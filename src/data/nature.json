@@ -1,0 +1,95 @@
+[
+  {
+    "id": "nature-001",
+    "name": "Puducherry Botanical Garden",
+    "nameTamil": "புதுச்சேரி தாவரவியல் பூங்கா",
+    "category": "Garden",
+    "location": "Marimalai Adigal Salai, Central Puducherry - 605001",
+    "address": "Puducherry Botanical Garden, Marimalai Adigal Salai, Near New Bus Stand, Puducherry, 605001",
+    "mapsUrl": "https://maps.google.com/?q=Puducherry+Botanical+Garden",
+    "coordinates": {
+      "lat": 11.9200,
+      "lng": 79.8150
+    },
+    "openingTimeWeekdays": "9:00 AM",
+    "closingTimeWeekdays": "5:30 PM",
+    "openingTimeWeekends": "9:00 AM",
+    "closingTimeWeekends": "5:30 PM",
+    "closedOn": "Government holidays (occasionally)",
+    "description": {
+      "whenFormed": "Established in 1826 during the French colonial period.",
+      "whoNamed": "Named as Puducherry Botanical Garden by the French administration.",
+      "whyCreated": "Created for scientific study, conservation, and public education.",
+      "maintenance": "Maintained by the Department of Agriculture & Farmers Welfare, Government of Puducherry.",
+      "typeOfPlace": "Botanical Garden - spread across a large green area with thousands of plant species.",
+      "whatCanBeSeen": [
+        "Ornamental plants",
+        "Medicinal plants",
+        "Palm varieties",
+        "Tree-lined walkways",
+        "Toy Train (seasonal)",
+        "Mini Zoo (small animals & birds)",
+        "Children's play area",
+        "Ponds and water features"
+      ],
+      "visitorPurpose": "Family outings, educational visits, nature walks, relaxation inside the city.",
+      "specialFeatures": "One of the oldest botanical gardens in South India. Houses French-era garden layout with wide variety of plant species and calm green environment inside city."
+    },
+    "images": [
+      "https://upload.wikimedia.org/wikipedia/commons/4/4b/Puducherry_Botanical_Garden.jpg",
+      "https://upload.wikimedia.org/wikipedia/commons/7/7a/Botanical_Garden_Puducherry_Entrance.jpg",
+      "https://upload.wikimedia.org/wikipedia/commons/1/1d/Puducherry_Botanical_Garden_Toy_Train.jpg",
+      "https://upload.wikimedia.org/wikipedia/commons/6/6f/Botanical_Garden_Puducherry_Inside.jpg",
+      "https://upload.wikimedia.org/wikipedia/commons/3/3c/Puducherry_Botanical_Garden_Pond.jpg"
+    ],
+    "entryFee": "Adults: Rs. 10, Children: Rs. 5, Camera charges: Extra (if applicable)",
+    "dressCode": "Decent / Comfortable clothing preferred",
+    "phoneNumber": "0413-2221198",
+    "emergencyContact": "0413-2221198",
+    "policeHelpline": "112",
+    "crowdLevel": "Low to Medium (Weekdays), Medium to High (Weekends & Holidays), High (School vacation)",
+    "famousThings": [
+      "French-era garden layout",
+      "Toy Train ride",
+      "Mini Zoo",
+      "Wide variety of plant species",
+      "Calm green environment inside city"
+    ],
+    "famousMonths": "October - February (Best weather, lush greenery)",
+    "famousMonthsTamil": "அக்டோபர் - பிப்ரவரி",
+    "whatHappensDuringFamousTimes": {
+      "peakSeason": "October - February: Best weather, lush greenery",
+      "migratoryBirds": "Not applicable",
+      "monsoonWaterflow": "Monsoon: Plants & ponds look fuller and greener",
+      "festivals": "Not applicable",
+      "specialEvents": "School holidays: Heavy family & student visits"
+    },
+    "activitiesAndSafety": {
+      "activitiesAllowed": [
+        "Walking & relaxation",
+        "Photography",
+        "Educational learning",
+        "Children's recreation",
+        "Toy Train ride (seasonal)",
+        "Mini Zoo visit"
+      ],
+      "activitiesNotAllowed": [
+        "Plucking plants",
+        "Feeding animals",
+        "Littering"
+      ],
+      "safetyRules": [
+        "Children should be supervised",
+        "Toy train availability is seasonal",
+        "Follow garden rules to protect plants"
+      ],
+      "environmentalProtection": [
+        "Do not pluck flowers or plants",
+        "Do not litter",
+        "Respect the natural environment",
+        "Follow designated pathways"
+      ]
+    },
+    "rating": 4.4
+  }
+]
