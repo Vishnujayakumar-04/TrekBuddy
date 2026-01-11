@@ -14,25 +14,20 @@ import {
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { ArrowBackIcon } from '../components/icons';
-import { colors } from '../theme/colors';
 import { spacing, radius } from '../theme/spacing';
 import { typography } from '../theme/typography';
 import { shadows } from '../theme/shadows';
-import { auth } from '../firebase';
-import { getGeminiChatResponse } from '../utils/geminiChat';
-import { collection, addDoc, serverTimestamp, query, orderBy, getDocs, onSnapshot } from 'firebase/firestore';
-import { db } from '../firebase';
-import { getUserSubcollectionPath } from '../firebase/firestoreStructure';
+import { auth } from '../firebase/auth';
+import { 
+  sendAIMessage, 
+  getChatHistory, 
+  subscribeToChatHistory,
+  ChatMessage 
+} from '../utils/firebaseAI';
 
 const STATUSBAR_HEIGHT = Platform.OS === 'android' ? StatusBar.currentHeight || 24 : 0;
 
-interface ChatMessage {
-  id: string;
-  question: string;
-  answer: string;
-  timestamp: string;
-  createdAt?: any;
-}
+// ChatMessage interface is imported from firebaseAI
 
 interface AIChatbotScreenProps {
   navigation?: any;
@@ -57,7 +52,7 @@ export default function AIChatbotScreen({ navigation }: AIChatbotScreenProps) {
     loadChatHistory();
 
     // Subscribe to real-time updates
-    const unsubscribe = subscribeToChatHistory();
+    const unsubscribe = setupChatSubscription();
     
     // Listen to auth state changes
     const authUnsubscribe = auth.onAuthStateChanged((user) => {
@@ -77,22 +72,7 @@ export default function AIChatbotScreen({ navigation }: AIChatbotScreenProps) {
 
     try {
       setLoadingHistory(true);
-      const chatsPath = getUserSubcollectionPath(auth.currentUser.uid, 'chats');
-      const chatsRef = collection(db, chatsPath);
-      const q = query(chatsRef, orderBy('createdAt', 'asc'));
-      const querySnapshot = await getDocs(q);
-      
-      const history: ChatMessage[] = querySnapshot.docs.map((doc) => {
-        const data = doc.data();
-        return {
-          id: doc.id,
-          question: data.question || '',
-          answer: data.answer || '',
-          timestamp: data.createdAt?.toDate?.()?.toISOString() || new Date().toISOString(),
-          createdAt: data.createdAt,
-        };
-      });
-      
+      const history = await getChatHistory(auth.currentUser.uid);
       setMessages(history);
     } catch (error) {
       console.error('Error loading chat history:', error);
@@ -101,38 +81,16 @@ export default function AIChatbotScreen({ navigation }: AIChatbotScreenProps) {
     }
   };
 
-  const subscribeToChatHistory = () => {
+  const setupChatSubscription = () => {
     if (!auth.currentUser) return () => {};
 
     try {
-      const chatsPath = getUserSubcollectionPath(auth.currentUser.uid, 'chats');
-      const chatsRef = collection(db, chatsPath);
-      const q = query(chatsRef, orderBy('createdAt', 'asc'));
-      
-      return onSnapshot(
-        q,
-        (querySnapshot) => {
-          const history: ChatMessage[] = querySnapshot.docs.map((doc) => {
-            const data = doc.data();
-            return {
-              id: doc.id,
-              question: data.question || '',
-              answer: data.answer || '',
-              timestamp: data.createdAt?.toDate?.()?.toISOString() || new Date().toISOString(),
-              createdAt: data.createdAt,
-            };
-          });
-          setMessages(history);
-          setLoadingHistory(false);
-        },
-        (error) => {
-          console.error('Error in chat history subscription:', error);
-          setLoadingHistory(false);
-          // Continue without real-time updates if there's an error
-        }
-      );
+      return subscribeToChatHistory(auth.currentUser.uid, (messages) => {
+        setMessages(messages);
+        setLoadingHistory(false);
+      });
     } catch (error) {
-      console.error('Error subscribing to chat history:', error);
+      console.error('Error setting up chat subscription:', error);
       setLoadingHistory(false);
       return () => {};
     }
@@ -162,35 +120,28 @@ export default function AIChatbotScreen({ navigation }: AIChatbotScreenProps) {
       question,
       answer: '',
       timestamp: new Date().toISOString(),
+      createdAt: new Date().toISOString(),
     };
     setMessages((prev) => [...prev, userMessage]);
 
     try {
-      // Get AI response
-      const aiReply = await getGeminiChatResponse(question);
+      // Get AI response and save to Firestore using Firebase AI service
+      if (!auth.currentUser) {
+        throw new Error('User not authenticated');
+      }
+
+      const { answer: aiReply, messageId } = await sendAIMessage(
+        auth.currentUser.uid,
+        question
+      );
 
       // Update message with answer
       const updatedMessage: ChatMessage = {
         ...userMessage,
+        id: messageId,
         answer: aiReply,
       };
       setMessages((prev) => prev.map((msg) => (msg.id === userMessage.id ? updatedMessage : msg)));
-
-      // Save to Firestore
-      if (auth.currentUser) {
-        try {
-          const chatsPath = getUserSubcollectionPath(auth.currentUser.uid, 'chats');
-          await addDoc(collection(db, chatsPath), {
-            question,
-            answer: aiReply,
-            createdAt: serverTimestamp(),
-          });
-        } catch (firestoreError: any) {
-          console.error('Error saving chat to Firestore:', firestoreError);
-          // Don't fail the chat if Firestore save fails (might be offline)
-          // User can still see the response
-        }
-      }
     } catch (error: any) {
       console.error('Error getting AI response:', error);
       
@@ -219,9 +170,9 @@ export default function AIChatbotScreen({ navigation }: AIChatbotScreenProps) {
   if (loadingHistory) {
     return (
       <SafeAreaView style={styles.container}>
-        <StatusBar barStyle="dark-content" backgroundColor={colors.background} />
+        <StatusBar barStyle="dark-content" backgroundColor="#FFFFFF" />
         <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color={colors.teal} />
+          <ActivityIndicator size="large" color="#0E7C86" />
           <Text style={styles.loadingText}>Loading chat history...</Text>
         </View>
       </SafeAreaView>
@@ -230,11 +181,11 @@ export default function AIChatbotScreen({ navigation }: AIChatbotScreenProps) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar barStyle="dark-content" backgroundColor={colors.background} />
+      <StatusBar barStyle="dark-content" backgroundColor="#FFFFFF" />
       
       {/* Header */}
       <LinearGradient
-        colors={colors.gradientTeal}
+        colors={['#0E7C86', '#4ECDC4']}
         style={styles.header}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
@@ -245,7 +196,7 @@ export default function AIChatbotScreen({ navigation }: AIChatbotScreenProps) {
             style={styles.backButton}
             activeOpacity={0.7}
           >
-            <ArrowBackIcon size={24} color={colors.textLight} />
+            <ArrowBackIcon size={24} color="#FFFFFF" />
           </TouchableOpacity>
           <View style={styles.headerTextContainer}>
             <Text style={styles.headerTitle}>AI Travel Assistant</Text>
@@ -288,7 +239,7 @@ export default function AIChatbotScreen({ navigation }: AIChatbotScreenProps) {
                 </View>
               ) : (
                 <View style={styles.aiMessageContainer}>
-                  <ActivityIndicator size="small" color={colors.teal} />
+                  <ActivityIndicator size="small" color="#0E7C86" />
                 </View>
               )}
             </View>
@@ -296,7 +247,7 @@ export default function AIChatbotScreen({ navigation }: AIChatbotScreenProps) {
         )}
         {isLoading && (
           <View style={styles.aiMessageContainer}>
-            <ActivityIndicator size="small" color={colors.teal} />
+            <ActivityIndicator size="small" color="#0E7C86" />
           </View>
         )}
       </ScrollView>
@@ -306,7 +257,7 @@ export default function AIChatbotScreen({ navigation }: AIChatbotScreenProps) {
         <TextInput
           style={styles.input}
           placeholder="Ask about places, food, culture..."
-          placeholderTextColor={colors.textSecondary}
+          placeholderTextColor="#666666"
           value={input}
           onChangeText={setInput}
           multiline
@@ -320,7 +271,7 @@ export default function AIChatbotScreen({ navigation }: AIChatbotScreenProps) {
           disabled={!input.trim() || isLoading}
         >
           <LinearGradient
-            colors={colors.gradientTeal}
+            colors={['#0E7C86', '#4ECDC4']}
             style={styles.sendButtonGradient}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 0 }}
@@ -336,7 +287,7 @@ export default function AIChatbotScreen({ navigation }: AIChatbotScreenProps) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.background,
+    backgroundColor: '#FFFFFF',
   },
   loadingContainer: {
     flex: 1,
@@ -345,7 +296,7 @@ const styles = StyleSheet.create({
   },
   loadingText: {
     ...typography.bodyMedium,
-    color: colors.textSecondary,
+    color: '#666666',
     marginTop: spacing.md,
   },
   header: {
@@ -371,12 +322,12 @@ const styles = StyleSheet.create({
   },
   headerTitle: {
     ...typography.h2,
-    color: colors.textLight,
+    color: '#FFFFFF',
     fontWeight: '700',
   },
   headerSubtitle: {
     ...typography.bodyMedium,
-    color: colors.textLight,
+    color: '#FFFFFF',
     opacity: 0.9,
     marginTop: 2,
   },
@@ -398,12 +349,12 @@ const styles = StyleSheet.create({
   },
   emptyTitle: {
     ...typography.h4,
-    color: colors.textPrimary,
+    color: '#000000',
     marginBottom: spacing.sm,
   },
   emptyText: {
     ...typography.bodyMedium,
-    color: colors.textSecondary,
+    color: '#666666',
     textAlign: 'center',
   },
   userMessageContainer: {
@@ -412,7 +363,7 @@ const styles = StyleSheet.create({
     marginBottom: spacing.md,
   },
   userMessage: {
-    backgroundColor: colors.teal,
+    backgroundColor: '#0E7C86',
     borderRadius: radius.lg,
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.sm,
@@ -420,7 +371,7 @@ const styles = StyleSheet.create({
   },
   userMessageText: {
     ...typography.bodyMedium,
-    color: colors.textLight,
+    color: '#FFFFFF',
   },
   aiMessageContainer: {
     flexDirection: 'row',
@@ -428,37 +379,37 @@ const styles = StyleSheet.create({
     marginBottom: spacing.md,
   },
   aiMessage: {
-    backgroundColor: colors.cardBackground,
+    backgroundColor: '#FFFFFF',
     borderRadius: radius.lg,
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.sm,
     maxWidth: '80%',
     borderWidth: 1,
-    borderColor: colors.border,
+    borderColor: '#E2E8F0',
   },
   aiMessageText: {
     ...typography.bodyMedium,
-    color: colors.textPrimary,
+    color: '#000000',
   },
   inputContainer: {
     flexDirection: 'row',
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.md,
-    backgroundColor: colors.cardBackground,
+    backgroundColor: '#FFFFFF',
     borderTopWidth: 1,
-    borderTopColor: colors.border,
+    borderTopColor: '#E2E8F0',
     alignItems: 'flex-end',
   },
   input: {
     flex: 1,
-    backgroundColor: colors.background,
+    backgroundColor: '#FFFFFF',
     borderRadius: radius.md,
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.sm,
     ...typography.bodyMedium,
-    color: colors.textPrimary,
+    color: '#000000',
     borderWidth: 1,
-    borderColor: colors.border,
+    borderColor: '#E2E8F0',
     maxHeight: 100,
     marginRight: spacing.sm,
   },
@@ -472,7 +423,7 @@ const styles = StyleSheet.create({
   },
   sendButtonText: {
     ...typography.labelMedium,
-    color: colors.textLight,
+    color: '#FFFFFF',
     fontWeight: '600',
   },
   sendButtonDisabled: {

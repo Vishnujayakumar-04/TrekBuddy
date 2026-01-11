@@ -20,7 +20,6 @@ import Animated, {
   interpolate,
   Easing,
 } from 'react-native-reanimated';
-import { colors } from '../theme/colors';
 import { spacing, radius } from '../theme/spacing';
 import { typography } from '../theme/typography';
 import { shadows } from '../theme/shadows';
@@ -107,7 +106,7 @@ export default function WelcomeScreen({ navigation }: WelcomeScreenProps) {
       <StatusBar translucent backgroundColor="transparent" barStyle="light-content" />
       
       <LinearGradient
-        colors={colors.gradientTeal}
+        colors={['#0E7C86', '#4ECDC4']}
         style={styles.gradient}
         start={{ x: 0, y: 0 }}
         end={{ x: 0, y: 1 }}
@@ -218,13 +217,13 @@ const styles = StyleSheet.create({
   appName: {
     fontSize: 36,
     fontWeight: '700',
-    color: colors.textLight,
+    color: '#FFFFFF',
     letterSpacing: 1,
     marginBottom: spacing.sm,
   },
   tagline: {
     fontSize: 16,
-    color: colors.textLight,
+    color: '#FFFFFF',
     opacity: 0.9,
     letterSpacing: 0.5,
   },
@@ -250,12 +249,12 @@ const styles = StyleSheet.create({
   buttonText: {
     fontSize: 17,
     fontWeight: '600',
-    color: colors.teal,
+    color: '#0E7C86',
     marginRight: spacing.sm,
   },
   buttonArrow: {
     fontSize: 20,
-    color: colors.teal,
+    color: '#0E7C86',
     fontWeight: '600',
   },
   dotsContainer: {
@@ -270,7 +269,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255, 255, 255, 0.3)',
   },
   dotActive: {
-    backgroundColor: colors.textLight,
+    backgroundColor: '#FFFFFF',
     width: 24,
   },
   // Decorative elements

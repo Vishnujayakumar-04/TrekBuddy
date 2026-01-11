@@ -9,8 +9,8 @@ import {
   ScrollView,
   Alert,
 } from 'react-native';
+import { MaterialIcons } from '@expo/vector-icons';
 import { ArrowBackIcon, CalendarIcon, ArrowForwardIcon, AccountBalanceWalletIcon, AutoAwesomeIcon } from '../components/icons';
-import { colors } from '../theme/colors';
 import { spacing, radius } from '../theme/spacing';
 import { typography } from '../theme/typography';
 import { shadows } from '../theme/shadows';
@@ -113,7 +113,7 @@ export default function TripPlannerInput({ navigation, route }: TripPlannerInput
         {/* Header */}
         <View style={styles.header}>
           <TouchableOpacity onPress={() => navigation?.goBack()} style={styles.backButton}>
-            <ArrowBackIcon size={24} color={colors.textPrimary} />
+            <ArrowBackIcon size={24} color="#000000" />
           </TouchableOpacity>
           <Text style={styles.headerTitle}>Plan Your Trip</Text>
         </View>
@@ -124,22 +124,22 @@ export default function TripPlannerInput({ navigation, route }: TripPlannerInput
             <Text style={styles.sectionTitle}>Travel Dates</Text>
             <View style={styles.dateRow}>
               <View style={styles.dateInputContainer}>
-                <CalendarIcon size={20} color={colors.textSecondary} />
+                <CalendarIcon size={20} color="#666666" />
                 <TextInput
                   style={styles.dateInput}
                   placeholder="Start Date (YYYY-MM-DD)"
-                  placeholderTextColor={colors.textSecondary}
+                  placeholderTextColor="#666666"
                   value={startDate}
                   onChangeText={(text) => handleDateInput(text, 'start')}
                 />
               </View>
-              <ArrowForwardIcon size={20} color={colors.textSecondary} />
+              <ArrowForwardIcon size={20} color="#666666" />
               <View style={styles.dateInputContainer}>
-                <CalendarIcon size={20} color={colors.textSecondary} />
+                <CalendarIcon size={20} color="#666666" />
                 <TextInput
                   style={styles.dateInput}
                   placeholder="End Date (YYYY-MM-DD)"
-                  placeholderTextColor={colors.textSecondary}
+                  placeholderTextColor="#666666"
                   value={endDate}
                   onChangeText={(text) => handleDateInput(text, 'end')}
                 />
@@ -151,11 +151,11 @@ export default function TripPlannerInput({ navigation, route }: TripPlannerInput
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>Budget (₹)</Text>
             <View style={styles.budgetContainer}>
-              <AccountBalanceWalletIcon size={20} color={colors.textSecondary} />
+              <AccountBalanceWalletIcon size={20} color="#666666" />
               <TextInput
                 style={styles.budgetInput}
                 placeholder="Enter your budget"
-                placeholderTextColor={colors.textSecondary}
+                placeholderTextColor="#666666"
                 value={budget}
                 onChangeText={setBudget}
                 keyboardType="numeric"
@@ -183,7 +183,7 @@ export default function TripPlannerInput({ navigation, route }: TripPlannerInput
                     <MaterialIcons
                       name={category.icon as any}
                       size={20}
-                      color={isSelected ? colors.textLight : colors.textSecondary}
+                      color={isSelected ? '#FFFFFF' : '#666666'}
                     />
                     <Text
                       style={[
@@ -219,7 +219,7 @@ export default function TripPlannerInput({ navigation, route }: TripPlannerInput
                     <MaterialIcons
                       name={mode.icon as any}
                       size={24}
-                      color={isSelected ? colors.textLight : colors.primary}
+                      color={isSelected ? '#FFFFFF' : '#0E7C86'}
                     />
                     <Text
                       style={[
@@ -240,7 +240,7 @@ export default function TripPlannerInput({ navigation, route }: TripPlannerInput
             style={[styles.planButton, shadows.md]}
             onPress={handlePlanTrip}
           >
-            <AutoAwesomeIcon size={20} color={colors.textLight} />
+            <AutoAwesomeIcon size={20} color="#FFFFFF" />
             <Text style={styles.planButtonText}>Generate Itinerary</Text>
           </TouchableOpacity>
 
@@ -254,23 +254,23 @@ export default function TripPlannerInput({ navigation, route }: TripPlannerInput
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.background,
+    backgroundColor: '#FFFFFF',
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.md,
-    backgroundColor: colors.cardBackground,
+    backgroundColor: '#FFFFFF',
     borderBottomWidth: 1,
-    borderBottomColor: colors.border,
+    borderBottomColor: '#E2E8F0',
   },
   backButton: {
     marginRight: spacing.md,
   },
   headerTitle: {
     ...typography.h2,
-    color: colors.textPrimary,
+    color: '#000000',
     flex: 1,
   },
   content: {
@@ -282,12 +282,12 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     ...typography.h3,
-    color: colors.textPrimary,
+    color: '#000000',
     marginBottom: spacing.sm,
   },
   sectionDescription: {
     ...typography.bodySmall,
-    color: colors.textSecondary,
+    color: '#666666',
     marginBottom: spacing.md,
   },
   dateRow: {
@@ -299,17 +299,17 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: colors.cardBackground,
+    backgroundColor: '#FFFFFF',
     borderRadius: radius.lg,
     borderWidth: 1,
-    borderColor: colors.border,
+    borderColor: '#E2E8F0',
     paddingHorizontal: spacing.md,
   },
   dateInput: {
     flex: 1,
     paddingVertical: spacing.md,
     ...typography.bodyMedium,
-    color: colors.textPrimary,
+    color: '#000000',
   },
   inputIcon: {
     marginRight: spacing.sm,
@@ -320,17 +320,17 @@ const styles = StyleSheet.create({
   budgetContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: colors.cardBackground,
+    backgroundColor: '#FFFFFF',
     borderRadius: radius.lg,
     borderWidth: 1,
-    borderColor: colors.border,
+    borderColor: '#E2E8F0',
     paddingHorizontal: spacing.md,
   },
   budgetInput: {
     flex: 1,
     paddingVertical: spacing.md,
     ...typography.bodyMedium,
-    color: colors.textPrimary,
+    color: '#000000',
   },
   categoriesGrid: {
     flexDirection: 'row',
@@ -343,21 +343,21 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.sm,
     borderRadius: radius.full,
-    backgroundColor: colors.cardBackground,
+    backgroundColor: '#FFFFFF',
     borderWidth: 1,
-    borderColor: colors.border,
+    borderColor: '#E2E8F0',
     gap: spacing.xs,
   },
   categoryChipSelected: {
-    backgroundColor: colors.primary,
-    borderColor: colors.primary,
+    backgroundColor: '#0E7C86',
+    borderColor: '#0E7C86',
   },
   categoryChipText: {
     ...typography.labelMedium,
-    color: colors.textSecondary,
+    color: '#666666',
   },
   categoryChipTextSelected: {
-    color: colors.textLight,
+    color: '#FFFFFF',
   },
   travelModeGrid: {
     flexDirection: 'row',
@@ -371,28 +371,28 @@ const styles = StyleSheet.create({
     paddingVertical: spacing.md,
     paddingHorizontal: spacing.sm,
     borderRadius: radius.lg,
-    backgroundColor: colors.cardBackground,
+    backgroundColor: '#FFFFFF',
     borderWidth: 2,
-    borderColor: colors.border,
+    borderColor: '#E2E8F0',
     gap: spacing.xs,
   },
   travelModeCardSelected: {
-    backgroundColor: colors.primary,
-    borderColor: colors.primary,
+    backgroundColor: '#0E7C86',
+    borderColor: '#0E7C86',
   },
   travelModeText: {
     ...typography.labelMedium,
-    color: colors.textPrimary,
+    color: '#000000',
     textAlign: 'center',
   },
   travelModeTextSelected: {
-    color: colors.textLight,
+    color: '#FFFFFF',
   },
   planButton: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: colors.primary,
+    backgroundColor: '#0E7C86',
     paddingVertical: spacing.md,
     borderRadius: radius.lg,
     gap: spacing.sm,
@@ -400,7 +400,7 @@ const styles = StyleSheet.create({
   },
   planButtonText: {
     ...typography.labelLarge,
-    color: colors.textLight,
+    color: '#FFFFFF',
     fontSize: 16,
   },
 });

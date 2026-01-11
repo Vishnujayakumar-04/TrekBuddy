@@ -18,7 +18,6 @@ import * as ImagePicker from 'expo-image-picker';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
 import { useLanguage } from '../context/LanguageContext';
-import { getColors } from '../theme/colors';
 import { spacing, radius } from '../theme/spacing';
 import { typography } from '../theme/typography';
 import { shadows } from '../theme/shadows';
@@ -35,7 +34,6 @@ interface ProfileScreenProps {
 export default function ProfileScreen({ navigation }: ProfileScreenProps) {
   const { user, userProfile, refreshUserProfile } = useAuth();
   const { isDark } = useTheme();
-  const colors = getColors(isDark);
   const [showMenu, setShowMenu] = useState(false);
   const [showImagePicker, setShowImagePicker] = useState(false);
   const [selectedImageUri, setSelectedImageUri] = useState<string | null>(null);
@@ -142,12 +140,12 @@ export default function ProfileScreen({ navigation }: ProfileScreenProps) {
   const currentPhotoUri = selectedImageUri || profilePhotoUrl;
 
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
-      <StatusBar barStyle={isDark ? 'light-content' : 'dark-content'} backgroundColor={colors.background} />
+    <SafeAreaView style={[styles.container, { backgroundColor: '#FFFFFF' }]}>
+      <StatusBar barStyle={isDark ? 'light-content' : 'dark-content'} backgroundColor="#FFFFFF" />
       
       {/* Header */}
       <LinearGradient
-        colors={colors.gradientTeal}
+        colors={['#0E7C86', '#4ECDC4']}
         style={styles.header}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
@@ -158,7 +156,7 @@ export default function ProfileScreen({ navigation }: ProfileScreenProps) {
             onPress={handleMenuPress}
             activeOpacity={0.7}
           >
-            <MenuIcon size={24} color={colors.textLight} />
+            <MenuIcon size={24} color="#FFFFFF" />
           </TouchableOpacity>
           
           <View style={styles.headerTextContainer}>
@@ -180,29 +178,29 @@ export default function ProfileScreen({ navigation }: ProfileScreenProps) {
               {currentPhotoUri ? (
                 <Image source={{ uri: currentPhotoUri }} style={styles.profilePhoto} />
               ) : (
-                <View style={[styles.profilePhotoPlaceholder, { backgroundColor: colors.cardBackground }]}>
+                <View style={[styles.profilePhotoPlaceholder, { backgroundColor: '#FFFFFF' }]}>
                   <Text style={styles.profilePhotoIcon}>👤</Text>
                 </View>
               )}
               {isUploading && (
                 <View style={styles.uploadingOverlay}>
-                  <ActivityIndicator size="large" color={colors.textLight} />
+                  <ActivityIndicator size="large" color="#FFFFFF" />
                 </View>
               )}
-              <View style={[styles.editBadge, { backgroundColor: colors.teal }]}>
+              <View style={[styles.editBadge, { backgroundColor: '#0E7C86' }]}>
                 <Text style={styles.editBadgeText}>✏️</Text>
               </View>
             </TouchableOpacity>
 
-            <Text style={[styles.profileName, { color: colors.textPrimary }]}>{displayName}</Text>
+            <Text style={[styles.profileName, { color: '#000000' }]}>{displayName}</Text>
             {displayEmail && (
-              <Text style={[styles.profileEmail, { color: colors.textSecondary }]}>{displayEmail}</Text>
+              <Text style={[styles.profileEmail, { color: '#666666' }]}>{displayEmail}</Text>
             )}
 
             {/* Save Photo Button (only show if image is selected but not saved) */}
             {selectedImageUri && !isUploading && (
               <TouchableOpacity
-                style={[styles.savePhotoButton, { backgroundColor: colors.teal }, shadows.md]}
+                style={[styles.savePhotoButton, { backgroundColor: '#0E7C86' }, shadows.md]}
                 onPress={handleSavePhoto}
               >
                 <Text style={styles.savePhotoButtonText}>Save Photo</Text>
@@ -211,41 +209,41 @@ export default function ProfileScreen({ navigation }: ProfileScreenProps) {
           </View>
 
           {/* User Info Section */}
-          <View style={[styles.infoSection, { backgroundColor: colors.cardBackground }]}>
-            <Text style={[styles.sectionTitle, { color: colors.textPrimary }]}>Account Information</Text>
+          <View style={[styles.infoSection, { backgroundColor: '#FFFFFF' }]}>
+            <Text style={[styles.sectionTitle, { color: '#000000' }]}>Account Information</Text>
             
             <View style={styles.infoRow}>
-              <Text style={[styles.infoLabel, { color: colors.textSecondary }]}>Name</Text>
-              <Text style={[styles.infoValue, { color: colors.textPrimary }]}>
+              <Text style={[styles.infoLabel, { color: '#666666' }]}>Name</Text>
+              <Text style={[styles.infoValue, { color: '#000000' }]}>
                 {userProfile?.name || displayName}
               </Text>
             </View>
 
             {displayEmail && (
               <View style={styles.infoRow}>
-                <Text style={[styles.infoLabel, { color: colors.textSecondary }]}>Email</Text>
-                <Text style={[styles.infoValue, { color: colors.textPrimary }]}>{displayEmail}</Text>
+                <Text style={[styles.infoLabel, { color: '#666666' }]}>Email</Text>
+                <Text style={[styles.infoValue, { color: '#000000' }]}>{displayEmail}</Text>
               </View>
             )}
 
             {userProfile?.phone && (
               <View style={styles.infoRow}>
-                <Text style={[styles.infoLabel, { color: colors.textSecondary }]}>Phone</Text>
-                <Text style={[styles.infoValue, { color: colors.textPrimary }]}>{userProfile.phone}</Text>
+                <Text style={[styles.infoLabel, { color: '#666666' }]}>Phone</Text>
+                <Text style={[styles.infoValue, { color: '#000000' }]}>{userProfile.phone}</Text>
               </View>
             )}
           </View>
 
           {/* Settings Section */}
-          <View style={[styles.settingsSection, { backgroundColor: colors.cardBackground }]}>
-            <Text style={[styles.sectionTitle, { color: colors.textPrimary }]}>Settings</Text>
+          <View style={[styles.settingsSection, { backgroundColor: '#FFFFFF' }]}>
+            <Text style={[styles.sectionTitle, { color: '#000000' }]}>Settings</Text>
             
             <TouchableOpacity
               style={styles.settingsItem}
               onPress={() => navigation?.navigate('Settings')}
             >
               <Text style={styles.settingsItemIcon}>⚙️</Text>
-              <Text style={[styles.settingsItemText, { color: colors.textPrimary }]}>App Settings</Text>
+              <Text style={[styles.settingsItemText, { color: '#000000' }]}>App Settings</Text>
               <Text style={styles.settingsItemArrow}>›</Text>
             </TouchableOpacity>
           </View>
@@ -263,27 +261,27 @@ export default function ProfileScreen({ navigation }: ProfileScreenProps) {
         onRequestClose={() => setShowImagePicker(false)}
       >
         <View style={styles.imagePickerOverlay}>
-          <View style={[styles.imagePickerContent, { backgroundColor: colors.cardBackground }]}>
+          <View style={[styles.imagePickerContent, { backgroundColor: '#FFFFFF' }]}>
             <View style={styles.imagePickerHeader}>
-              <Text style={[styles.imagePickerTitle, { color: colors.textPrimary }]}>Select Photo</Text>
+              <Text style={[styles.imagePickerTitle, { color: '#000000' }]}>Select Photo</Text>
               <TouchableOpacity
                 onPress={() => setShowImagePicker(false)}
                 style={styles.imagePickerCloseButton}
               >
-                <Text style={[styles.imagePickerCloseText, { color: colors.textSecondary }]}>✕</Text>
+                <Text style={[styles.imagePickerCloseText, { color: '#666666' }]}>✕</Text>
               </TouchableOpacity>
             </View>
             <TouchableOpacity
-              style={[styles.imagePickerOption, { borderBottomColor: colors.border }]}
+              style={[styles.imagePickerOption, { borderBottomColor: '#E2E8F0' }]}
               onPress={handlePickImage}
             >
-              <Text style={[styles.imagePickerOptionText, { color: colors.textPrimary }]}>Choose from Gallery</Text>
+              <Text style={[styles.imagePickerOptionText, { color: '#000000' }]}>Choose from Gallery</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.imagePickerOption}
               onPress={() => setShowImagePicker(false)}
             >
-              <Text style={[styles.imagePickerOptionText, { color: colors.textSecondary }]}>Cancel</Text>
+              <Text style={[styles.imagePickerOptionText, { color: '#666666' }]}>Cancel</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -302,14 +300,14 @@ export default function ProfileScreen({ navigation }: ProfileScreenProps) {
             activeOpacity={1}
             onPress={() => setShowMenu(false)}
           />
-          <View style={[styles.menuContent, { backgroundColor: colors.cardBackground }]}>
-            <View style={[styles.menuHeader, { borderBottomColor: colors.border }]}>
-              <Text style={[styles.menuTitle, { color: colors.textPrimary }]}>Menu</Text>
+          <View style={[styles.menuContent, { backgroundColor: '#FFFFFF' }]}>
+            <View style={[styles.menuHeader, { borderBottomColor: '#E2E8F0' }]}>
+              <Text style={[styles.menuTitle, { color: '#000000' }]}>Menu</Text>
               <TouchableOpacity
                 onPress={() => setShowMenu(false)}
                 style={styles.menuCloseButton}
               >
-                <Text style={[styles.menuCloseText, { color: colors.textSecondary }]}>✕</Text>
+                <Text style={[styles.menuCloseText, { color: '#666666' }]}>✕</Text>
               </TouchableOpacity>
             </View>
 
@@ -320,7 +318,7 @@ export default function ProfileScreen({ navigation }: ProfileScreenProps) {
                 onPress={() => handleMenuOption('theme')}
               >
                 <Text style={styles.menuItemIcon}>🌓</Text>
-                <Text style={[styles.menuItemText, { color: colors.textPrimary }]}>Theme</Text>
+                <Text style={[styles.menuItemText, { color: '#000000' }]}>Theme</Text>
               </TouchableOpacity>
 
               {/* App Language */}
@@ -329,7 +327,7 @@ export default function ProfileScreen({ navigation }: ProfileScreenProps) {
                 onPress={() => handleMenuOption('language')}
               >
                 <Text style={styles.menuItemIcon}>🌐</Text>
-                <Text style={[styles.menuItemText, { color: colors.textPrimary }]}>App Language</Text>
+                <Text style={[styles.menuItemText, { color: '#000000' }]}>App Language</Text>
               </TouchableOpacity>
 
               {/* History */}
@@ -338,11 +336,11 @@ export default function ProfileScreen({ navigation }: ProfileScreenProps) {
                 onPress={() => handleMenuOption('history')}
               >
                 <Text style={styles.menuItemIcon}>📜</Text>
-                <Text style={[styles.menuItemText, { color: colors.textPrimary }]}>History</Text>
+                <Text style={[styles.menuItemText, { color: '#000000' }]}>History</Text>
               </TouchableOpacity>
 
               {/* Divider */}
-              <View style={[styles.menuDivider, { backgroundColor: colors.border }]} />
+              <View style={[styles.menuDivider, { backgroundColor: '#E2E8F0' }]} />
 
               {/* Logout */}
               <TouchableOpacity
@@ -350,7 +348,7 @@ export default function ProfileScreen({ navigation }: ProfileScreenProps) {
                 onPress={() => handleMenuOption('logout')}
               >
                 <Text style={styles.menuItemIcon}>🚪</Text>
-                <Text style={[styles.menuItemText, styles.menuItemTextLogout, { color: colors.red }]}>Logout</Text>
+                <Text style={[styles.menuItemText, styles.menuItemTextLogout, { color: '#E84A4A' }]}>Logout</Text>
               </TouchableOpacity>
             </ScrollView>
           </View>

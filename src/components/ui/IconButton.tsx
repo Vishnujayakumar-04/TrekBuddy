@@ -1,6 +1,5 @@
 import React from 'react';
 import { TouchableOpacity, StyleSheet, ViewStyle, Animated, Platform, TouchableNativeFeedback, View } from 'react-native';
-import { colors } from '../../theme/colors';
 import { spacing, radius } from '../../theme/spacing';
 import { shadows } from '../../theme/shadows';
 import { usePressAnimation } from '../../hooks/usePressAnimation';
@@ -18,7 +17,7 @@ export const IconButton: React.FC<IconButtonProps> = ({
   icon,
   onPress,
   size = 48,
-  backgroundColor = colors.cardBackground,
+  backgroundColor = '#FFFFFF',
   style,
   disabled = false,
 }) => {
@@ -55,7 +54,7 @@ export const IconButton: React.FC<IconButtonProps> = ({
           onPressIn={handlePressIn}
           onPressOut={handlePressOut}
           disabled={disabled}
-          background={TouchableNativeFeedback.Ripple(colors.teal + '40', true, size / 2)}
+          background={TouchableNativeFeedback.Ripple('#0E7C8640', true, size / 2)}
         >
           {buttonContent}
         </TouchableNativeFeedback>

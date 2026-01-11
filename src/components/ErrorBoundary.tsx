@@ -1,8 +1,19 @@
 import React, { Component, ErrorInfo, ReactNode } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { colors } from '../theme/colors';
+// Use direct color values to avoid module initialization issues in ErrorBoundary
+// ErrorBoundary must work even if theme module has issues
 import { spacing, radius } from '../theme/spacing';
 import { typography } from '../theme/typography';
+
+// Direct color values for ErrorBoundary (must work even if colors module fails)
+const errorBoundaryColors = {
+  background: '#FFFFFF',
+  textPrimary: '#1A202C',
+  textSecondary: '#666666',
+  red: '#E84A4A',
+  teal: '#0E7C86',
+  textLight: '#FFFFFF',
+};
 
 interface Props {
   children: ReactNode;
@@ -24,18 +35,25 @@ export class ErrorBoundary extends Component<Props, State> {
     // Don't show error UI for update-related errors or loading errors
     const errorMessage = error?.message || '';
     const errorStack = error?.stack || '';
-    const combined = `${errorMessage} ${errorStack}`.toLowerCase();
+    const errorName = error?.name || '';
+    const combined = `${errorMessage} ${errorStack} ${errorName}`.toLowerCase();
     
     if (
       combined.includes('failed to download remote update') ||
       combined.includes('java.io.ioexception') ||
+      combined.includes('java.ioexception') ||
       combined.includes('remote update') ||
+      combined.includes('expo-updates') ||
+      combined.includes('expo_updates') ||
       combined.includes('new update available') ||
       combined.includes('downloading') ||
       combined.includes('exp.direct') ||
       combined.includes('loading from') ||
+      combined.includes('update failed') ||
+      combined.includes('update error') ||
       (combined.includes('update') && combined.includes('download')) ||
-      (combined.includes('update') && combined.includes('ioexception'))
+      (combined.includes('update') && combined.includes('ioexception')) ||
+      (combined.includes('ioexception') && combined.includes('update'))
     ) {
       return { hasError: false, error: null };
     }
@@ -46,19 +64,26 @@ export class ErrorBoundary extends Component<Props, State> {
     // Ignore update-related errors - they're not critical
     const errorMessage = error?.message || '';
     const errorStack = error?.stack || '';
+    const errorName = error?.name || '';
     const errorInfoString = errorInfo?.componentStack || '';
-    const combined = `${errorMessage} ${errorStack} ${errorInfoString}`.toLowerCase();
+    const combined = `${errorMessage} ${errorStack} ${errorName} ${errorInfoString}`.toLowerCase();
     
     if (
       combined.includes('failed to download remote update') ||
       combined.includes('java.io.ioexception') ||
+      combined.includes('java.ioexception') ||
       combined.includes('remote update') ||
+      combined.includes('expo-updates') ||
+      combined.includes('expo_updates') ||
       combined.includes('new update available') ||
       combined.includes('downloading') ||
       combined.includes('exp.direct') ||
       combined.includes('loading from') ||
+      combined.includes('update failed') ||
+      combined.includes('update error') ||
       (combined.includes('update') && combined.includes('download')) ||
-      (combined.includes('update') && combined.includes('ioexception'))
+      (combined.includes('update') && combined.includes('ioexception')) ||
+      (combined.includes('ioexception') && combined.includes('update'))
     ) {
       console.warn('Update error ignored (updates are disabled):', error.message);
       // Reset error state to allow app to continue
@@ -106,7 +131,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: colors.background,
+    backgroundColor: errorBoundaryColors.background,
     padding: spacing.xl,
   },
   icon: {
@@ -115,32 +140,32 @@ const styles = StyleSheet.create({
   },
   title: {
     ...typography.h3,
-    color: colors.textPrimary,
+    color: errorBoundaryColors.textPrimary,
     marginBottom: spacing.sm,
     textAlign: 'center',
   },
   message: {
     ...typography.bodyMedium,
-    color: colors.textSecondary,
+    color: errorBoundaryColors.textSecondary,
     textAlign: 'center',
     marginBottom: spacing.md,
   },
   errorDetail: {
     ...typography.bodySmall,
-    color: colors.red,
+    color: errorBoundaryColors.red,
     textAlign: 'center',
     marginBottom: spacing.lg,
     paddingHorizontal: spacing.md,
   },
   button: {
-    backgroundColor: colors.teal,
+    backgroundColor: errorBoundaryColors.teal,
     paddingVertical: spacing.sm,
     paddingHorizontal: spacing.xl,
     borderRadius: radius.md,
   },
   buttonText: {
     ...typography.labelMedium,
-    color: colors.textLight,
+    color: errorBoundaryColors.textLight,
   },
 });
 

@@ -3,7 +3,6 @@ import { View, Text, TouchableOpacity, StyleSheet, Animated, Easing } from 'reac
 import { Card } from './ui';
 import { ChevronRightIcon } from './icons';
 import { DayItinerary, Activity } from '../utils/gemini';
-import { colors } from '../theme/colors';
 import { spacing, radius } from '../theme/spacing';
 import { typography } from '../theme/typography';
 
@@ -97,9 +96,6 @@ export const ExpandableDayCard: React.FC<ExpandableDayCardProps> = ({
         style={styles.header}
         onPress={toggleExpand}
         activeOpacity={0.7}
-        onLayout={(event) => {
-          setHeaderHeight(event.nativeEvent.layout.height);
-        }}
       >
         <View style={styles.headerContent}>
           <View>
@@ -116,7 +112,7 @@ export const ExpandableDayCard: React.FC<ExpandableDayCardProps> = ({
                 { transform: [{ rotate: rotateInterpolate }] },
               ]}
             >
-              <ChevronRightIcon size={24} color={colors.textSecondary} />
+              <ChevronRightIcon size={24} color="#666666" />
             </Animated.View>
           </View>
         </View>
@@ -246,16 +242,16 @@ const styles = StyleSheet.create({
   },
   dayTitle: {
     ...typography.h2,
-    color: colors.textPrimary,
+    color: '#000000',
     marginBottom: spacing.xs,
   },
   dayDate: {
     ...typography.bodyMedium,
-    color: colors.textLightGray,
+    color: '#777777',
   },
   activityCount: {
     ...typography.bodySmall,
-    color: colors.textSecondary,
+    color: '#666666',
   },
   chevronContainer: {
     marginLeft: spacing.xs,
@@ -279,29 +275,29 @@ const styles = StyleSheet.create({
     marginTop: spacing.lg,
     paddingTop: spacing.lg,
     borderTopWidth: 1,
-    borderTopColor: colors.border,
+    borderTopColor: '#E2E8F0',
   },
   diningTitle: {
     ...typography.labelMedium,
-    color: colors.textPrimary,
+    color: '#000000',
     marginBottom: spacing.sm,
     fontWeight: '600',
   },
   diningItem: {
     ...typography.bodySmall,
-    color: colors.textSecondary,
+    color: '#666666',
     marginBottom: spacing.xs,
   },
   costSummary: {
     marginTop: spacing.md,
     paddingTop: spacing.md,
     borderTopWidth: 1,
-    borderTopColor: colors.border,
+    borderTopColor: '#E2E8F0',
     alignItems: 'flex-end',
   },
   costLabel: {
     ...typography.labelLarge,
-    color: colors.yellow,
+    color: '#F4C430',
     fontWeight: '700',
   },
 });

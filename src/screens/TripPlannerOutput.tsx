@@ -22,7 +22,6 @@ import { saveTrip, StoredTrip } from '../utils/storage';
 import { useAuth } from '../context/AuthContext';
 import { saveTrip as saveTripToFirestore } from '../utils/firestore';
 import { addToHistory } from '../utils/firestore';
-import { colors } from '../theme/colors';
 import { spacing, radius } from '../theme/spacing';
 import { typography } from '../theme/typography';
 import { shadows } from '../theme/shadows';
@@ -173,7 +172,7 @@ export default function TripPlannerOutput({ route, navigation }: TripPlannerOutp
           gradientType="teal"
         />
         <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color={colors.teal} />
+          <ActivityIndicator size="large" color="#0E7C86" />
           <Text style={styles.loadingText}>Generating your trip itinerary...</Text>
         </View>
       </SafeAreaView>
@@ -226,7 +225,7 @@ export default function TripPlannerOutput({ route, navigation }: TripPlannerOutp
               </View>
               <View style={styles.statItem}>
                 <Text style={styles.statLabel}>Estimated Cost</Text>
-                <Text style={[styles.statValue, { color: itinerary.estimatedCost <= itinerary.totalBudget ? colors.success : colors.warning }]}>
+                <Text style={[styles.statValue, { color: itinerary.estimatedCost <= itinerary.totalBudget ? '#48BB78' : '#ED8936' }]}>
                   ₹{itinerary.estimatedCost}
                 </Text>
               </View>
@@ -280,7 +279,7 @@ export default function TripPlannerOutput({ route, navigation }: TripPlannerOutp
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.background,
+    backgroundColor: '#FFFFFF',
   },
   content: {
     paddingHorizontal: spacing.lg,
@@ -294,7 +293,7 @@ const styles = StyleSheet.create({
   },
   loadingText: {
     ...typography.bodyMedium,
-    color: colors.textSecondary,
+    color: '#666666',
     marginTop: spacing.md,
   },
   errorContainer: {
@@ -305,11 +304,11 @@ const styles = StyleSheet.create({
   },
   errorText: {
     ...typography.h3,
-    color: colors.error,
+    color: '#E84A4A',
     marginBottom: spacing.lg,
   },
   retryButton: {
-    backgroundColor: colors.teal,
+    backgroundColor: '#0E7C86',
     paddingHorizontal: spacing.xl,
     paddingVertical: spacing.md,
     borderRadius: radius.lg,
@@ -323,7 +322,7 @@ const styles = StyleSheet.create({
     marginBottom: spacing.lg,
     paddingBottom: spacing.lg,
     borderBottomWidth: 1,
-    borderBottomColor: colors.border,
+    borderBottomColor: '#E2E8F0',
   },
   activityLeft: {
     flexDirection: 'row',
@@ -334,7 +333,7 @@ const styles = StyleSheet.create({
     width: 12,
     height: 12,
     borderRadius: 6,
-    backgroundColor: colors.red,
+    backgroundColor: '#E84A4A',
     marginRight: spacing.md,
     marginTop: spacing.xs,
   },
@@ -343,45 +342,45 @@ const styles = StyleSheet.create({
   },
   activityTime: {
     ...typography.labelMedium,
-    color: colors.blue,
+    color: '#2176FF',
     marginBottom: spacing.xs,
   },
   activityPlace: {
     ...typography.cardLabel,
-    color: colors.textPrimary,
+    color: '#000000',
     marginBottom: spacing.xs,
   },
   activityCategory: {
     ...typography.bodySmall,
-    color: colors.textSecondary,
+    color: '#666666',
     marginBottom: spacing.xs,
   },
   activityDuration: {
     ...typography.bodySmall,
-    color: colors.textLightGray,
+    color: '#777777',
   },
   travelTime: {
     ...typography.bodySmall,
-    color: colors.blue,
+    color: '#2176FF',
     fontStyle: 'italic',
     marginBottom: spacing.xs,
   },
   activityCost: {
     ...typography.bodySmall,
-    color: colors.yellow,
+    color: '#F4C430',
     fontWeight: '600',
     marginTop: spacing.xs,
   },
   mapButton: {
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.sm,
-    backgroundColor: colors.blue + '15',
+    backgroundColor: '#2176FF15',
     borderRadius: radius.md,
     marginLeft: spacing.md,
   },
   mapButtonText: {
     ...typography.labelSmall,
-    color: colors.blue,
+    color: '#2176FF',
   },
   saveButton: {
     marginTop: spacing.lg,
@@ -393,12 +392,12 @@ const styles = StyleSheet.create({
   },
   summaryTitle: {
     ...typography.h3,
-    color: colors.textPrimary,
+    color: '#000000',
     marginBottom: spacing.md,
   },
   summaryText: {
     ...typography.bodyMedium,
-    color: colors.textSecondary,
+    color: '#666666',
     marginBottom: spacing.lg,
     lineHeight: 22,
   },
@@ -407,19 +406,19 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     paddingTop: spacing.md,
     borderTopWidth: 1,
-    borderTopColor: colors.border,
+    borderTopColor: '#E2E8F0',
   },
   statItem: {
     alignItems: 'center',
   },
   statLabel: {
     ...typography.bodySmall,
-    color: colors.textLightGray,
+    color: '#777777',
     marginBottom: spacing.xs,
   },
   statValue: {
     ...typography.h4,
-    color: colors.teal,
+    color: '#0E7C86',
     fontWeight: '700',
   },
   successModal: {
@@ -429,7 +428,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   successModalContent: {
-    backgroundColor: colors.cardBackground,
+    backgroundColor: '#FFFFFF',
     borderRadius: radius.xl,
     padding: spacing.xl,
     alignItems: 'center',
@@ -438,13 +437,13 @@ const styles = StyleSheet.create({
   },
   successText: {
     ...typography.h3,
-    color: colors.textPrimary,
+    color: '#000000',
     marginTop: spacing.lg,
     marginBottom: spacing.sm,
   },
   successSubtext: {
     ...typography.bodyMedium,
-    color: colors.textSecondary,
+    color: '#666666',
     textAlign: 'center',
   },
 });

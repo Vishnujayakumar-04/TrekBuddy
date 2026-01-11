@@ -1,7 +1,7 @@
 import React from 'react';
-import { View, Text, StyleSheet, SafeAreaView, Platform, StatusBar } from 'react-native';
+import { View, Text, StyleSheet, Platform, StatusBar } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
-import { colors } from '../../theme/colors';
 import { spacing } from '../../theme/spacing';
 import { typography } from '../../theme/typography';
 
@@ -27,18 +27,18 @@ export const GradientHeader: React.FC<GradientHeaderProps> = ({
   height = 100,
   children,
 }) => {
-  const getGradientColors = () => {
+  const getGradientColors = (): readonly [string, string] => {
     switch (gradientType) {
       case 'teal':
-        return colors.gradientTeal;
+        return ['#0E7C86', '#4ECDC4'] as const;
       case 'orange':
-        return colors.gradientOrange;
+        return ['#FF6B6B', '#F4C430'] as const;
       case 'red':
-        return colors.gradientRed;
+        return ['#E84A4A', '#FF8A8A'] as const;
       case 'blue':
-        return colors.gradientBlue;
+        return ['#2176FF', '#6BA3FF'] as const;
       default:
-        return colors.gradientTeal;
+        return ['#0E7C86', '#4ECDC4'] as const;
     }
   };
 
@@ -81,13 +81,13 @@ const styles = StyleSheet.create({
   },
   title: {
     ...typography.h3,
-    color: colors.textLight,
+    color: '#FFFFFF',
     textAlign: 'center',
     marginBottom: 2,
   },
   subtitle: {
     ...typography.bodySmall,
-    color: colors.textLight,
+    color: '#FFFFFF',
     textAlign: 'center',
     opacity: 0.9,
   },

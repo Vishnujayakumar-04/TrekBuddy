@@ -103,6 +103,50 @@ export const updateUserProfile = async (
   }
 };
 
+/**
+ * Ensure user profile exists in Firestore (create if missing)
+ * This is useful when a user logs in but their profile doesn't exist yet
+ */
+export const ensureUserProfile = async (
+  userId: string,
+  userData: {
+    name?: string;
+    email: string;
+    phone?: string;
+    profilePhotoUrl?: string;
+  }
+): Promise<UserProfile> => {
+  try {
+    const existingProfile = await getUserProfile(userId);
+    
+    if (existingProfile) {
+      // Profile exists, return it
+      return existingProfile;
+    }
+    
+    // Profile doesn't exist, create it
+    const profileData = {
+      name: userData.name || 'User',
+      email: userData.email,
+      phone: userData.phone,
+      profilePhotoUrl: userData.profilePhotoUrl,
+    };
+    
+    await createUserProfile(userId, profileData);
+    
+    // Return the newly created profile
+    const newProfile = await getUserProfile(userId);
+    if (!newProfile) {
+      throw new Error('Failed to retrieve newly created profile');
+    }
+    
+    return newProfile;
+  } catch (error: any) {
+    console.error('Error ensuring user profile:', error);
+    throw new Error(error.message || 'Failed to ensure user profile');
+  }
+};
+
 // ==================== TRIP OPERATIONS ====================
 
 /**

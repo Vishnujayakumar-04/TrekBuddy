@@ -14,7 +14,6 @@ import { CategoryCard } from '../components/CategoryCard';
 import { getCategoryKey } from '../utils/api';
 import { ALL_CATEGORIES, Category } from '../data/categories';
 import { ArrowBackIcon } from '../components/icons';
-import { colors } from '../theme/colors';
 import { spacing, radius } from '../theme/spacing';
 import { typography } from '../theme/typography';
 
@@ -107,7 +106,7 @@ export default function ExploreScreen({ navigation }: ExploreScreenProps) {
           onPress={() => navigation?.goBack()}
           style={styles.backButton}
         >
-          <ArrowBackIcon size={20} color={colors.textPrimary} />
+          <ArrowBackIcon size={20} color="#000000" />
         </TouchableOpacity>
           <Text style={styles.title}>Explore</Text>
       </View>
@@ -159,7 +158,7 @@ export default function ExploreScreen({ navigation }: ExploreScreenProps) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.background,
+    backgroundColor: '#FFFFFF',
     paddingTop: Platform.OS === 'android' ? STATUSBAR_HEIGHT : 0,
   },
   header: {
@@ -168,8 +167,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.sm,
     paddingVertical: spacing.xs + 2,
     borderBottomWidth: 1,
-    borderBottomColor: colors.border,
-    backgroundColor: colors.cardBackground,
+    borderBottomColor: '#E2E8F0',
+    backgroundColor: '#FFFFFF',
   },
   backButton: {
     padding: spacing.xs,
@@ -177,7 +176,7 @@ const styles = StyleSheet.create({
   },
   title: {
     ...typography.h4,
-    color: colors.textPrimary,
+    color: '#000000',
   },
   searchContainer: {
     paddingHorizontal: spacing.sm,
@@ -188,7 +187,7 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     ...typography.labelMedium,
-    color: colors.textSecondary,
+    color: '#666666',
     marginLeft: spacing.xs,
     marginTop: spacing.xs,
     marginBottom: spacing.xs,
@@ -209,6 +208,6 @@ const styles = StyleSheet.create({
   },
   emptyText: {
     ...typography.bodySmall,
-    color: colors.textSecondary,
+    color: '#666666',
   },
 });

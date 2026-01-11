@@ -3,7 +3,6 @@ import { View, Text, StyleSheet, SafeAreaView, ScrollView, TouchableOpacity, Pla
 import { LinearGradient } from 'expo-linear-gradient';
 import { Card, SectionTitle } from '../components/ui';
 import { TransportIcon, ArrowBackIcon } from '../components/icons';
-import { colors } from '../theme/colors';
 import { spacing, radius } from '../theme/spacing';
 import { typography } from '../theme/typography';
 import { shadows } from '../theme/shadows';
@@ -32,17 +31,17 @@ interface BusRoute {
 
 // Rental options
 const RENTALS = [
-  { id: 'bike', icon: '🏍️', label: 'Bike Rental', description: 'Two-wheeler rentals', color: colors.teal },
-  { id: 'cycle', icon: '🚲', label: 'Cycle Rental', description: 'Eco-friendly rides', color: colors.blue },
-  { id: 'car', icon: '🚗', label: 'Car Rental', description: 'Self-drive cars', color: colors.yellow },
+  { id: 'bike', icon: '🏍️', label: 'Bike Rental', description: 'Two-wheeler rentals', color: '#0E7C86' },
+  { id: 'cycle', icon: '🚲', label: 'Cycle Rental', description: 'Eco-friendly rides', color: '#2176FF' },
+  { id: 'car', icon: '🚗', label: 'Car Rental', description: 'Self-drive cars', color: '#F4C430' },
 ];
 
 // Cab options
 const CABS = [
-  { id: 'car-cab', icon: '🚕', label: 'Car Cab', description: 'Premium car service', color: colors.yellow },
-  { id: 'bike-taxi', icon: '🏍️', label: 'Bike Taxi', description: 'Quick bike rides', color: colors.teal },
-  { id: 'auto', icon: '🛺', label: 'Auto', description: 'Auto rickshaw', color: colors.blue },
-  { id: 'share-auto', icon: '🛺', label: 'Share Auto', description: 'Shared rides', color: colors.teal },
+  { id: 'car-cab', icon: '🚕', label: 'Car Cab', description: 'Premium car service', color: '#F4C430' },
+  { id: 'bike-taxi', icon: '🏍️', label: 'Bike Taxi', description: 'Quick bike rides', color: '#0E7C86' },
+  { id: 'auto', icon: '🛺', label: 'Auto', description: 'Auto rickshaw', color: '#2176FF' },
+  { id: 'share-auto', icon: '🛺', label: 'Share Auto', description: 'Shared rides', color: '#0E7C86' },
 ];
 
 export default function TransportScreen({ navigation }: TransportScreenProps) {
@@ -95,7 +94,7 @@ export default function TransportScreen({ navigation }: TransportScreenProps) {
       <ScrollView showsVerticalScrollIndicator={false}>
         {/* Header with Settings Icon */}
         <LinearGradient
-          colors={colors.gradientBlue}
+          colors={['#2176FF', '#6BA3FF']}
           style={styles.header}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}
@@ -109,7 +108,7 @@ export default function TransportScreen({ navigation }: TransportScreenProps) {
 
             {/* Transport Icon */}
             <View style={styles.headerIcon}>
-              <TransportIcon size={40} color={colors.textLight} />
+              <TransportIcon size={40} color="#FFFFFF" />
             </View>
           </View>
         </LinearGradient>
@@ -133,6 +132,15 @@ export default function TransportScreen({ navigation }: TransportScreenProps) {
             >
               <Text style={[styles.tabText, activeTab === 'cabs' && styles.tabTextActive]}>
                 🚕 Cabs
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity 
+              style={styles.tab}
+              onPress={() => navigation?.navigate('BusHome')}
+              activeOpacity={0.8}
+            >
+              <Text style={styles.tabText}>
+                🚌 Bus
               </Text>
             </TouchableOpacity>
           </View>
@@ -336,7 +344,7 @@ export default function TransportScreen({ navigation }: TransportScreenProps) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.background,
+    backgroundColor: '#FFFFFF',
   },
   header: {
     paddingTop: STATUSBAR_HEIGHT + spacing.md,
@@ -352,12 +360,12 @@ const styles = StyleSheet.create({
   },
   headerTitle: {
     ...typography.h2,
-    color: colors.textLight,
+    color: '#FFFFFF',
     fontWeight: '700',
   },
   headerSubtitle: {
     ...typography.bodyMedium,
-    color: colors.textLight,
+    color: '#FFFFFF',
     opacity: 0.9,
     marginTop: 2,
   },
@@ -371,7 +379,7 @@ const styles = StyleSheet.create({
   },
   tabContainer: {
     flexDirection: 'row',
-    backgroundColor: colors.cardBackground,
+    backgroundColor: '#FFFFFF',
     borderRadius: radius.lg,
     padding: spacing.xs,
     marginBottom: spacing.lg,
@@ -382,16 +390,17 @@ const styles = StyleSheet.create({
     paddingVertical: spacing.sm + 2,
     alignItems: 'center',
     borderRadius: radius.md,
+    marginHorizontal: spacing.xs / 2,
   },
   tabActive: {
-    backgroundColor: colors.teal,
+    backgroundColor: '#0E7C86',
   },
   tabText: {
     ...typography.labelMedium,
-    color: colors.textSecondary,
+    color: '#666666',
   },
   tabTextActive: {
-    color: colors.textLight,
+    color: '#FFFFFF',
     fontWeight: '600',
   },
   gridContainer: {
@@ -422,22 +431,22 @@ const styles = StyleSheet.create({
   },
   cardLabel: {
     ...typography.labelMedium,
-    color: colors.textPrimary,
+    color: '#000000',
     marginBottom: spacing.xs,
     textAlign: 'center',
   },
   cardDescription: {
     ...typography.bodySmall,
-    color: colors.textSecondary,
+    color: '#666666',
     textAlign: 'center',
   },
   infoCard: {
     padding: spacing.md,
     marginBottom: spacing.md,
     borderRadius: radius.lg,
-    backgroundColor: colors.teal + '10',
+    backgroundColor: '#0E7C8610',
     borderWidth: 1,
-    borderColor: colors.teal + '30',
+    borderColor: '#0E7C8630',
   },
   infoHeader: {
     flexDirection: 'row',
@@ -450,12 +459,12 @@ const styles = StyleSheet.create({
   },
   infoTitle: {
     ...typography.labelMedium,
-    color: colors.teal,
+    color: '#0E7C86',
     fontWeight: '600',
   },
   infoText: {
     ...typography.bodySmall,
-    color: colors.textSecondary,
+    color: '#666666',
     lineHeight: 20,
   },
   fareCard: {
@@ -465,7 +474,7 @@ const styles = StyleSheet.create({
   },
   fareTitle: {
     ...typography.labelMedium,
-    color: colors.textPrimary,
+    color: '#000000',
     marginBottom: spacing.md,
     textAlign: 'center',
   },
@@ -478,12 +487,12 @@ const styles = StyleSheet.create({
   },
   fareLabel: {
     ...typography.bodySmall,
-    color: colors.textSecondary,
+    color: '#666666',
     marginBottom: spacing.xs,
   },
   fareValue: {
     ...typography.h4,
-    color: colors.yellow,
+    color: '#F4C430',
     fontWeight: '700',
   },
   busRouteCard: {
@@ -495,7 +504,7 @@ const styles = StyleSheet.create({
   },
   routeNumberBadge: {
     alignSelf: 'flex-start',
-    backgroundColor: colors.teal + '20',
+    backgroundColor: '#0E7C8620',
     paddingHorizontal: spacing.sm,
     paddingVertical: spacing.xs,
     borderRadius: radius.full,
@@ -503,7 +512,7 @@ const styles = StyleSheet.create({
   },
   routeNumberText: {
     ...typography.labelSmall,
-    color: colors.teal,
+    color: '#0E7C86',
     fontWeight: '600',
   },
   routeHeader: {
@@ -516,17 +525,17 @@ const styles = StyleSheet.create({
   },
   routePointLabel: {
     ...typography.bodySmall,
-    color: colors.textSecondary,
+    color: '#666666',
     marginBottom: spacing.xs,
   },
   routePointValue: {
     ...typography.labelMedium,
-    color: colors.textPrimary,
+    color: '#000000',
     fontWeight: '600',
   },
   routeArrow: {
     ...typography.h3,
-    color: colors.teal,
+    color: '#0E7C86',
     marginHorizontal: spacing.sm,
     fontWeight: '700',
   },
@@ -535,23 +544,23 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingTop: spacing.md,
     borderTopWidth: 1,
-    borderTopColor: colors.border,
+    borderTopColor: '#E2E8F0',
   },
   routeInfoItem: {
     flex: 1,
   },
   routeInfoLabel: {
     ...typography.bodySmall,
-    color: colors.textSecondary,
+    color: '#666666',
     marginBottom: spacing.xs,
   },
   routeInfoValue: {
     ...typography.labelMedium,
-    color: colors.textPrimary,
+    color: '#000000',
   },
   routeInfoValuePrice: {
     ...typography.labelMedium,
-    color: colors.yellow,
+    color: '#F4C430',
     fontWeight: '700',
   },
   emptyCard: {
@@ -561,12 +570,12 @@ const styles = StyleSheet.create({
   },
   emptyText: {
     ...typography.labelMedium,
-    color: colors.textPrimary,
+    color: '#000000',
     marginBottom: spacing.xs,
   },
   emptySubtext: {
     ...typography.bodySmall,
-    color: colors.textSecondary,
+    color: '#666666',
   },
   modalOverlay: {
     flex: 1,
@@ -574,7 +583,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   modalContent: {
-    backgroundColor: colors.background,
+    backgroundColor: '#FFFFFF',
     borderTopLeftRadius: radius.xl,
     borderTopRightRadius: radius.xl,
     maxHeight: '90%',
@@ -587,24 +596,24 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.lg,
     paddingVertical: spacing.md,
     borderBottomWidth: 1,
-    borderBottomColor: colors.border,
+    borderBottomColor: '#E2E8F0',
   },
   modalTitle: {
     ...typography.h4,
-    color: colors.textPrimary,
+    color: '#000000',
     fontWeight: '700',
   },
   modalCloseButton: {
     width: 32,
     height: 32,
     borderRadius: 16,
-    backgroundColor: colors.cardBackground,
+    backgroundColor: '#FFFFFF',
     alignItems: 'center',
     justifyContent: 'center',
   },
   modalCloseText: {
     fontSize: 18,
-    color: colors.textSecondary,
+    color: '#666666',
     fontWeight: '600',
   },
   modalBody: {
@@ -613,7 +622,7 @@ const styles = StyleSheet.create({
   },
   modalRouteNumber: {
     alignSelf: 'flex-start',
-    backgroundColor: colors.teal + '20',
+    backgroundColor: '#0E7C8620',
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.sm,
     borderRadius: radius.full,
@@ -621,7 +630,7 @@ const styles = StyleSheet.create({
   },
   modalRouteNumberText: {
     ...typography.labelMedium,
-    color: colors.teal,
+    color: '#0E7C86',
     fontWeight: '700',
   },
   modalRouteHeader: {
@@ -630,29 +639,29 @@ const styles = StyleSheet.create({
     marginBottom: spacing.lg,
     paddingBottom: spacing.md,
     borderBottomWidth: 1,
-    borderBottomColor: colors.border,
+    borderBottomColor: '#E2E8F0',
   },
   modalRoutePoint: {
     flex: 1,
   },
   modalRoutePointLabel: {
     ...typography.bodySmall,
-    color: colors.textSecondary,
+    color: '#666666',
     marginBottom: spacing.xs,
   },
   modalRoutePointValue: {
     ...typography.h4,
-    color: colors.textPrimary,
+    color: '#000000',
     fontWeight: '700',
     marginBottom: spacing.xs,
   },
   modalRoutePointTamil: {
     ...typography.bodySmall,
-    color: colors.textSecondary,
+    color: '#666666',
   },
   modalRouteArrow: {
     ...typography.h2,
-    color: colors.teal,
+    color: '#0E7C86',
     marginHorizontal: spacing.md,
     fontWeight: '700',
   },
@@ -661,17 +670,17 @@ const styles = StyleSheet.create({
   },
   modalSectionTitle: {
     ...typography.labelMedium,
-    color: colors.textPrimary,
+    color: '#000000',
     fontWeight: '600',
     marginBottom: spacing.sm,
   },
   modalSectionValue: {
     ...typography.bodyMedium,
-    color: colors.textSecondary,
+    color: '#666666',
   },
   modalTicketPrice: {
     ...typography.h3,
-    color: colors.yellow,
+    color: '#F4C430',
     fontWeight: '700',
   },
   stopsContainer: {
@@ -682,30 +691,30 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: spacing.sm,
     borderBottomWidth: 1,
-    borderBottomColor: colors.border,
+    borderBottomColor: '#E2E8F0',
   },
   stopNumber: {
     width: 28,
     height: 28,
     borderRadius: 14,
-    backgroundColor: colors.teal + '20',
+    backgroundColor: '#0E7C8620',
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: spacing.sm,
   },
   stopNumberText: {
     ...typography.labelSmall,
-    color: colors.teal,
+    color: '#0E7C86',
     fontWeight: '700',
   },
   stopName: {
     ...typography.bodyMedium,
-    color: colors.textPrimary,
+    color: '#000000',
     flex: 1,
   },
   stopNameTamil: {
     ...typography.bodySmall,
-    color: colors.textSecondary,
+    color: '#666666',
     marginTop: 2,
   },
 });

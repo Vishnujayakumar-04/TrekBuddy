@@ -8,7 +8,7 @@ import {
   getCurrentUser,
   onAuthStateChanged,
 } from '../utils/auth';
-import { createUserProfile, getUserProfile, UserProfile } from '../utils/firestore';
+import { createUserProfile, getUserProfile, ensureUserProfile, UserProfile } from '../utils/firestore';
 
 interface AuthContextType {
   user: FirebaseUser | null;
@@ -59,6 +59,18 @@ export function AuthProvider({ children }: AuthProviderProps) {
       
       if (firebaseUser) {
         try {
+          // Ensure user profile exists in Firestore (create if missing)
+          await ensureUserProfile(firebaseUser.uid, {
+            name: firebaseUser.displayName || undefined,
+            email: firebaseUser.email || '',
+            profilePhotoUrl: firebaseUser.photoURL || undefined,
+          });
+        } catch (profileError) {
+          console.error('Error ensuring user profile:', profileError);
+          // Continue even if profile creation fails
+        }
+        
+        try {
           await loadUserProfile(firebaseUser.uid);
         } catch (error) {
           console.error('Error loading user profile:', error);
@@ -82,6 +94,17 @@ export function AuthProvider({ children }: AuthProviderProps) {
       const firebaseUser = await signInWithEmail(email, password);
       setUser(firebaseUser);
       if (firebaseUser) {
+        // Ensure user profile exists in Firestore (create if missing)
+        try {
+          await ensureUserProfile(firebaseUser.uid, {
+            name: firebaseUser.displayName || undefined,
+            email: firebaseUser.email || email,
+            profilePhotoUrl: firebaseUser.photoURL || undefined,
+          });
+        } catch (profileError) {
+          console.error('Error ensuring user profile:', profileError);
+          // Continue even if profile creation fails
+        }
         await loadUserProfile(firebaseUser.uid);
       }
     } catch (error: any) {

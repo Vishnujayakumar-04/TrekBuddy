@@ -7,11 +7,13 @@ import { GoogleIcon } from '../components/icons/LoginIcons';
 import { spacing, radius } from '../theme/spacing';
 import { typography } from '../theme/typography';
 import { shadows } from '../theme/shadows';
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signInAnonymously } from 'firebase/auth';
-import { auth } from '../firebase';
+import { createUserWithEmailAndPassword, signInAnonymously } from 'firebase/auth';
+import { auth } from '../firebase/auth';
 import { uploadProfilePhoto } from '../utils/storageService';
-import { createUserProfile, updateUserProfile } from '../utils/firestore';
+import { createUserProfile } from '../utils/firestore';
 import { useLanguage, SUPPORTED_LANGUAGES } from '../context/LanguageContext';
+import { useAuth } from '../context/AuthContext';
+import { PhoneConfirmationResult, sendOTP, verifyOTP } from '../utils/auth';
 
 const STATUSBAR_HEIGHT = Platform.OS === 'android' ? StatusBar.currentHeight || 24 : 0;
 
@@ -21,6 +23,7 @@ interface LoginScreenProps {
 
 export default function LoginScreen({ navigation }: LoginScreenProps) {
   const { language, setLanguage } = useLanguage();
+  const { signIn } = useAuth();
   const [showMenu, setShowMenu] = useState(false);
   const [isSignup, setIsSignup] = useState(false);
   const [showLanguageSelection, setShowLanguageSelection] = useState(false);
@@ -44,16 +47,17 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
 
     setIsLoading(true);
     try {
-      await signInWithEmailAndPassword(auth, formData.email, formData.password);
+      // Use AuthContext signIn which ensures user profile is created in Firestore
+      await signIn(formData.email, formData.password);
       // Navigation will be handled by auth state change in StackNavigator
       // No need to navigate manually - AuthContext will update and StackNavigator will show Main
     } catch (error: any) {
       let errorMessage = 'Failed to sign in';
-      if (error.code === 'auth/user-not-found') {
+      if (error.code === 'auth/user-not-found' || error.message?.includes('user-not-found')) {
         errorMessage = 'No account found with this email';
-      } else if (error.code === 'auth/wrong-password') {
+      } else if (error.code === 'auth/wrong-password' || error.message?.includes('wrong-password')) {
         errorMessage = 'Incorrect password';
-      } else if (error.code === 'auth/invalid-email') {
+      } else if (error.code === 'auth/invalid-email' || error.message?.includes('invalid-email')) {
         errorMessage = 'Invalid email address';
       } else if (error.message) {
         errorMessage = error.message;
@@ -734,7 +738,7 @@ const staticColors = {
   border: '#E2E8F0',
   teal: '#0E7C86',
   red: '#E84A4A',
-  gradientTeal: ['#0E7C86', '#4ECDC4'],
+  gradientTeal: ['#0E7C86', '#4ECDC4'] as [string, string],
 };
 
 const styles = StyleSheet.create({

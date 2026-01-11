@@ -3,7 +3,6 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { InfoIcon, AccessTimeIcon, PlaceIcon, AutoAwesomeIcon, ChevronRightIcon } from './icons';
 import { LottieAnimation } from './LottieAnimation';
 import { LOTTIE_ANIMATIONS } from '../assets/lottie/animations';
-import { colors } from '../theme/colors';
 import { spacing, radius } from '../theme/spacing';
 import { typography } from '../theme/typography';
 import { shadows } from '../theme/shadows';
@@ -27,9 +26,9 @@ export const AIRecommendationCard: React.FC<AIRecommendationCardProps> = ({
   };
 
   const getColor = () => {
-    if (recommendation?.type === 'best_time') return colors.primary;
-    if (recommendation?.type === 'nearby_attraction') return colors.accent;
-    return colors.warning;
+    if (recommendation?.type === 'best_time') return '#0E7C86';
+    if (recommendation?.type === 'nearby_attraction') return '#2176FF';
+    return '#ED8936';
   };
 
   if (isLoading) {
@@ -65,7 +64,7 @@ export const AIRecommendationCard: React.FC<AIRecommendationCardProps> = ({
         }}
       >
         <View style={styles.emptyContainer}>
-          <InfoIcon size={20} color={colors.textSecondary} />
+          <InfoIcon size={20} color="#666666" />
           <Text style={styles.emptyText}>Tap to configure API key</Text>
         </View>
       </TouchableOpacity>
@@ -89,7 +88,7 @@ export const AIRecommendationCard: React.FC<AIRecommendationCardProps> = ({
           {recommendation.content}
         </Text>
       </View>
-      <ChevronRightIcon size={20} color={colors.textSecondary} />
+      <ChevronRightIcon size={20} color="#666666" />
     </TouchableOpacity>
   );
 };
@@ -97,7 +96,7 @@ export const AIRecommendationCard: React.FC<AIRecommendationCardProps> = ({
 const styles = StyleSheet.create({
   card: {
     flexDirection: 'row',
-    backgroundColor: colors.cardBackground,
+    backgroundColor: '#FFFFFF',
     borderRadius: radius.sm,
     padding: spacing.sm,
     marginBottom: spacing.xs,
@@ -116,13 +115,13 @@ const styles = StyleSheet.create({
   },
   title: {
     ...typography.labelSmall,
-    color: colors.textPrimary,
+    color: '#000000',
     marginBottom: 2,
     fontWeight: '600',
   },
   text: {
     ...typography.bodySmall,
-    color: colors.textSecondary,
+    color: '#666666',
     fontSize: 11,
     lineHeight: 14,
   },
@@ -135,7 +134,7 @@ const styles = StyleSheet.create({
   },
   loadingText: {
     ...typography.bodySmall,
-    color: colors.textSecondary,
+    color: '#666666',
     marginLeft: spacing.xs,
     fontSize: 11,
   },
@@ -148,7 +147,7 @@ const styles = StyleSheet.create({
   },
   emptyText: {
     ...typography.bodySmall,
-    color: colors.textSecondary,
+    color: '#666666',
     marginLeft: spacing.xs,
     fontSize: 11,
   },

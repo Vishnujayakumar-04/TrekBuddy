@@ -14,7 +14,6 @@ import {
 } from '../components/icons';
 import { AccountCircleIcon } from '../components/icons/CommonIcons';
 import { AnimatedTabIcon } from '../components/AnimatedTabIcon';
-import { colors } from '../theme/colors';
 import { radius } from '../theme/spacing';
 
 const Tab = createBottomTabNavigator();
@@ -23,6 +22,10 @@ const Tab = createBottomTabNavigator();
 const TAB_ICON_SIZE = 28;
 
 export default function TabNavigator() {
+  // Get colors inside component to avoid module initialization issues
+  const activeColor = '#0E7C86';
+  const inactiveColor = '#666666';
+  
   return (
     <Tab.Navigator
       screenOptions={{
@@ -30,8 +33,8 @@ export default function TabNavigator() {
         tabBarStyle: styles.tabBar,
         tabBarShowLabel: false,
         tabBarHideOnKeyboard: true,
-        tabBarActiveTintColor: colors.teal,
-        tabBarInactiveTintColor: colors.textSecondary,
+        tabBarActiveTintColor: activeColor,
+        tabBarInactiveTintColor: inactiveColor,
       }}
     >
       <Tab.Screen
@@ -109,7 +112,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    backgroundColor: colors.cardBackground,
+    backgroundColor: '#FFFFFF',
     borderTopWidth: 0,
     height: Platform.OS === 'ios' ? 80 : 68,
     paddingBottom: Platform.OS === 'ios' ? 20 : 6,

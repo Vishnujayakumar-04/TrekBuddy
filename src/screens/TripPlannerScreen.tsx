@@ -4,7 +4,6 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { FadeInView } from '../components/animations/FadeInView';
 import { Card, Button, IconButton } from '../components/ui';
 import { CalendarLargeIcon, MinusIcon, PlusIcon, CheckmarkIcon } from '../components/icons';
-import { colors } from '../theme/colors';
 import { spacing, radius } from '../theme/spacing';
 import { typography } from '../theme/typography';
 import { shadows } from '../theme/shadows';
@@ -40,7 +39,7 @@ export default function TripPlannerScreen({ navigation }: TripPlannerScreenProps
       <ScrollView showsVerticalScrollIndicator={false}>
         {/* Custom Header with Settings Icon */}
         <LinearGradient
-          colors={colors.gradientTeal}
+          colors={['#0E7C86', '#4ECDC4']}
           style={styles.header}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}
@@ -53,7 +52,7 @@ export default function TripPlannerScreen({ navigation }: TripPlannerScreenProps
             </View>
 
             {/* Calendar Icon */}
-            <CalendarLargeIcon size={40} color={colors.textLight} />
+            <CalendarLargeIcon size={40} color="#FFFFFF" />
           </View>
         </LinearGradient>
 
@@ -67,10 +66,10 @@ export default function TripPlannerScreen({ navigation }: TripPlannerScreenProps
               <View style={styles.daysSelector}>
                 <FadeInView delay={200}>
                   <IconButton
-                    icon={<MinusIcon size={24} color={colors.teal} />}
+                    icon={<MinusIcon size={24} color="#0E7C86" />}
                     onPress={handleMinus}
                     size={48}
-                    backgroundColor={colors.background}
+                    backgroundColor="#FFFFFF"
                   />
                 </FadeInView>
                 
@@ -83,10 +82,10 @@ export default function TripPlannerScreen({ navigation }: TripPlannerScreenProps
                 
                 <FadeInView delay={200}>
                   <IconButton
-                    icon={<PlusIcon size={24} color={colors.teal} />}
+                    icon={<PlusIcon size={24} color="#0E7C86" />}
                     onPress={handlePlus}
                     size={48}
-                    backgroundColor={colors.background}
+                    backgroundColor="#FFFFFF"
                   />
                 </FadeInView>
               </View>
@@ -98,7 +97,7 @@ export default function TripPlannerScreen({ navigation }: TripPlannerScreenProps
                   onPress={handleGenerateItinerary}
                   size="large"
                   style={styles.generateButton}
-                  icon={<CheckmarkIcon size={20} color={colors.textLight} />}
+                  icon={<CheckmarkIcon size={20} color="#FFFFFF" />}
                   pulse={true}
                 />
               </FadeInView>
@@ -129,7 +128,7 @@ export default function TripPlannerScreen({ navigation }: TripPlannerScreenProps
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.background,
+    backgroundColor: '#FFFFFF',
   },
   header: {
     paddingTop: STATUSBAR_HEIGHT + spacing.md,
@@ -145,12 +144,12 @@ const styles = StyleSheet.create({
   },
   headerTitle: {
     ...typography.h2,
-    color: colors.textLight,
+    color: '#FFFFFF',
     fontWeight: '700',
   },
   headerSubtitle: {
     ...typography.bodyMedium,
-    color: colors.textLight,
+    color: '#FFFFFF',
     opacity: 0.9,
     marginTop: 2,
   },
@@ -164,7 +163,7 @@ const styles = StyleSheet.create({
   },
   daysQuestion: {
     ...typography.cardLabel,
-    color: colors.textPrimary,
+    color: '#000000',
     marginBottom: spacing.xl,
     textAlign: 'center',
   },
@@ -181,13 +180,13 @@ const styles = StyleSheet.create({
   },
   daysNumber: {
     ...typography.h1,
-    color: colors.teal,
+    color: '#0E7C86',
     fontSize: 48,
     fontWeight: '700',
   },
   daysLabel: {
     ...typography.subtitle,
-    color: colors.textLightGray,
+    color: '#777777',
     marginTop: spacing.xs,
   },
   generateButton: {
@@ -198,9 +197,9 @@ const styles = StyleSheet.create({
     padding: spacing.lg,
     marginTop: spacing.lg,
     alignItems: 'center',
-    backgroundColor: colors.teal + '10',
+    backgroundColor: '#0E7C8610',
     borderWidth: 1,
-    borderColor: colors.teal + '30',
+    borderColor: '#0E7C8630',
   },
   tipIcon: {
     fontSize: 24,
@@ -208,12 +207,12 @@ const styles = StyleSheet.create({
   },
   tipTitle: {
     ...typography.labelMedium,
-    color: colors.teal,
+    color: '#0E7C86',
     marginBottom: spacing.sm,
   },
   tipText: {
     ...typography.bodySmall,
-    color: colors.textSecondary,
+    color: '#666666',
     lineHeight: 22,
     textAlign: 'left',
     alignSelf: 'stretch',

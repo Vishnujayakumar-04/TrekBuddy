@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image, Dimensions, Animated } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { colors } from '../theme/colors';
 import { spacing, radius } from '../theme/spacing';
 import { shadows } from '../theme/shadows';
 import { typography } from '../theme/typography';
@@ -25,10 +24,11 @@ const getPlaceholderText = (label: string) => {
 };
 
 // Get gradient colors based on label for variety
+// Use direct color values to avoid module initialization issues
 const getPlaceholderGradient = (label: string): [string, string] => {
   const gradientOptions: [string, string][] = [
-    [colors.teal, '#0D9488'],
-    [colors.blue, '#2563EB'],
+    ['#0E7C86', '#0D9488'], // teal
+    ['#2176FF', '#2563EB'], // blue
     ['#8B5CF6', '#7C3AED'],
     ['#EC4899', '#DB2777'],
     ['#F59E0B', '#D97706'],
@@ -159,7 +159,7 @@ const styles = StyleSheet.create({
   card: {
     width: '100%',
     height: CARD_HEIGHT,
-    backgroundColor: colors.cardBackground,
+    backgroundColor: '#FFFFFF',
     borderRadius: radius.lg,
     overflow: 'hidden',
   },
@@ -190,7 +190,7 @@ const styles = StyleSheet.create({
   placeholderText: {
     fontSize: 48,
     fontWeight: '700',
-    color: colors.textLight,
+    color: '#FFFFFF',
     opacity: 0.9,
   },
   labelContainer: {
@@ -203,7 +203,7 @@ const styles = StyleSheet.create({
   },
   label: {
     ...typography.labelLarge,
-    color: colors.textLight,
+    color: '#FFFFFF',
     fontWeight: '700',
     fontSize: 14,
     textShadowColor: 'rgba(0, 0, 0, 0.75)',

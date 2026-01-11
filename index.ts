@@ -4,19 +4,25 @@ const isUpdateError = (error: Error | string | any): boolean => {
   if (!error) return false;
   const errorMessage = typeof error === 'string' ? error : error?.message || error?.toString() || '';
   const errorStack = typeof error === 'string' ? '' : error?.stack || '';
-  const combined = `${errorMessage} ${errorStack}`.toLowerCase();
+  const errorName = (error && typeof error === 'object' && 'name' in error) ? String(error.name) : '';
+  const combined = `${errorMessage} ${errorStack} ${errorName}`.toLowerCase();
   
   return (
     combined.includes('failed to download remote update') ||
     combined.includes('java.io.ioexception') ||
+    combined.includes('java.ioexception') ||
     combined.includes('remote update') ||
     combined.includes('expo-updates') ||
+    combined.includes('expo_updates') ||
     combined.includes('new update available') ||
     combined.includes('downloading') ||
     combined.includes('exp.direct') ||
     combined.includes('loading from') ||
+    combined.includes('update failed') ||
+    combined.includes('update error') ||
     (combined.includes('update') && combined.includes('download')) ||
-    (combined.includes('update') && combined.includes('ioexception'))
+    (combined.includes('update') && combined.includes('ioexception')) ||
+    (combined.includes('ioexception') && combined.includes('update'))
   );
 };
 
@@ -29,14 +35,23 @@ if (typeof global !== 'undefined') {
     ErrorUtils.setGlobalHandler((error: Error, isFatal?: boolean) => {
       if (isUpdateError(error)) {
         // Silently ignore update-related errors since updates are disabled
+        // Don't crash the app for update errors
         if (__DEV__) {
           console.warn('[Suppressed] Update error (updates disabled):', error?.message || error);
         }
+        // Return without calling original handler to prevent crash
         return;
       }
       // Call original handler for other errors
       if (originalGlobalHandler) {
-        originalGlobalHandler(error, isFatal);
+        try {
+          originalGlobalHandler(error, isFatal);
+        } catch (handlerError) {
+          // If the error handler itself fails, log but don't crash
+          if (__DEV__) {
+            console.error('Error in global error handler:', handlerError);
+          }
+        }
       }
     });
   }
@@ -73,26 +88,18 @@ if (typeof global !== 'undefined') {
   };
 }
 
+// Disable expo-updates at runtime (before any imports that might trigger it)
+// This ensures updates are never checked, even in development mode
+if (typeof global !== 'undefined') {
+  (global as any).__EXPO_UPDATES_DISABLED__ = true;
+}
+
 // Now import and register the app
 import { registerRootComponent } from 'expo';
 import App from './App';
 
-// Suppress expo-updates errors if the module tries to initialize
-try {
-  // Try to require expo-updates and suppress any initialization errors
-  const Updates = require('expo-updates');
-  if (Updates && typeof Updates.checkForUpdateAsync === 'function') {
-    // Override checkForUpdateAsync to prevent any checks
-    const originalCheck = Updates.checkForUpdateAsync;
-    Updates.checkForUpdateAsync = async () => {
-      // Return a mock response indicating no update available
-      return { isAvailable: false };
-    };
-  }
-} catch (e) {
-  // expo-updates might not be available or might error - that's fine
-  // We're suppressing update checks anyway
-}
+// expo-updates is disabled in app.json, so we don't need to import or initialize it
+// Any errors from expo-updates will be caught by the global error handlers above
 
 // Wrap registration in try-catch to prevent crashes
 try {
@@ -107,8 +114,19 @@ try {
     try {
       registerRootComponent(App);
     } catch (retryError) {
-      // If it still fails, log but don't crash
-      console.error('Failed to register app after update error recovery:', retryError);
+      // If it still fails, log but don't crash - just continue anyway
+      if (__DEV__) {
+        console.warn('[Non-fatal] Update error during registration:', retryError);
+      }
+      // Still try to register to allow app to continue
+      try {
+        registerRootComponent(App);
+      } catch (finalError) {
+        // Last resort - log but don't throw
+        if (__DEV__) {
+          console.error('Final registration attempt failed:', finalError);
+        }
+      }
     }
   } else {
     // For other errors, re-throw

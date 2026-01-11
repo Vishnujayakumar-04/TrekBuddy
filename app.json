@@ -4,10 +4,7 @@
     "slug": "trekbuddy",
     "version": "1.0.0",
     "updates": {
-      "enabled": false,
-      "checkAutomatically": "NEVER",
-      "fallbackToCacheTimeout": 0,
-      "url": null
+      "enabled": false
     },
     "orientation": "portrait",
     "icon": "./assets/icon.png",

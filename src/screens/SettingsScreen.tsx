@@ -16,7 +16,6 @@ import { KeyIcon, CheckIcon, InfoIcon, ArrowBackIcon } from '../components/icons
 import { saveGeminiApiKey, getGeminiApiKey } from '../utils/storage';
 import { useTheme } from '../context/ThemeContext';
 import { useLanguage, SUPPORTED_LANGUAGES } from '../context/LanguageContext';
-import { getColors } from '../theme/colors';
 import { spacing, radius } from '../theme/spacing';
 import { typography } from '../theme/typography';
 import { shadows } from '../theme/shadows';
@@ -31,7 +30,6 @@ interface SettingsScreenProps {
 export default function SettingsScreen({ navigation, route }: SettingsScreenProps) {
   const { theme, isDark, setTheme } = useTheme();
   const { language, setLanguage, t } = useLanguage();
-  const colors = getColors(isDark);
   const [apiKey, setApiKey] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
@@ -87,13 +85,13 @@ export default function SettingsScreen({ navigation, route }: SettingsScreenProp
   };
 
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
-      <StatusBar barStyle={isDark ? 'light-content' : 'dark-content'} backgroundColor={colors.background} />
+    <SafeAreaView style={[styles.container, { backgroundColor: '#FFFFFF' }]}>
+      <StatusBar barStyle={isDark ? 'light-content' : 'dark-content'} backgroundColor={'#FFFFFF'} />
       <ScrollView showsVerticalScrollIndicator={false}>
         {/* Header */}
         <View style={styles.header}>
           <TouchableOpacity onPress={handleBack} style={styles.backButton}>
-            <ArrowBackIcon size={24} color={colors.textPrimary} />
+            <ArrowBackIcon size={24} color="#000000" />
           </TouchableOpacity>
           <View>
             <Text style={styles.headerTitle}>Settings</Text>
@@ -102,40 +100,40 @@ export default function SettingsScreen({ navigation, route }: SettingsScreenProp
         </View>
 
         {/* Theme Section */}
-        <View style={[styles.section, { backgroundColor: colors.cardBackground, borderColor: colors.border }]}>
+        <View style={[styles.section, { backgroundColor: '#FFFFFF', borderColor: '#E2E8F0' }]}>
           <View style={styles.sectionHeader}>
             <Text style={styles.sectionIcon}>🌓</Text>
-            <Text style={[styles.sectionTitle, { color: colors.textPrimary }]}>{t('settings.theme')}</Text>
+            <Text style={[styles.sectionTitle, { color: '#000000' }]}>{t('settings.theme')}</Text>
           </View>
           <View style={styles.themeContainer}>
             <View style={styles.themeOption}>
-              <Text style={[styles.themeLabel, { color: colors.textPrimary }]}>{t('settings.lightTheme')}</Text>
+              <Text style={[styles.themeLabel, { color: '#000000' }]}>{t('settings.lightTheme')}</Text>
               <Switch
                 value={!isDark}
                 onValueChange={(value) => handleThemeToggle(!value)}
-                trackColor={{ false: colors.border, true: colors.teal }}
-                thumbColor={colors.textLight}
+                trackColor={{ false: '#E2E8F0', true: '#0E7C86' }}
+                thumbColor={'#FFFFFF'}
               />
             </View>
             <View style={styles.themeOption}>
-              <Text style={[styles.themeLabel, { color: colors.textPrimary }]}>{t('settings.darkTheme')}</Text>
+              <Text style={[styles.themeLabel, { color: '#000000' }]}>{t('settings.darkTheme')}</Text>
               <Switch
                 value={isDark}
                 onValueChange={handleThemeToggle}
-                trackColor={{ false: colors.border, true: colors.teal }}
-                thumbColor={colors.textLight}
+                trackColor={{ false: '#E2E8F0', true: '#0E7C86' }}
+                thumbColor={'#FFFFFF'}
               />
             </View>
           </View>
         </View>
 
         {/* Language Selection Section */}
-        <View style={[styles.section, { backgroundColor: colors.cardBackground, borderColor: colors.border }]}>
+        <View style={[styles.section, { backgroundColor: '#FFFFFF', borderColor: '#E2E8F0' }]}>
           <View style={styles.sectionHeader}>
             <Text style={styles.sectionIcon}>🌐</Text>
-            <Text style={[styles.sectionTitle, { color: colors.textPrimary }]}>{t('settings.language')}</Text>
+            <Text style={[styles.sectionTitle, { color: '#000000' }]}>{t('settings.language')}</Text>
           </View>
-          <Text style={[styles.sectionDescription, { color: colors.textSecondary }]}>
+          <Text style={[styles.sectionDescription, { color: '#666666' }]}>
             {t('settings.language.description')}
           </Text>
           <View style={styles.languageContainer}>
@@ -145,8 +143,8 @@ export default function SettingsScreen({ navigation, route }: SettingsScreenProp
                 style={[
                   styles.languageOption,
                   {
-                    borderColor: language === lang.code ? colors.teal : colors.border,
-                    backgroundColor: language === lang.code ? colors.teal + '10' : colors.background,
+                    borderColor: language === lang.code ? '#0E7C86' : '#E2E8F0',
+                    backgroundColor: language === lang.code ? '#0E7C86' + '10' : '#FFFFFF',
                   },
                 ]}
                 onPress={() => handleLanguageSelect(lang.code)}
@@ -155,7 +153,7 @@ export default function SettingsScreen({ navigation, route }: SettingsScreenProp
                   style={[
                     styles.languageOptionText,
                     {
-                      color: language === lang.code ? colors.teal : colors.textPrimary,
+                      color: language === lang.code ? '#0E7C86' : '#000000',
                     },
                     language === lang.code && styles.languageOptionTextActive,
                   ]}
@@ -166,14 +164,14 @@ export default function SettingsScreen({ navigation, route }: SettingsScreenProp
                   style={[
                     styles.languageOptionSubtext,
                     {
-                      color: language === lang.code ? colors.teal : colors.textSecondary,
+                      color: language === lang.code ? '#0E7C86' : '#666666',
                     },
                   ]}
                 >
                   {lang.name}
                 </Text>
                 {language === lang.code && (
-                  <Text style={[styles.checkmark, { color: colors.teal }]}>✓</Text>
+                  <Text style={[styles.checkmark, { color: '#0E7C86' }]}>✓</Text>
                 )}
               </TouchableOpacity>
             ))}
@@ -181,21 +179,21 @@ export default function SettingsScreen({ navigation, route }: SettingsScreenProp
         </View>
 
         {/* API Key Section */}
-        <View style={[styles.section, { backgroundColor: colors.cardBackground, borderColor: colors.border }]}>
+        <View style={[styles.section, { backgroundColor: '#FFFFFF', borderColor: '#E2E8F0' }]}>
           <View style={styles.sectionHeader}>
-            <KeyIcon size={24} color={colors.teal} />
-            <Text style={[styles.sectionTitle, { color: colors.textPrimary }]}>Gemini API Key</Text>
+            <KeyIcon size={24} color={'#0E7C86'} />
+            <Text style={[styles.sectionTitle, { color: '#000000' }]}>Gemini API Key</Text>
           </View>
-          <Text style={[styles.sectionDescription, { color: colors.textSecondary }]}>
+          <Text style={[styles.sectionDescription, { color: '#666666' }]}>
             Enter your Google Gemini API key to enable AI travel recommendations.
             Get your key from Google AI Studio.
           </Text>
 
           <View style={styles.inputContainer}>
             <TextInput
-              style={[styles.input, { backgroundColor: colors.background, borderColor: colors.border, color: colors.textPrimary }]}
+              style={[styles.input, { backgroundColor: '#FFFFFF', borderColor: '#E2E8F0', color: '#000000' }]}
               placeholder="Enter your Gemini API key"
-              placeholderTextColor={colors.textSecondary}
+              placeholderTextColor={'#666666'}
               value={apiKey}
               onChangeText={setApiKey}
               secureTextEntry
@@ -211,7 +209,7 @@ export default function SettingsScreen({ navigation, route }: SettingsScreenProp
                 <Text style={styles.saveButtonText}>{t('settings.saving')}</Text>
               ) : isSaved ? (
                 <>
-                  <CheckIcon size={18} color={colors.textLight} />
+                  <CheckIcon size={18} color={'#FFFFFF'} />
                   <Text style={[styles.saveButtonText, { marginLeft: spacing.xs }]}>{t('settings.saved')}</Text>
                 </>
               ) : (
@@ -221,7 +219,7 @@ export default function SettingsScreen({ navigation, route }: SettingsScreenProp
           </View>
 
           <View style={styles.infoBox}>
-            <InfoIcon size={20} color={colors.blue} />
+            <InfoIcon size={20} color="#2176FF" />
             <Text style={styles.infoText}>
               {t('settings.apiKey.info')}
             </Text>
@@ -229,16 +227,16 @@ export default function SettingsScreen({ navigation, route }: SettingsScreenProp
         </View>
 
         {/* App Info Section */}
-        <View style={[styles.section, { backgroundColor: colors.cardBackground, borderColor: colors.border }]}>
+        <View style={[styles.section, { backgroundColor: '#FFFFFF', borderColor: '#E2E8F0' }]}>
           <View style={styles.sectionHeader}>
-            <InfoIcon size={24} color={colors.teal} />
-            <Text style={[styles.sectionTitle, { color: colors.textPrimary }]}>{t('settings.about')}</Text>
+            <InfoIcon size={24} color={'#0E7C86'} />
+            <Text style={[styles.sectionTitle, { color: '#000000' }]}>{t('settings.about')}</Text>
           </View>
-          <Text style={[styles.aboutText, { color: colors.textSecondary }]}>
+          <Text style={[styles.aboutText, { color: '#666666' }]}>
             {t('settings.about.description')}
           </Text>
           <View style={styles.versionContainer}>
-            <Text style={[styles.versionText, { color: colors.textSecondary }]}>{t('settings.version')}</Text>
+            <Text style={[styles.versionText, { color: '#666666' }]}>{t('settings.version')}</Text>
           </View>
         </View>
 
@@ -267,20 +265,20 @@ const styles = StyleSheet.create({
   },
   headerTitle: {
     ...typography.h3,
-    color: colors.textPrimary,
+    color: '#000000',
   },
   headerSubtitle: {
     ...typography.bodySmall,
-    color: colors.textSecondary,
+    color: '#666666',
   },
   section: {
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.lg,
-    backgroundColor: colors.cardBackground,
+    backgroundColor: '#FFFFFF',
     marginTop: spacing.sm,
     borderTopWidth: 1,
     borderBottomWidth: 1,
-    borderColor: colors.border,
+    borderColor: '#E2E8F0',
   },
   sectionHeader: {
     flexDirection: 'row',
@@ -324,33 +322,33 @@ const styles = StyleSheet.create({
     borderRadius: radius.md,
     marginBottom: spacing.sm,
     borderWidth: 1,
-    borderColor: colors.border,
-    backgroundColor: colors.background,
+    borderColor: '#E2E8F0',
+    backgroundColor: '#FFFFFF',
   },
   languageOptionActive: {
-    backgroundColor: colors.teal + '10',
-    borderColor: colors.teal,
+    backgroundColor: '#0E7C86' + '10',
+    borderColor: '#0E7C86',
   },
   languageOptionText: {
     ...typography.bodyLarge,
-    color: colors.textPrimary,
+    color: '#000000',
     flex: 1,
   },
   languageOptionTextActive: {
-    color: colors.teal,
+    color: '#0E7C86',
     fontWeight: '600',
   },
   languageOptionSubtext: {
     ...typography.bodySmall,
-    color: colors.textSecondary,
+    color: '#666666',
     marginRight: spacing.sm,
   },
   languageOptionSubtextActive: {
-    color: colors.teal,
+    color: '#0E7C86',
   },
   checkmark: {
     ...typography.h4,
-    color: colors.teal,
+    color: '#0E7C86',
     fontWeight: '700',
   },
   inputContainer: {
@@ -365,7 +363,7 @@ const styles = StyleSheet.create({
     marginBottom: spacing.md,
   },
   saveButton: {
-    backgroundColor: colors.teal,
+    backgroundColor: '#0E7C86',
     borderRadius: radius.md,
     paddingVertical: spacing.md,
     paddingHorizontal: spacing.lg,
@@ -374,29 +372,29 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   saveButtonSuccess: {
-    backgroundColor: colors.success,
+    backgroundColor: '#48BB78',
   },
   saveButtonText: {
     ...typography.labelMedium,
-    color: colors.textLight,
+    color: '#FFFFFF',
   },
   infoBox: {
     flexDirection: 'row',
-    backgroundColor: colors.blue + '10',
+    backgroundColor: '#2176FF10',
     borderRadius: radius.md,
     padding: spacing.md,
     alignItems: 'flex-start',
   },
   infoText: {
     ...typography.bodySmall,
-    color: colors.textSecondary,
+    color: '#666666',
     marginLeft: spacing.sm,
     flex: 1,
     lineHeight: 18,
   },
   aboutText: {
     ...typography.bodyMedium,
-    color: colors.textSecondary,
+    color: '#666666',
     lineHeight: 22,
   },
   versionContainer: {
@@ -405,6 +403,6 @@ const styles = StyleSheet.create({
   },
   versionText: {
     ...typography.bodySmall,
-    color: colors.textSecondary,
+    color: '#666666',
   },
 });

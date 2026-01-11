@@ -15,7 +15,6 @@ import {
 import { ArrowBackIcon, LocalOfferIcon, AccessTimeIcon } from '../components/icons';
 import { getCategoryData, Place } from '../utils/api';
 import { addVisitedCategory } from '../utils/storage';
-import { colors } from '../theme/colors';
 import { spacing, radius } from '../theme/spacing';
 import { typography } from '../theme/typography';
 import { shadows } from '../theme/shadows';
@@ -156,12 +155,12 @@ export default function CategoryScreen({ route, navigation }: CategoryScreenProp
         </Text>
 
         <View style={styles.infoRow}>
-          <LocalOfferIcon size={18} color={colors.textSecondary} />
+          <LocalOfferIcon size={18} color="#666666" />
             <Text style={[styles.infoText, { marginLeft: spacing.sm }]}>{item.entryFee || 'Free'}</Text>
         </View>
 
         <View style={styles.infoRow}>
-          <AccessTimeIcon size={18} color={colors.textSecondary} />
+          <AccessTimeIcon size={18} color="#666666" />
             <Text style={[styles.infoText, { marginLeft: spacing.sm }]}>{item.opening || 'Check locally'}</Text>
         </View>
       </View>
@@ -178,7 +177,7 @@ export default function CategoryScreen({ route, navigation }: CategoryScreenProp
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color={colors.primary} />
+          <ActivityIndicator size="large" color="#0E7C86" />
           <Text style={styles.loadingText}>Loading {category}...</Text>
         </View>
       </SafeAreaView>
@@ -199,7 +198,7 @@ export default function CategoryScreen({ route, navigation }: CategoryScreenProp
       >
         <TouchableOpacity onPress={() => navigation?.goBack()}>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <ArrowBackIcon size={18} color={colors.primary} />
+            <ArrowBackIcon size={18} color="#0E7C86" />
             <Text style={[styles.backButton, { marginLeft: spacing.sm }]}>Back</Text>
           </View>
         </TouchableOpacity>
@@ -242,7 +241,7 @@ export default function CategoryScreen({ route, navigation }: CategoryScreenProp
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.background,
+    backgroundColor: '#FFFFFF',
     paddingTop: Platform.OS === 'android' ? STATUSBAR_HEIGHT : 0,
   },
   header: {
@@ -250,18 +249,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: spacing.sm,
     paddingVertical: spacing.xs + 2,
-    backgroundColor: colors.cardBackground,
+    backgroundColor: '#FFFFFF',
     borderBottomWidth: 1,
-    borderBottomColor: colors.border,
+    borderBottomColor: '#E2E8F0',
   },
   backButton: {
     ...typography.labelMedium,
-    color: colors.primary,
+    color: '#0E7C86',
     marginRight: spacing.sm,
   },
   headerTitle: {
     ...typography.h4,
-    color: colors.textPrimary,
+    color: '#000000',
     flex: 1,
   },
   listContent: {
@@ -269,14 +268,14 @@ const styles = StyleSheet.create({
     paddingVertical: spacing.sm,
   },
   card: {
-    backgroundColor: colors.cardBackground,
+    backgroundColor: '#FFFFFF',
     borderRadius: radius.md,
     overflow: 'hidden',
     marginBottom: spacing.sm,
   },
   imageContainer: {
     height: 140,
-    backgroundColor: colors.background,
+    backgroundColor: '#FFFFFF',
     justifyContent: 'center',
     alignItems: 'center',
     position: 'relative',
@@ -291,20 +290,20 @@ const styles = StyleSheet.create({
   fallbackImage: {
     width: '100%',
     height: '100%',
-    backgroundColor: colors.border,
+    backgroundColor: '#E2E8F0',
   },
   ratingBadge: {
     position: 'absolute',
     top: spacing.sm,
     right: spacing.sm,
-    backgroundColor: colors.primary,
+    backgroundColor: '#0E7C86',
     paddingHorizontal: spacing.xs + 2,
     paddingVertical: 2,
     borderRadius: radius.full,
   },
   rating: {
     ...typography.labelSmall,
-    color: colors.textLight,
+    color: '#FFFFFF',
     fontSize: 10,
   },
   cardContent: {
@@ -312,12 +311,12 @@ const styles = StyleSheet.create({
   },
   placeName: {
     ...typography.labelLarge,
-    color: colors.textPrimary,
+    color: '#000000',
     marginBottom: spacing.xs,
   },
   description: {
     ...typography.bodySmall,
-    color: colors.textSecondary,
+    color: '#666666',
     marginBottom: spacing.sm,
     fontSize: 12,
     lineHeight: 16,
@@ -333,7 +332,7 @@ const styles = StyleSheet.create({
   },
   infoText: {
     ...typography.bodySmall,
-    color: colors.textSecondary,
+    color: '#666666',
     flex: 1,
     fontSize: 11,
   },
@@ -344,7 +343,7 @@ const styles = StyleSheet.create({
   },
   loadingText: {
     ...typography.bodySmall,
-    color: colors.textSecondary,
+    color: '#666666',
     marginTop: spacing.sm,
   },
   emptyContainer: {
@@ -359,24 +358,24 @@ const styles = StyleSheet.create({
   },
   emptyTitle: {
     ...typography.h3,
-    color: colors.textPrimary,
+    color: '#000000',
     marginBottom: spacing.xs,
   },
   emptyText: {
     ...typography.bodySmall,
-    color: colors.textSecondary,
+    color: '#666666',
     textAlign: 'center',
     lineHeight: 18,
     marginBottom: spacing.lg,
   },
   emptyButton: {
-    backgroundColor: colors.teal,
+    backgroundColor: '#0E7C86',
     paddingVertical: spacing.sm,
     paddingHorizontal: spacing.lg,
     borderRadius: radius.md,
   },
   emptyButtonText: {
     ...typography.labelMedium,
-    color: colors.textLight,
+    color: '#FFFFFF',
   },
 });

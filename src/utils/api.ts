@@ -9,6 +9,7 @@ import pubsData from '../data/pubs.json';
 import shoppingData from '../data/shopping.json';
 import photoshootData from '../data/photoshoot.json';
 import theatresData from '../data/theatres.json';
+import natureData from '../data/nature.json';
 import busRoutesData from '../data/busRoutes.json';
 import cabServicesData from '../data/cabServices.json';
 import famousPlacesData from '../data/famous-places.json';
@@ -53,6 +54,7 @@ const localDataMap: { [key: string]: any[] } = {
   shopping: shoppingData,
   photoshoot: photoshootData,
   theatres: theatresData,
+  nature: natureData,
   busroutes: busRoutesData,
   cabservices: cabServicesData,
   'famous-places': famousPlacesData,
@@ -94,6 +96,7 @@ export interface Place {
   mapUrl: string;
   phone?: string;
   category?: string;
+  address?: string;
 }
 
 /**
@@ -106,7 +109,8 @@ export const getCategoryKey = (label: string): string => {
     'dining': 'restaurants',
     'beaches': 'beaches',
     'temples': 'temples',
-    'parks': 'parks',
+    'parks': 'parks', // Now a subcategory of nature, but still uses parks.json
+    'nature': 'nature',
     'hotels': 'hotels',
     'hotels & resorts': 'hotels',
     'pubs': 'pubs',
@@ -153,14 +157,14 @@ export const getCategoryKey = (label: string): string => {
 };
 
 /**
- * Get places by category from local JSON data
+ * Get places by category from local JSON data (works offline)
  */
 export const getCategoryData = async (category: string): Promise<Place[]> => {
   try {
     const categoryKey = getCategoryKey(category);
     const data = localDataMap[categoryKey] || [];
     
-    return (data || []).map((item: any) => ({
+    const places = (data || []).map((item: any) => ({
       id: item.id || Math.random().toString(),
       name: item.name || '',
       image: item.image || item.cover_image || '',
@@ -172,18 +176,37 @@ export const getCategoryData = async (category: string): Promise<Place[]> => {
       phone: item.phone,
       category: categoryKey,
     }));
+
+    // Cache data for offline use
+    try {
+      const { cacheCategoryData } = await import('./offlineCache');
+      await cacheCategoryData(categoryKey, places);
+    } catch (cacheError) {
+      // Don't fail if caching fails
+      console.warn('Failed to cache category data:', cacheError);
+    }
+
+    return places;
   } catch (error) {
     console.error('Error loading category data:', error);
+    // Try to get cached data if available
+    try {
+      const { getCachedCategoryData } = await import('./offlineCache');
+      const cached = await getCachedCategoryData(category);
+      if (cached) return cached;
+    } catch (cacheError) {
+      // Ignore cache errors
+    }
     return [];
   }
 };
 
 /**
- * Get all places from local JSON data
+ * Get all places from local JSON data (works offline)
  */
 export const getAllPlaces = async (): Promise<Place[]> => {
   try {
-    const categories = ['beaches', 'temples', 'restaurants', 'parks', 'hotels', 'pubs', 'shopping', 'photoshoot', 'theatres'];
+    const categories = ['beaches', 'temples', 'restaurants', 'parks', 'nature', 'hotels', 'pubs', 'shopping', 'photoshoot', 'theatres'];
     const allPlaces: Place[] = [];
 
     for (const category of categories) {
@@ -203,9 +226,26 @@ export const getAllPlaces = async (): Promise<Place[]> => {
         allPlaces.push(...places);
     }
 
+    // Cache data for offline use
+    try {
+      const { cachePlaces } = await import('./offlineCache');
+      await cachePlaces(allPlaces);
+    } catch (cacheError) {
+      // Don't fail if caching fails
+      console.warn('Failed to cache places:', cacheError);
+    }
+
     return allPlaces;
   } catch (error) {
     console.error('Error loading places:', error);
+    // Try to get cached data if available
+    try {
+      const { getCachedPlaces } = await import('./offlineCache');
+      const cached = await getCachedPlaces();
+      if (cached) return cached;
+    } catch (cacheError) {
+      // Ignore cache errors
+    }
     return [];
   }
 };

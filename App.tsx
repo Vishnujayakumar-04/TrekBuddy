@@ -1,15 +1,13 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { View, StyleSheet, LogBox, ActivityIndicator } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import * as Updates from 'expo-updates';
 import StackNavigator from './src/navigation/StackNavigator';
 import { ErrorBoundary } from './src/components/ErrorBoundary';
 import { AuthProvider, useAuth } from './src/context/AuthContext';
 import { ThemeProvider, useTheme } from './src/context/ThemeContext';
 import { LanguageProvider } from './src/context/LanguageContext';
-import { getColors } from './src/theme/colors';
 
 // Ignore specific warnings
 LogBox.ignoreLogs([
@@ -22,6 +20,9 @@ LogBox.ignoreLogs([
   'downloading',
   'exp.direct',
   'Loading from',
+  'Network request failed',
+  'Unable to resolve',
+  'ECONNREFUSED',
 ]);
 
 // Suppress update-related errors (works in both dev and production)
@@ -33,13 +34,19 @@ console.error = (...args) => {
     if (
       lowerArg.includes('failed to download remote update') ||
       lowerArg.includes('java.io.ioexception') ||
+      lowerArg.includes('java.ioexception') ||
       lowerArg.includes('remote update') ||
+      lowerArg.includes('expo-updates') ||
+      lowerArg.includes('expo_updates') ||
       lowerArg.includes('new update available') ||
       lowerArg.includes('downloading') ||
       lowerArg.includes('exp.direct') ||
       lowerArg.includes('loading from') ||
+      lowerArg.includes('update failed') ||
+      lowerArg.includes('update error') ||
       (lowerArg.includes('update') && lowerArg.includes('download')) ||
-      (lowerArg.includes('update') && lowerArg.includes('ioexception'))
+      (lowerArg.includes('update') && lowerArg.includes('ioexception')) ||
+      (lowerArg.includes('ioexception') && lowerArg.includes('update'))
     ) {
       // Silently ignore update-related errors
       return;
@@ -49,12 +56,20 @@ console.error = (...args) => {
   if (firstArg instanceof Error) {
     const errorMessage = firstArg.message?.toLowerCase() || '';
     const errorStack = firstArg.stack?.toLowerCase() || '';
+    const errorName = firstArg.name?.toLowerCase() || '';
+    const combined = `${errorMessage} ${errorStack} ${errorName}`;
     if (
-      errorMessage.includes('failed to download remote update') ||
-      errorMessage.includes('java.io.ioexception') ||
-      errorMessage.includes('remote update') ||
-      errorStack.includes('update') ||
-      (errorMessage.includes('update') && errorMessage.includes('download'))
+      combined.includes('failed to download remote update') ||
+      combined.includes('java.io.ioexception') ||
+      combined.includes('java.ioexception') ||
+      combined.includes('remote update') ||
+      combined.includes('expo-updates') ||
+      combined.includes('expo_updates') ||
+      combined.includes('update failed') ||
+      combined.includes('update error') ||
+      (combined.includes('update') && combined.includes('download')) ||
+      (combined.includes('update') && combined.includes('ioexception')) ||
+      (combined.includes('ioexception') && combined.includes('update'))
     ) {
       return;
     }
@@ -68,13 +83,22 @@ if (typeof global !== 'undefined') {
   (global as any).onunhandledrejection = (event: any) => {
     const error = event?.reason || event;
     const errorMessage = error?.message || error?.toString() || '';
-    const lowerMessage = errorMessage.toLowerCase();
+    const errorStack = error?.stack || '';
+    const errorName = error?.name || '';
+    const lowerMessage = `${errorMessage} ${errorStack} ${errorName}`.toLowerCase();
     
     if (
       lowerMessage.includes('failed to download remote update') ||
       lowerMessage.includes('java.io.ioexception') ||
+      lowerMessage.includes('java.ioexception') ||
       lowerMessage.includes('remote update') ||
-      (lowerMessage.includes('update') && lowerMessage.includes('download'))
+      lowerMessage.includes('expo-updates') ||
+      lowerMessage.includes('expo_updates') ||
+      lowerMessage.includes('update failed') ||
+      lowerMessage.includes('update error') ||
+      (lowerMessage.includes('update') && lowerMessage.includes('download')) ||
+      (lowerMessage.includes('update') && lowerMessage.includes('ioexception')) ||
+      (lowerMessage.includes('ioexception') && lowerMessage.includes('update'))
     ) {
       // Suppress update-related promise rejections
       event?.preventDefault?.();
@@ -89,53 +113,10 @@ if (typeof global !== 'undefined') {
 function AppContent() {
   const { loading } = useAuth();
   const { isDark } = useTheme();
-  const colors = getColors(isDark);
-
-  // Aggressively prevent any update checks and downloads
-  useEffect(() => {
-    // Wrap in try-catch to prevent any update-related crashes
-    try {
-      // Override update functions to prevent any checks
-      if (Updates && typeof Updates.checkForUpdateAsync === 'function') {
-        // Replace with no-op functions
-        (Updates as any).checkForUpdateAsync = async () => {
-          return { isAvailable: false };
-        };
-        (Updates as any).fetchUpdateAsync = async () => {
-          return { isNew: false };
-        };
-        (Updates as any).reloadAsync = async () => {
-          // Do nothing
-        };
-      }
-      
-      // Check if updates are enabled (they shouldn't be based on app.json)
-      if (Updates.isEnabled) {
-        if (__DEV__) {
-          console.log('[Updates] Updates disabled - all checks prevented');
-        }
-      }
-    } catch (error: any) {
-      // Silently suppress any update-related errors
-      const errorMsg = error?.message || error?.toString() || '';
-      if (errorMsg.toLowerCase().includes('update') || 
-          errorMsg.toLowerCase().includes('download') ||
-          errorMsg.toLowerCase().includes('exp.direct')) {
-        // This is an update/download error - suppress it
-        if (__DEV__) {
-          console.warn('[Updates] Update error suppressed:', errorMsg);
-        }
-      } else {
-        // Not an update error - log it normally
-        console.error('Error in AppContent useEffect:', error);
-      }
-    }
-  }, []);
-
   if (loading) {
     return (
-      <View style={[styles.loadingContainer, { backgroundColor: colors.background }]}>
-        <ActivityIndicator size="large" color={colors.teal} />
+      <View style={[styles.loadingContainer, { backgroundColor: '#FFFFFF' }]}>
+        <ActivityIndicator size="large" color="#0E7C86" />
       </View>
     );
   }

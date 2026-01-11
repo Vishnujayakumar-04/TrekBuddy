@@ -1,6 +1,5 @@
 import React from 'react';
 import { View, Text, StyleSheet, TextStyle } from 'react-native';
-import { colors } from '../../theme/colors';
 import { typography } from '../../theme/typography';
 import { spacing } from '../../theme/spacing';
 
@@ -25,12 +24,12 @@ const styles = StyleSheet.create({
   },
   title: {
     ...typography.labelLarge,
-    color: colors.textPrimary,
+    color: '#000000',
     marginBottom: 1,
   },
   subtitle: {
     ...typography.bodySmall,
-    color: colors.textLightGray,
+    color: '#777777',
     fontSize: 11,
   },
 });
