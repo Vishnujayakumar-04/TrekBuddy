@@ -16,7 +16,6 @@ import {
 import { ArrowBackIcon, FilterIcon } from '../components/icons';
 import { Place } from '../utils/api';
 import { LinearGradient } from 'expo-linear-gradient';
-import { colors } from '../theme/colors';
 import { spacing, radius } from '../theme/spacing';
 import { typography } from '../theme/typography';
 import { shadows } from '../theme/shadows';
@@ -286,7 +285,7 @@ export default function PubsScreen({ navigation }: PubsScreenProps) {
   if (loading) {
     return (
       <SafeAreaView style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color={colors.teal} />
+        <ActivityIndicator size="large" color="#0E7C86" />
         <Text style={styles.loadingText}>Loading pubs & bars...</Text>
       </SafeAreaView>
     );
@@ -309,7 +308,7 @@ export default function PubsScreen({ navigation }: PubsScreenProps) {
             }
           }}
         >
-          <ArrowBackIcon size={24} color={colors.textPrimary} />
+          <ArrowBackIcon size={24} color="#000000" />
         </TouchableOpacity>
         
         <Text style={styles.headerTitle}>
@@ -331,7 +330,7 @@ export default function PubsScreen({ navigation }: PubsScreenProps) {
               style={styles.actionButton}
               onPress={() => setShowFilters(true)}
             >
-              <FilterIcon size={20} color={colors.textPrimary} />
+              <FilterIcon size={20} color="#000000" />
             </TouchableOpacity>
           )}
         </View>
@@ -494,18 +493,18 @@ export default function PubsScreen({ navigation }: PubsScreenProps) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.background,
+    backgroundColor: '#FFFFFF',
     paddingTop: Platform.OS === 'android' ? STATUSBAR_HEIGHT : 0,
   },
   loadingContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: colors.background,
+    backgroundColor: '#FFFFFF',
   },
   loadingText: {
     ...typography.bodyMedium,
-    color: colors.textSecondary,
+    color: '#666666',
     marginTop: spacing.md,
   },
   header: {
@@ -513,16 +512,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.sm,
-    backgroundColor: colors.cardBackground,
+    backgroundColor: '#FFFFFF',
     borderBottomWidth: 1,
-    borderBottomColor: colors.border,
+    borderBottomColor: '#E2E8F0',
   },
   backButton: {
     padding: spacing.xs,
   },
   headerTitle: {
     ...typography.h4,
-    color: colors.textPrimary,
+    color: '#000000',
     flex: 1,
     marginLeft: spacing.sm,
   },
@@ -534,7 +533,7 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: colors.background,
+    backgroundColor: '#FFFFFF',
     alignItems: 'center',
     justifyContent: 'center',
     marginLeft: spacing.xs,
@@ -542,26 +541,26 @@ const styles = StyleSheet.create({
   },
   languageCode: {
     ...typography.labelMedium,
-    color: colors.teal,
+    color: '#0E7C86',
     fontWeight: '700',
   },
   activeFiltersContainer: {
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.sm,
-    backgroundColor: colors.cardBackground,
+    backgroundColor: '#FFFFFF',
   },
   activeFilterTag: {
-    backgroundColor: colors.teal + '20',
+    backgroundColor: '#0E7C8620',
     paddingHorizontal: spacing.sm,
     paddingVertical: spacing.xs,
     borderRadius: radius.full,
     marginRight: spacing.xs,
     borderWidth: 1,
-    borderColor: colors.teal,
+    borderColor: '#0E7C86',
   },
   activeFilterText: {
     ...typography.labelSmall,
-    color: colors.teal,
+    color: '#0E7C86',
   },
   clearFiltersButton: {
     paddingHorizontal: spacing.sm,
@@ -569,7 +568,7 @@ const styles = StyleSheet.create({
   },
   clearFiltersText: {
     ...typography.labelSmall,
-    color: colors.red,
+    color: '#E84A4A',
     fontWeight: '600',
   },
   categoriesContainer: {
@@ -579,7 +578,7 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     ...typography.h4,
-    color: colors.textPrimary,
+    color: '#000000',
     marginBottom: spacing.md,
     paddingHorizontal: spacing.xs,
   },
@@ -589,7 +588,7 @@ const styles = StyleSheet.create({
   },
   resultsText: {
     ...typography.bodySmall,
-    color: colors.textSecondary,
+    color: '#666666',
   },
   listContainer: {
     paddingHorizontal: spacing.sm,
@@ -601,7 +600,7 @@ const styles = StyleSheet.create({
   categoryCard: {
     width: '48.5%',
     height: 140,
-    backgroundColor: colors.cardBackground,
+    backgroundColor: '#FFFFFF',
     borderRadius: radius.lg,
     marginBottom: spacing.sm,
     overflow: 'hidden',
@@ -639,7 +638,7 @@ const styles = StyleSheet.create({
   },
   categoryLabel: {
     ...typography.labelLarge,
-    color: colors.textLight,
+    color: '#FFFFFF',
     fontWeight: '700',
     fontSize: 14,
     textShadowColor: 'rgba(0, 0, 0, 0.75)',
@@ -648,7 +647,7 @@ const styles = StyleSheet.create({
   },
   placeCard: {
     width: '48.5%',
-    backgroundColor: colors.cardBackground,
+    backgroundColor: '#FFFFFF',
     borderRadius: radius.md,
     marginBottom: spacing.sm,
     overflow: 'hidden',
@@ -657,20 +656,20 @@ const styles = StyleSheet.create({
   placeImage: {
     width: '100%',
     height: 120,
-    backgroundColor: colors.border,
+    backgroundColor: '#E2E8F0',
   },
   placeInfo: {
     padding: spacing.sm,
   },
   placeName: {
     ...typography.labelMedium,
-    color: colors.textPrimary,
+    color: '#000000',
     fontWeight: '600',
     marginBottom: 4,
   },
   placeLocation: {
     ...typography.bodySmall,
-    color: colors.textSecondary,
+    color: '#666666',
     marginBottom: spacing.xs,
   },
   placeMetaRow: {
@@ -679,7 +678,7 @@ const styles = StyleSheet.create({
     marginBottom: spacing.xs,
   },
   categoryBadge: {
-    backgroundColor: colors.yellow + '20',
+    backgroundColor: '#F4C430' + '20',
     paddingHorizontal: spacing.xs,
     paddingVertical: 2,
     borderRadius: radius.sm,
@@ -687,7 +686,7 @@ const styles = StyleSheet.create({
   },
   categoryBadgeText: {
     ...typography.labelSmall,
-    color: colors.yellow,
+    color: '#F4C430',
     fontSize: 9,
   },
   ratingRow: {
@@ -695,7 +694,7 @@ const styles = StyleSheet.create({
   },
   ratingText: {
     ...typography.labelSmall,
-    color: colors.yellow,
+    color: '#F4C430',
     fontWeight: '600',
   },
   emptyContainer: {
@@ -706,11 +705,11 @@ const styles = StyleSheet.create({
   },
   emptyText: {
     ...typography.h4,
-    color: colors.textSecondary,
+    color: '#666666',
   },
   emptySubtext: {
     ...typography.bodySmall,
-    color: colors.textSecondary,
+    color: '#666666',
     marginTop: spacing.xs,
   },
   modalOverlay: {
@@ -719,7 +718,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   modalContent: {
-    backgroundColor: colors.background,
+    backgroundColor: '#FFFFFF',
     borderTopLeftRadius: radius.xl,
     borderTopRightRadius: radius.xl,
     maxHeight: '80%',
@@ -732,24 +731,24 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.lg,
     paddingVertical: spacing.md,
     borderBottomWidth: 1,
-    borderBottomColor: colors.border,
+    borderBottomColor: '#E2E8F0',
   },
   modalTitle: {
     ...typography.h4,
-    color: colors.textPrimary,
+    color: '#000000',
     fontWeight: '700',
   },
   modalCloseButton: {
     width: 32,
     height: 32,
     borderRadius: 16,
-    backgroundColor: colors.cardBackground,
+    backgroundColor: '#FFFFFF',
     alignItems: 'center',
     justifyContent: 'center',
   },
   modalCloseText: {
     fontSize: 18,
-    color: colors.textSecondary,
+    color: '#666666',
     fontWeight: '600',
   },
   modalBody: {
@@ -758,7 +757,7 @@ const styles = StyleSheet.create({
   },
   filterLabel: {
     ...typography.labelMedium,
-    color: colors.textPrimary,
+    color: '#000000',
     fontWeight: '600',
     marginBottom: spacing.sm,
     marginTop: spacing.md,
@@ -771,26 +770,26 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.sm,
     borderRadius: radius.full,
-    backgroundColor: colors.cardBackground,
+    backgroundColor: '#FFFFFF',
     marginRight: spacing.xs,
     marginBottom: spacing.xs,
     borderWidth: 1,
-    borderColor: colors.border,
+    borderColor: '#E2E8F0',
   },
   filterOptionActive: {
-    backgroundColor: colors.teal,
-    borderColor: colors.teal,
+    backgroundColor: '#0E7C86',
+    borderColor: '#0E7C86',
   },
   filterOptionText: {
     ...typography.labelSmall,
-    color: colors.textSecondary,
+    color: '#666666',
   },
   filterOptionTextActive: {
-    color: colors.textLight,
+    color: '#FFFFFF',
     fontWeight: '600',
   },
   applyButton: {
-    backgroundColor: colors.teal,
+    backgroundColor: '#0E7C86',
     marginHorizontal: spacing.lg,
     marginTop: spacing.lg,
     paddingVertical: spacing.md,
@@ -799,11 +798,11 @@ const styles = StyleSheet.create({
   },
   applyButtonText: {
     ...typography.labelMedium,
-    color: colors.textLight,
+    color: '#FFFFFF',
     fontWeight: '600',
   },
   languageModalContent: {
-    backgroundColor: colors.background,
+    backgroundColor: '#FFFFFF',
     borderTopLeftRadius: radius.xl,
     borderTopRightRadius: radius.xl,
     paddingBottom: spacing.xl,
@@ -816,28 +815,28 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.lg,
     paddingVertical: spacing.md,
     borderBottomWidth: 1,
-    borderBottomColor: colors.border,
+    borderBottomColor: '#E2E8F0',
   },
   languageModalTitle: {
     ...typography.h4,
-    color: colors.textPrimary,
+    color: '#000000',
     fontWeight: '700',
   },
   languageOption: {
     paddingHorizontal: spacing.lg,
     paddingVertical: spacing.md,
     borderBottomWidth: 1,
-    borderBottomColor: colors.border,
+    borderBottomColor: '#E2E8F0',
   },
   languageOptionActive: {
-    backgroundColor: colors.teal + '10',
+    backgroundColor: '#0E7C8610',
   },
   languageOptionText: {
     ...typography.bodyMedium,
-    color: colors.textPrimary,
+    color: '#000000',
   },
   languageOptionTextActive: {
-    color: colors.teal,
+    color: '#0E7C86',
     fontWeight: '600',
   },
 });

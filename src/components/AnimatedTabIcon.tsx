@@ -1,6 +1,5 @@
 import React, { useEffect, useRef } from 'react';
 import { View, StyleSheet, Animated, Easing } from 'react-native';
-import { colors } from '../theme/colors';
 
 interface AnimatedTabIconProps {
   Icon: React.ComponentType<{ size?: number; color?: string }>;
@@ -39,7 +38,7 @@ export const AnimatedTabIcon: React.FC<AnimatedTabIconProps> = ({
       ]}>
       <Icon
           size={iconSize}
-        color={focused ? colors.teal : colors.textSecondary}
+        color={focused ? '#0E7C86' : '#666666'}
       />
       </View>
     </Animated.View>
@@ -61,6 +60,6 @@ const styles = StyleSheet.create({
     borderRadius: 24,
   },
   iconWrapperActive: {
-    backgroundColor: colors.teal + '15',
+    backgroundColor: '#0E7C8615',
   },
 });

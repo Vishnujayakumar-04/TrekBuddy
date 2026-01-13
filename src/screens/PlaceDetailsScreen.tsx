@@ -16,7 +16,6 @@ import {
 import { ArrowBackIcon, PlaceIcon, AccessTimeIcon, LocalOfferIcon, PhoneIcon, MapIcon, ShareIcon, HeartIcon, HeartStrokeIcon } from '../components/icons';
 import { Place } from '../utils/api';
 import { saveFavorite, removeFavorite, isFavorite } from '../utils/storage';
-import { colors } from '../theme/colors';
 import { spacing, radius } from '../theme/spacing';
 import { typography } from '../theme/typography';
 import { shadows } from '../theme/shadows';
@@ -128,7 +127,7 @@ export default function PlaceDetailsScreen({
             style={styles.backNav}
             onPress={() => navigation?.goBack()}
           >
-            <ArrowBackIcon size={22} color={colors.primary} />
+            <ArrowBackIcon size={22} color="#0E7C86" />
           </TouchableOpacity>
 
           <View style={styles.imageContainer}>
@@ -150,9 +149,9 @@ export default function PlaceDetailsScreen({
             disabled={loading}
           >
             {favorited ? (
-              <HeartIcon size={24} color={colors.red} />
+              <HeartIcon size={24} color="#E84A4A" />
             ) : (
-              <HeartStrokeIcon size={24} color={colors.textLight} />
+              <HeartStrokeIcon size={24} color="#FFFFFF" />
             )}
           </TouchableOpacity>
         </View>
@@ -165,7 +164,7 @@ export default function PlaceDetailsScreen({
           {/* Address */}
           {place.address && (
             <View style={styles.infoBlock}>
-              <PlaceIcon size={20} color={colors.textSecondary} />
+              <PlaceIcon size={20} color="#666666" />
               <Text style={styles.infoValue}>{place.address}</Text>
             </View>
           )}
@@ -178,7 +177,7 @@ export default function PlaceDetailsScreen({
 
           {/* Opening Hours */}
           <View style={styles.infoCard}>
-            <AccessTimeIcon size={20} color={colors.textSecondary} />
+            <AccessTimeIcon size={20} color="#666666" />
             <View style={styles.infoContent}>
               <Text style={styles.infoLabel}>Opening Hours</Text>
               <Text style={styles.infoValue}>{place.opening}</Text>
@@ -187,7 +186,7 @@ export default function PlaceDetailsScreen({
 
           {/* Entry Fee */}
           <View style={styles.infoCard}>
-            <LocalOfferIcon size={20} color={colors.textSecondary} />
+            <LocalOfferIcon size={20} color="#666666" />
             <View style={styles.infoContent}>
               <Text style={styles.infoLabel}>Entry Fee</Text>
               <Text style={styles.infoValue}>{place.entryFee}</Text>
@@ -197,7 +196,7 @@ export default function PlaceDetailsScreen({
           {/* Contact */}
           {place.phone && (
             <View style={styles.infoCard}>
-              <PhoneIcon size={20} color={colors.textSecondary} />
+              <PhoneIcon size={20} color="#666666" />
               <View style={styles.infoContent}>
                 <Text style={styles.infoLabel}>Contact</Text>
                 <Text style={styles.infoValue}>{place.phone}</Text>
@@ -211,7 +210,7 @@ export default function PlaceDetailsScreen({
               style={[styles.actionButton, styles.mapButton, shadows.md]}
               onPress={handleOpenMap}
             >
-              <MapIcon size={20} color={colors.textLight} />
+              <MapIcon size={20} color="#FFFFFF" />
               <Text style={styles.actionText}>Open Maps</Text>
             </TouchableOpacity>
 
@@ -220,7 +219,7 @@ export default function PlaceDetailsScreen({
                 style={[styles.actionButton, styles.callButton, shadows.md]}
                 onPress={handleCall}
               >
-                <PhoneIcon size={20} color={colors.textLight} />
+                <PhoneIcon size={20} color="#FFFFFF" />
                 <Text style={styles.actionText}>Call</Text>
               </TouchableOpacity>
             )}
@@ -229,7 +228,7 @@ export default function PlaceDetailsScreen({
               style={[styles.actionButton, styles.shareButton, shadows.md]}
               onPress={handleShare}
             >
-              <ShareIcon size={20} color={colors.textLight} />
+              <ShareIcon size={20} color="#FFFFFF" />
               <Text style={styles.actionText}>Share</Text>
             </TouchableOpacity>
           </View>
@@ -245,11 +244,11 @@ export default function PlaceDetailsScreen({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.background,
+    backgroundColor: '#FFFFFF',
   },
   heroSection: {
     position: 'relative',
-    backgroundColor: colors.cardBackground,
+    backgroundColor: '#FFFFFF',
   },
   backNav: {
     position: 'absolute',
@@ -259,18 +258,18 @@ const styles = StyleSheet.create({
     width: 36,
     height: 36,
     borderRadius: radius.full,
-    backgroundColor: colors.cardBackground,
+    backgroundColor: '#FFFFFF',
     justifyContent: 'center',
     alignItems: 'center',
     ...shadows.sm,
   },
   backNavText: {
     ...typography.h3,
-    color: colors.primary,
+    color: '#0E7C86',
   },
   imageContainer: {
     height: 200,
-    backgroundColor: colors.background,
+    backgroundColor: '#FFFFFF',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -285,13 +284,13 @@ const styles = StyleSheet.create({
   fallbackHero: {
     width: '100%',
     height: '100%',
-    backgroundColor: colors.border,
+    backgroundColor: '#E2E8F0',
   },
   ratingContainer: {
     position: 'absolute',
     bottom: spacing.sm,
     right: spacing.sm,
-    backgroundColor: colors.primary,
+    backgroundColor: '#0E7C86',
     paddingHorizontal: spacing.sm,
     paddingVertical: spacing.xs,
     borderRadius: radius.full,
@@ -304,7 +303,7 @@ const styles = StyleSheet.create({
     width: 36,
     height: 36,
     borderRadius: radius.full,
-    backgroundColor: colors.cardBackground,
+    backgroundColor: '#FFFFFF',
     justifyContent: 'center',
     alignItems: 'center',
     ...shadows.sm,
@@ -312,7 +311,7 @@ const styles = StyleSheet.create({
   },
   rating: {
     ...typography.labelMedium,
-    color: colors.textLight,
+    color: '#FFFFFF',
   },
   content: {
     paddingHorizontal: spacing.sm,
@@ -320,7 +319,7 @@ const styles = StyleSheet.create({
   },
   placeName: {
     ...typography.h3,
-    color: colors.textPrimary,
+    color: '#000000',
     marginBottom: spacing.sm,
   },
   descriptionContainer: {
@@ -328,12 +327,12 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     ...typography.labelLarge,
-    color: colors.textPrimary,
+    color: '#000000',
     marginBottom: spacing.xs,
   },
   description: {
     ...typography.bodySmall,
-    color: colors.textSecondary,
+    color: '#666666',
     lineHeight: 20,
   },
   infoBlock: {
@@ -348,12 +347,12 @@ const styles = StyleSheet.create({
   },
   infoValue: {
     ...typography.bodySmall,
-    color: colors.textSecondary,
+    color: '#666666',
     flex: 1,
   },
   infoCard: {
     flexDirection: 'row',
-    backgroundColor: colors.cardBackground,
+    backgroundColor: '#FFFFFF',
     borderRadius: radius.md,
     padding: spacing.sm,
     marginVertical: spacing.xs,
@@ -366,7 +365,7 @@ const styles = StyleSheet.create({
   },
   infoLabel: {
     ...typography.labelSmall,
-    color: colors.textPrimary,
+    color: '#000000',
     marginBottom: 2,
   },
   actionsContainer: {
@@ -382,13 +381,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   mapButton: {
-    backgroundColor: colors.primary,
+    backgroundColor: '#0E7C86',
   },
   callButton: {
-    backgroundColor: colors.success,
+    backgroundColor: '#48BB78',
   },
   shareButton: {
-    backgroundColor: colors.accent,
+    backgroundColor: '#2176FF',
   },
   actionIcon: {
     fontSize: 16,
@@ -396,7 +395,7 @@ const styles = StyleSheet.create({
   },
   actionText: {
     ...typography.labelSmall,
-    color: colors.textLight,
+    color: '#FFFFFF',
     fontSize: 10,
   },
   errorContainer: {
@@ -406,17 +405,17 @@ const styles = StyleSheet.create({
   },
   errorText: {
     ...typography.h3,
-    color: colors.textSecondary,
+    color: '#666666',
     marginBottom: spacing.md,
   },
   backButton: {
-    backgroundColor: colors.primary,
+    backgroundColor: '#0E7C86',
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.sm,
     borderRadius: radius.md,
   },
   backButtonText: {
     ...typography.labelMedium,
-    color: colors.textLight,
+    color: '#FFFFFF',
   },
 });

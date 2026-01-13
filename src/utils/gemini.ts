@@ -79,7 +79,7 @@ const generatePlaceholderRecommendation = (
       
       if (visitedCategories.length > 0) {
         // Find a place from a different category than the most visited one
-        const allCategories = ['beaches', 'temples', 'parks', 'restaurants', 'hotels', 'pubs', 'shopping', 'photoshoot', 'theatres'];
+        const allCategories = ['beaches', 'temples', 'parks', 'nature', 'restaurants', 'hotels', 'pubs', 'shopping', 'photoshoot', 'theatres'];
         const unvisitedCategories = allCategories.filter(cat => !visitedCategories.includes(cat));
         if (unvisitedCategories.length > 0) {
           const randomCategory = unvisitedCategories[Math.floor(Math.random() * unvisitedCategories.length)];
@@ -246,13 +246,15 @@ Provide a concise safety or weather tip (2-3 sentences) that would be helpful fo
         content = lines.slice(1).join('\n').trim() || firstLine.split(':').slice(1).join(':').trim();
         
         // Try to find matching place
-        const matchingPlace = allPlaces.find(
-          p => p.name.toLowerCase().includes(placeName.toLowerCase()) ||
-               placeName.toLowerCase().includes(p.name.toLowerCase())
-        );
-        if (matchingPlace) {
-          placeId = matchingPlace.id;
-          placeName = matchingPlace.name;
+        if (placeName) {
+          const matchingPlace = allPlaces.find(
+            p => p.name.toLowerCase().includes(placeName.toLowerCase()) ||
+                 placeName.toLowerCase().includes(p.name.toLowerCase())
+          );
+          if (matchingPlace) {
+            placeId = matchingPlace.id;
+            placeName = matchingPlace.name;
+          }
         }
       }
     }
@@ -516,13 +518,13 @@ export const generateTripItinerary = async (
   travelMode: string,
   allPlaces: Place[]
 ): Promise<TripItinerary | null> => {
+  // Calculate number of days (defined outside try block for catch block access)
+  const start = new Date(startDate);
+  const end = new Date(endDate);
+  const totalDays = Math.ceil((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24)) + 1;
+  
   try {
     const apiKey = await getGeminiApiKey();
-    
-    // Calculate number of days
-    const start = new Date(startDate);
-    const end = new Date(endDate);
-    const totalDays = Math.ceil((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24)) + 1;
     
     // Get places for selected categories (map food->restaurants, nightlife->pubs)
     const categoryPlacesPromises = categories.map(async cat => {

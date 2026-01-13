@@ -12,7 +12,6 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import { ArrowBackIcon, CalendarIcon, PlaceIcon } from '../components/icons';
-import { colors } from '../theme/colors';
 import { spacing, radius } from '../theme/spacing';
 import { typography } from '../theme/typography';
 import { shadows } from '../theme/shadows';
@@ -85,9 +84,9 @@ export default function HistoryScreen({ navigation }: HistoryScreenProps) {
       <View style={styles.historyItemContent}>
         <View style={styles.historyIconContainer}>
           {item.type === 'trip' ? (
-            <CalendarIcon size={24} color={colors.teal} />
+            <CalendarIcon size={24} color="#0E7C86" />
           ) : (
-            <PlaceIcon size={24} color={colors.blue} />
+            <PlaceIcon size={24} color="#2176FF" />
           )}
         </View>
         <View style={styles.historyTextContainer}>
@@ -103,12 +102,12 @@ export default function HistoryScreen({ navigation }: HistoryScreenProps) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar barStyle="dark-content" backgroundColor={colors.background} />
+      <StatusBar barStyle="dark-content" backgroundColor="#FFFFFF" />
       
       {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation?.goBack()} style={styles.backButton}>
-          <ArrowBackIcon size={24} color={colors.textPrimary} />
+          <ArrowBackIcon size={24} color="#000000" />
         </TouchableOpacity>
         <View>
           <Text style={styles.headerTitle}>History</Text>
@@ -119,7 +118,7 @@ export default function HistoryScreen({ navigation }: HistoryScreenProps) {
       {/* Content */}
       {loading ? (
         <View style={styles.emptyContainer}>
-          <ActivityIndicator size="large" color={colors.teal} />
+          <ActivityIndicator size="large" color="#0E7C86" />
           <Text style={styles.emptyText}>Loading history...</Text>
         </View>
       ) : historyItems.length === 0 ? (
@@ -146,7 +145,7 @@ export default function HistoryScreen({ navigation }: HistoryScreenProps) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.background,
+    backgroundColor: '#FFFFFF',
     paddingTop: Platform.OS === 'android' ? STATUSBAR_HEIGHT : 0,
   },
   header: {
@@ -154,9 +153,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.md,
-    backgroundColor: colors.cardBackground,
+    backgroundColor: '#FFFFFF',
     borderBottomWidth: 1,
-    borderBottomColor: colors.border,
+    borderBottomColor: '#E2E8F0',
   },
   backButton: {
     marginRight: spacing.md,
@@ -164,11 +163,11 @@ const styles = StyleSheet.create({
   },
   headerTitle: {
     ...typography.h3,
-    color: colors.textPrimary,
+    color: '#000000',
   },
   headerSubtitle: {
     ...typography.bodySmall,
-    color: colors.textSecondary,
+    color: '#666666',
   },
   listContainer: {
     padding: spacing.md,
@@ -186,7 +185,7 @@ const styles = StyleSheet.create({
     width: 48,
     height: 48,
     borderRadius: 24,
-    backgroundColor: colors.teal + '15',
+    backgroundColor: '#0E7C8615',
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: spacing.md,
@@ -196,17 +195,17 @@ const styles = StyleSheet.create({
   },
   historyTitle: {
     ...typography.labelMedium,
-    color: colors.textPrimary,
+    color: '#000000',
     marginBottom: spacing.xs,
   },
   historyDetails: {
     ...typography.bodySmall,
-    color: colors.textSecondary,
+    color: '#666666',
     marginBottom: spacing.xs,
   },
   historyDate: {
     ...typography.bodySmall,
-    color: colors.textSecondary,
+    color: '#666666',
     fontSize: 12,
   },
   emptyContainer: {
@@ -221,12 +220,12 @@ const styles = StyleSheet.create({
   },
   emptyTitle: {
     ...typography.h4,
-    color: colors.textPrimary,
+    color: '#000000',
     marginBottom: spacing.sm,
   },
   emptyText: {
     ...typography.bodyMedium,
-    color: colors.textSecondary,
+    color: '#666666',
     textAlign: 'center',
   },
 });

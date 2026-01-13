@@ -24,6 +24,10 @@ import ExploreScreen from "../screens/ExploreScreen";
 import LoginScreen from "../screens/LoginScreen";
 import AIChatbotScreen from "../screens/AIChatbotScreen";
 import ProfileScreen from "../screens/ProfileScreen";
+import BusHomeScreen from "../screens/bus/BusHomeScreen";
+import TownBusListScreen from "../screens/bus/TownBusListScreen";
+import BusRouteDetailsScreen from "../screens/bus/BusRouteDetailsScreen";
+import InterCityBusScreen from "../screens/bus/InterCityBusScreen";
 import { useAuth } from "../context/AuthContext";
 
 const Stack = createStackNavigator();
@@ -82,15 +86,12 @@ export default function StackNavigator() {
             name="Welcome" 
             component={WelcomeScreen}
             options={{
-              animationEnabled: false, // No animation on initial load
+              // No animation on initial load - removed animationEnabled as it's not a valid option
             }}
           />
           <Stack.Screen 
             name="Login" 
             component={LoginScreen}
-            options={{
-              animationEnabled: true,
-            }}
           />
         </>
       ) : (
@@ -100,16 +101,12 @@ export default function StackNavigator() {
       <Stack.Screen 
         name="Explore" 
         component={ExploreScreen}
-        options={{
-          animationEnabled: true,
-        }}
       />
       <Stack.Screen 
         name="Category" 
         component={CategoryScreen}
         options={{
-          animationEnabled: true,
-          cardStyleInterpolator: CardStyleInterpolators.forVerticalFromBottomJS,
+          cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS,
           transitionSpec: {
             open: { animation: 'timing', config: { duration: 350 } },
             close: { animation: 'timing', config: { duration: 350 } },
@@ -120,8 +117,7 @@ export default function StackNavigator() {
         name="ReligiousPlaces" 
         component={ReligiousPlacesScreen}
         options={{
-          animationEnabled: true,
-          cardStyleInterpolator: CardStyleInterpolators.forVerticalFromBottomJS,
+          cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS,
           transitionSpec: {
             open: { animation: 'timing', config: { duration: 350 } },
             close: { animation: 'timing', config: { duration: 350 } },
@@ -132,8 +128,7 @@ export default function StackNavigator() {
         name="Beaches" 
         component={BeachesScreen}
         options={{
-          animationEnabled: true,
-          cardStyleInterpolator: CardStyleInterpolators.forVerticalFromBottomJS,
+          cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS,
           transitionSpec: {
             open: { animation: 'timing', config: { duration: 350 } },
             close: { animation: 'timing', config: { duration: 350 } },
@@ -144,8 +139,7 @@ export default function StackNavigator() {
         name="Parks" 
         component={ParksScreen}
         options={{
-          animationEnabled: true,
-          cardStyleInterpolator: CardStyleInterpolators.forVerticalFromBottomJS,
+          cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS,
           transitionSpec: {
             open: { animation: 'timing', config: { duration: 350 } },
             close: { animation: 'timing', config: { duration: 350 } },
@@ -156,8 +150,7 @@ export default function StackNavigator() {
         name="Nature" 
         component={NatureScreen}
         options={{
-          animationEnabled: true,
-          cardStyleInterpolator: CardStyleInterpolators.forVerticalFromBottomJS,
+          cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS,
           transitionSpec: {
             open: { animation: 'timing', config: { duration: 350 } },
             close: { animation: 'timing', config: { duration: 350 } },
@@ -168,8 +161,7 @@ export default function StackNavigator() {
         name="Nightlife" 
         component={NightlifeScreen}
         options={{
-          animationEnabled: true,
-          cardStyleInterpolator: CardStyleInterpolators.forVerticalFromBottomJS,
+          cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS,
           transitionSpec: {
             open: { animation: 'timing', config: { duration: 350 } },
             close: { animation: 'timing', config: { duration: 350 } },
@@ -180,8 +172,7 @@ export default function StackNavigator() {
         name="Adventure" 
         component={AdventureScreen}
         options={{
-          animationEnabled: true,
-          cardStyleInterpolator: CardStyleInterpolators.forVerticalFromBottomJS,
+          cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS,
           transitionSpec: {
             open: { animation: 'timing', config: { duration: 350 } },
             close: { animation: 'timing', config: { duration: 350 } },
@@ -192,8 +183,7 @@ export default function StackNavigator() {
         name="Theatres" 
         component={TheatresScreen}
         options={{
-          animationEnabled: true,
-          cardStyleInterpolator: CardStyleInterpolators.forVerticalFromBottomJS,
+          cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS,
           transitionSpec: {
             open: { animation: 'timing', config: { duration: 350 } },
             close: { animation: 'timing', config: { duration: 350 } },
@@ -204,8 +194,7 @@ export default function StackNavigator() {
         name="Photoshoot" 
         component={PhotoshootScreen}
         options={{
-          animationEnabled: true,
-          cardStyleInterpolator: CardStyleInterpolators.forVerticalFromBottomJS,
+          cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS,
           transitionSpec: {
             open: { animation: 'timing', config: { duration: 350 } },
             close: { animation: 'timing', config: { duration: 350 } },
@@ -216,8 +205,7 @@ export default function StackNavigator() {
         name="Shopping" 
         component={ShoppingScreen}
         options={{
-          animationEnabled: true,
-          cardStyleInterpolator: CardStyleInterpolators.forVerticalFromBottomJS,
+          cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS,
           transitionSpec: {
             open: { animation: 'timing', config: { duration: 350 } },
             close: { animation: 'timing', config: { duration: 350 } },
@@ -228,8 +216,7 @@ export default function StackNavigator() {
         name="Pubs" 
         component={PubsScreen}
         options={{
-          animationEnabled: true,
-          cardStyleInterpolator: CardStyleInterpolators.forVerticalFromBottomJS,
+          cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS,
           transitionSpec: {
             open: { animation: 'timing', config: { duration: 350 } },
             close: { animation: 'timing', config: { duration: 350 } },
@@ -240,8 +227,7 @@ export default function StackNavigator() {
         name="Accommodation" 
         component={AccommodationScreen}
         options={{
-          animationEnabled: true,
-          cardStyleInterpolator: CardStyleInterpolators.forVerticalFromBottomJS,
+          cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS,
           transitionSpec: {
             open: { animation: 'timing', config: { duration: 350 } },
             close: { animation: 'timing', config: { duration: 350 } },
@@ -252,8 +238,7 @@ export default function StackNavigator() {
         name="Restaurants" 
         component={RestaurantsScreen}
         options={{
-          animationEnabled: true,
-          cardStyleInterpolator: CardStyleInterpolators.forVerticalFromBottomJS,
+          cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS,
           transitionSpec: {
             open: { animation: 'timing', config: { duration: 350 } },
             close: { animation: 'timing', config: { duration: 350 } },
@@ -264,7 +249,6 @@ export default function StackNavigator() {
         name="PlaceDetails" 
         component={PlaceDetailsScreen}
         options={{
-          animationEnabled: true,
           cardStyleInterpolator: CardStyleInterpolators.forModalPresentationIOS,
           transitionSpec: {
             open: { animation: 'timing', config: { duration: 350 } },
@@ -275,29 +259,19 @@ export default function StackNavigator() {
       <Stack.Screen 
         name="AIDetail" 
         component={AIDetailScreen}
-        options={{
-          animationEnabled: true,
-        }}
       />
       <Stack.Screen 
         name="Settings" 
         component={SettingsScreen}
-        options={{
-          animationEnabled: true,
-        }}
       />
       <Stack.Screen 
         name="History" 
         component={HistoryScreen}
-        options={{
-          animationEnabled: true,
-        }}
       />
       <Stack.Screen 
         name="TripPlannerInput" 
         component={TripPlannerInput}
         options={{
-          animationEnabled: true,
           cardStyleInterpolator: CardStyleInterpolators.forModalPresentationIOS,
           transitionSpec: {
             open: { animation: 'timing', config: { duration: 350 } },
@@ -309,7 +283,6 @@ export default function StackNavigator() {
             name="TripPlannerOutput" 
             component={TripPlannerOutput}
             options={{
-              animationEnabled: true,
               cardStyleInterpolator: CardStyleInterpolators.forModalPresentationIOS,
               transitionSpec: {
                 open: { animation: 'timing', config: { duration: 350 } },
@@ -320,16 +293,26 @@ export default function StackNavigator() {
           <Stack.Screen 
             name="AIChatbot" 
             component={AIChatbotScreen}
-            options={{
-              animationEnabled: true,
-            }}
           />
           <Stack.Screen 
             name="Profile" 
             component={ProfileScreen}
-            options={{
-              animationEnabled: true,
-            }}
+          />
+          <Stack.Screen 
+            name="BusHome" 
+            component={BusHomeScreen}
+          />
+          <Stack.Screen 
+            name="TownBusList" 
+            component={TownBusListScreen}
+          />
+          <Stack.Screen 
+            name="BusRouteDetails" 
+            component={BusRouteDetailsScreen}
+          />
+          <Stack.Screen 
+            name="InterCityBus" 
+            component={InterCityBusScreen}
           />
         </>
       )}

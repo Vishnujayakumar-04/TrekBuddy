@@ -1,6 +1,5 @@
 import React from 'react';
 import { View, TextInput, StyleSheet } from 'react-native';
-import { colors } from '../theme/colors';
 import { spacing, radius } from '../theme/spacing';
 
 interface SearchBarProps {
@@ -19,7 +18,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
       <TextInput
         style={styles.input}
         placeholder={placeholder}
-        placeholderTextColor={colors.textSecondary}
+        placeholderTextColor="#666666"
         onChangeText={onChangeText}
         value={value}
       />
@@ -38,12 +37,12 @@ const styles = StyleSheet.create({
     height: 40,
     paddingHorizontal: spacing.md,
     paddingRight: 40,
-    backgroundColor: colors.cardBackground,
+    backgroundColor: '#FFFFFF',
     borderRadius: radius.md,
     fontSize: 14,
-    color: colors.textPrimary,
+    color: '#000000',
     borderWidth: 1,
-    borderColor: colors.border,
+    borderColor: '#E2E8F0',
   },
   icon: {
     position: 'absolute',

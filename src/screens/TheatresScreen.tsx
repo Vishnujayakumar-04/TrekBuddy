@@ -16,7 +16,6 @@ import {
 import { ArrowBackIcon, FilterIcon } from '../components/icons';
 import { Place } from '../utils/api';
 import { LinearGradient } from 'expo-linear-gradient';
-import { colors } from '../theme/colors';
 import { spacing, radius } from '../theme/spacing';
 import { typography } from '../theme/typography';
 import { shadows } from '../theme/shadows';
@@ -248,7 +247,7 @@ export default function TheatresScreen({ navigation }: TheatresScreenProps) {
   if (loading) {
     return (
       <SafeAreaView style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color={colors.teal} />
+        <ActivityIndicator size="large" color="#0E7C86" />
         <Text style={styles.loadingText}>Loading theatres...</Text>
       </SafeAreaView>
     );
@@ -264,7 +263,7 @@ export default function TheatresScreen({ navigation }: TheatresScreenProps) {
           style={styles.backButton}
           onPress={() => navigation?.goBack()}
         >
-          <ArrowBackIcon size={24} color={colors.textPrimary} />
+          <ArrowBackIcon size={24} color="#000000" />
         </TouchableOpacity>
         
         <Text style={styles.headerTitle}>Theatres & Cinemas</Text>
@@ -357,18 +356,18 @@ export default function TheatresScreen({ navigation }: TheatresScreenProps) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.background,
+    backgroundColor: '#FFFFFF',
     paddingTop: Platform.OS === 'android' ? STATUSBAR_HEIGHT : 0,
   },
   loadingContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: colors.background,
+    backgroundColor: '#FFFFFF',
   },
   loadingText: {
     ...typography.bodyMedium,
-    color: colors.textSecondary,
+    color: '#666666',
     marginTop: spacing.md,
   },
   header: {
@@ -376,16 +375,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.sm,
-    backgroundColor: colors.cardBackground,
+    backgroundColor: '#FFFFFF',
     borderBottomWidth: 1,
-    borderBottomColor: colors.border,
+    borderBottomColor: '#E2E8F0',
   },
   backButton: {
     padding: spacing.xs,
   },
   headerTitle: {
     ...typography.h4,
-    color: colors.textPrimary,
+    color: '#000000',
     flex: 1,
     marginLeft: spacing.sm,
   },
@@ -397,7 +396,7 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: colors.background,
+    backgroundColor: '#FFFFFF',
     alignItems: 'center',
     justifyContent: 'center',
     marginLeft: spacing.xs,
@@ -405,7 +404,7 @@ const styles = StyleSheet.create({
   },
   languageCode: {
     ...typography.labelMedium,
-    color: colors.teal,
+    color: '#0E7C86',
     fontWeight: '700',
   },
   resultsBar: {
@@ -414,7 +413,7 @@ const styles = StyleSheet.create({
   },
   resultsText: {
     ...typography.bodySmall,
-    color: colors.textSecondary,
+    color: '#666666',
   },
   listContainer: {
     paddingHorizontal: spacing.sm,
@@ -425,7 +424,7 @@ const styles = StyleSheet.create({
   },
   theatreCard: {
     width: '48.5%',
-    backgroundColor: colors.cardBackground,
+    backgroundColor: '#FFFFFF',
     borderRadius: radius.md,
     marginBottom: spacing.sm,
     overflow: 'hidden',
@@ -440,20 +439,20 @@ const styles = StyleSheet.create({
   theatreImage: {
     width: '100%',
     height: 120,
-    backgroundColor: colors.border,
+    backgroundColor: '#E2E8F0',
   },
   theatreInfo: {
     padding: spacing.sm,
   },
   theatreName: {
     ...typography.labelMedium,
-    color: colors.textPrimary,
+    color: '#000000',
     fontWeight: '600',
     marginBottom: 4,
   },
   theatreLocation: {
     ...typography.bodySmall,
-    color: colors.textSecondary,
+    color: '#666666',
     marginBottom: spacing.xs,
   },
   ratingRow: {
@@ -461,7 +460,7 @@ const styles = StyleSheet.create({
   },
   ratingText: {
     ...typography.labelSmall,
-    color: colors.yellow,
+    color: '#F4C430',
     fontWeight: '600',
   },
   emptyContainer: {
@@ -472,7 +471,7 @@ const styles = StyleSheet.create({
   },
   emptyText: {
     ...typography.h4,
-    color: colors.textSecondary,
+    color: '#666666',
   },
   modalOverlay: {
     flex: 1,
@@ -480,7 +479,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   languageModalContent: {
-    backgroundColor: colors.background,
+    backgroundColor: '#FFFFFF',
     borderTopLeftRadius: radius.xl,
     borderTopRightRadius: radius.xl,
     paddingBottom: spacing.xl,
@@ -493,41 +492,41 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.lg,
     paddingVertical: spacing.md,
     borderBottomWidth: 1,
-    borderBottomColor: colors.border,
+    borderBottomColor: '#E2E8F0',
   },
   languageModalTitle: {
     ...typography.h4,
-    color: colors.textPrimary,
+    color: '#000000',
     fontWeight: '700',
   },
   modalCloseButton: {
     width: 32,
     height: 32,
     borderRadius: 16,
-    backgroundColor: colors.cardBackground,
+    backgroundColor: '#FFFFFF',
     alignItems: 'center',
     justifyContent: 'center',
   },
   modalCloseText: {
     fontSize: 18,
-    color: colors.textSecondary,
+    color: '#666666',
     fontWeight: '600',
   },
   languageOption: {
     paddingHorizontal: spacing.lg,
     paddingVertical: spacing.md,
     borderBottomWidth: 1,
-    borderBottomColor: colors.border,
+    borderBottomColor: '#E2E8F0',
   },
   languageOptionActive: {
-    backgroundColor: colors.teal + '10',
+    backgroundColor: '#0E7C86' + '10',
   },
   languageOptionText: {
     ...typography.bodyMedium,
-    color: colors.textPrimary,
+    color: '#000000',
   },
   languageOptionTextActive: {
-    color: colors.teal,
+    color: '#0E7C86',
     fontWeight: '600',
   },
 });

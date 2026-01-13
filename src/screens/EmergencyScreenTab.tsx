@@ -7,7 +7,6 @@ import { LottieAnimation } from '../components/LottieAnimation';
 import { LOTTIE_ANIMATIONS } from '../assets/lottie/animations';
 import { PhoneEmergencyIcon, HospitalIcon, PoliceBadgeIcon, FireIcon, PharmacyIcon } from '../components/icons';
 import { getCategoryData, Place } from '../utils/api';
-import { colors } from '../theme/colors';
 import { spacing, radius } from '../theme/spacing';
 import { typography } from '../theme/typography';
 import { shadows } from '../theme/shadows';
@@ -55,10 +54,11 @@ export default function EmergencyScreenTab({ navigation }: EmergencyScreenTabPro
     });
   };
 
+  // Get colors inside component to avoid module initialization issues
   const emergencyBlocks = [
-    { id: 'ambulance', label: 'Ambulance', phone: '108', color: colors.red },
-    { id: 'police', label: 'Police', phone: '100', color: colors.blue },
-    { id: 'fire', label: 'Fire', phone: '101', color: colors.red },
+    { id: 'ambulance', label: 'Ambulance', phone: '108', color: '#E84A4A' },
+    { id: 'police', label: 'Police', phone: '100', color: '#2176FF' },
+    { id: 'fire', label: 'Fire', phone: '101', color: '#E84A4A' },
   ];
 
   const renderEmergencyBlock = (block: typeof emergencyBlocks[0]) => (
@@ -103,7 +103,7 @@ export default function EmergencyScreenTab({ navigation }: EmergencyScreenTabPro
       <SafeAreaView style={styles.container}>
         <StatusBar translucent backgroundColor="transparent" barStyle="light-content" />
         <LinearGradient
-          colors={colors.gradientRed}
+          colors={['#E84A4A', '#FF8A8A']}
           style={styles.header}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}
@@ -113,7 +113,7 @@ export default function EmergencyScreenTab({ navigation }: EmergencyScreenTabPro
               <Text style={styles.headerTitle}>SOS</Text>
               <Text style={styles.headerSubtitle}>Emergency Services</Text>
             </View>
-            <PhoneEmergencyIcon size={40} color={colors.textLight} />
+            <PhoneEmergencyIcon size={40} color="#FFFFFF" />
           </View>
         </LinearGradient>
         <View style={styles.loadingContainer}>
@@ -136,7 +136,7 @@ export default function EmergencyScreenTab({ navigation }: EmergencyScreenTabPro
         <ScrollView showsVerticalScrollIndicator={false}>
           {/* Red Gradient Header with Settings Icon */}
           <LinearGradient
-            colors={colors.gradientRed}
+            colors={['#E84A4A', '#FF8A8A']}
             style={styles.header}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 1 }}
@@ -167,12 +167,12 @@ export default function EmergencyScreenTab({ navigation }: EmergencyScreenTabPro
           {/* Hospitals Section */}
           <SectionTitle title="Hospitals" />
           {hospitals.length > 0 ? (
-            hospitals.map(service => renderServiceCard(service, <HospitalIcon size={32} color={colors.red} />))
+            hospitals.map(service => renderServiceCard(service, <HospitalIcon size={32} color="#E84A4A" />))
           ) : (
             <Card style={styles.serviceCard}>
               <View style={styles.serviceContent}>
                 <View style={styles.serviceIconContainer}>
-                  <HospitalIcon size={32} color={colors.red} />
+                  <HospitalIcon size={32} color="#E84A4A" />
                 </View>
                 <View style={styles.serviceInfo}>
                   <Text style={styles.serviceName}>General Hospital</Text>
@@ -192,12 +192,12 @@ export default function EmergencyScreenTab({ navigation }: EmergencyScreenTabPro
           {/* Police Stations Section */}
           <SectionTitle title="Police Stations" />
           {police.length > 0 ? (
-            police.map(service => renderServiceCard(service, <PoliceBadgeIcon size={32} color={colors.blue} />))
+            police.map(service => renderServiceCard(service, <PoliceBadgeIcon size={32} color="#2176FF" />))
           ) : (
             <Card style={styles.serviceCard}>
               <View style={styles.serviceContent}>
                 <View style={styles.serviceIconContainer}>
-                  <PoliceBadgeIcon size={32} color={colors.blue} />
+                  <PoliceBadgeIcon size={32} color="#2176FF" />
                 </View>
                 <View style={styles.serviceInfo}>
                   <Text style={styles.serviceName}>Police Station</Text>
@@ -217,12 +217,12 @@ export default function EmergencyScreenTab({ navigation }: EmergencyScreenTabPro
           {/* Fire Department Section */}
           <SectionTitle title="Fire Department" />
           {fire.length > 0 ? (
-            fire.map(service => renderServiceCard(service, <FireIcon size={32} color={colors.red} />))
+            fire.map(service => renderServiceCard(service, <FireIcon size={32} color="#E84A4A" />))
           ) : (
             <Card style={styles.serviceCard}>
               <View style={styles.serviceContent}>
                 <View style={styles.serviceIconContainer}>
-                  <FireIcon size={32} color={colors.red} />
+                  <FireIcon size={32} color="#E84A4A" />
                 </View>
                 <View style={styles.serviceInfo}>
                   <Text style={styles.serviceName}>Fire Station</Text>
@@ -242,12 +242,12 @@ export default function EmergencyScreenTab({ navigation }: EmergencyScreenTabPro
           {/* Pharmacies Section */}
           <SectionTitle title="Pharmacies" />
           {pharmacies.length > 0 ? (
-            pharmacies.map(service => renderServiceCard(service, <PharmacyIcon size={32} color={colors.teal} />))
+            pharmacies.map(service => renderServiceCard(service, <PharmacyIcon size={32} color="#0E7C86" />))
           ) : (
             <Card style={styles.serviceCard}>
               <View style={styles.serviceContent}>
                 <View style={styles.serviceIconContainer}>
-                  <PharmacyIcon size={32} color={colors.teal} />
+                  <PharmacyIcon size={32} color="#0E7C86" />
                 </View>
                 <View style={styles.serviceInfo}>
                   <Text style={styles.serviceName}>24/7 Pharmacy</Text>
@@ -275,7 +275,7 @@ export default function EmergencyScreenTab({ navigation }: EmergencyScreenTabPro
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.background,
+    backgroundColor: '#FFFFFF',
   },
   header: {
     paddingTop: STATUSBAR_HEIGHT + spacing.md,
@@ -291,12 +291,12 @@ const styles = StyleSheet.create({
   },
   headerTitle: {
     ...typography.h2,
-    color: colors.textLight,
+    color: '#FFFFFF',
     fontWeight: '700',
   },
   headerSubtitle: {
     ...typography.bodyMedium,
-    color: colors.textLight,
+    color: '#FFFFFF',
     opacity: 0.9,
     marginTop: 2,
   },
@@ -342,7 +342,7 @@ const styles = StyleSheet.create({
   },
   serviceName: {
     ...typography.cardLabel,
-    color: colors.textPrimary,
+    color: '#000000',
     marginBottom: spacing.xs,
   },
   serviceDescription: {
@@ -351,10 +351,10 @@ const styles = StyleSheet.create({
   },
   serviceAddress: {
     ...typography.bodySmall,
-    color: colors.textLightGray,
+    color: '#777777',
   },
   callButton: {
-    backgroundColor: colors.red,
+    backgroundColor: '#E84A4A',
     paddingVertical: spacing.md,
     paddingHorizontal: spacing.lg,
     borderRadius: radius.lg,
@@ -372,7 +372,7 @@ const styles = StyleSheet.create({
   },
   loadingText: {
     ...typography.bodyMedium,
-    color: colors.textSecondary,
+    color: '#666666',
     marginTop: spacing.md,
   },
 });

@@ -16,7 +16,7 @@ export interface SubCategory {
   parentId: string;
 }
 
-// Main Categories - 12 Categories as specified
+// Main Categories - 11 Categories (Parks moved to Nature subcategory)
 export const ALL_CATEGORIES: Category[] = [
   // 1. Temples
   {
@@ -39,14 +39,7 @@ export const ALL_CATEGORIES: Category[] = [
     image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800',
   },
   
-  // 3. Parks
-  {
-    id: 'parks',
-    label: 'Parks',
-    image: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800',
-  },
-  
-  // 4. Restaurants & Dining
+  // 3. Restaurants & Dining
   {
     id: 'restaurants',
     label: 'Restaurants & Dining',
@@ -158,6 +151,7 @@ export const ALL_CATEGORIES: Category[] = [
     label: 'Nature',
     image: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800',
     subcategories: [
+      { id: 'parks', label: 'Parks', image: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800', parentId: 'nature' },
       { id: 'botanical-gardens', label: 'Botanical Gardens', image: 'https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?w=800', parentId: 'nature' },
       { id: 'mangroves', label: 'Mangroves', image: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=800', parentId: 'nature' },
       { id: 'backwaters', label: 'Backwaters', image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800', parentId: 'nature' },
@@ -167,11 +161,10 @@ export const ALL_CATEGORIES: Category[] = [
   },
 ];
 
-// Quick categories for Home screen (all 12 categories in 2-column grid)
+// Quick categories for Home screen (all 11 main categories in 2-column grid)
 export const QUICK_CATEGORIES: Category[] = [
   ALL_CATEGORIES.find(c => c.id === 'temples')!,
   ALL_CATEGORIES.find(c => c.id === 'beaches')!,
-  ALL_CATEGORIES.find(c => c.id === 'parks')!,
   ALL_CATEGORIES.find(c => c.id === 'restaurants')!,
   ALL_CATEGORIES.find(c => c.id === 'accommodation')!,
   ALL_CATEGORIES.find(c => c.id === 'pubs')!,

@@ -16,6 +16,7 @@ export type PhoneConfirmationResult = Awaited<ReturnType<typeof signInWithPhoneN
 import * as AuthSession from 'expo-auth-session';
 import * as WebBrowser from 'expo-web-browser';
 import * as Crypto from 'expo-crypto';
+import { Auth } from 'firebase/auth';
 import { auth } from '../firebase/auth';
 
 // Complete web browser authentication flow
@@ -34,7 +35,7 @@ export const signUpWithEmail = async (
   phone?: string
 ): Promise<FirebaseUser> => {
   try {
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    const userCredential = await createUserWithEmailAndPassword(auth as Auth, email, password);
     const user = userCredential.user;
 
     // Update display name if provided
@@ -58,7 +59,7 @@ export const signInWithEmail = async (
   password: string
 ): Promise<FirebaseUser> => {
   try {
-    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    const userCredential = await signInWithEmailAndPassword(auth as Auth, email, password);
     return userCredential.user;
   } catch (error: any) {
     console.error('Error signing in:', error);
@@ -82,9 +83,7 @@ export const signInWithGoogle = async (): Promise<FirebaseUser> => {
       clientId: GOOGLE_CLIENT_ID,
       scopes: ['openid', 'profile', 'email'],
       responseType: AuthSession.ResponseType.IdToken,
-      redirectUri: AuthSession.makeRedirectUri({
-        useProxy: true,
-      }),
+      redirectUri: AuthSession.makeRedirectUri(),
       state,
     });
 
@@ -96,14 +95,12 @@ export const signInWithGoogle = async (): Promise<FirebaseUser> => {
     };
 
     // Start the authentication flow
-    const result = await request.promptAsync(discovery, {
-      useProxy: true,
-    });
+    const result = await request.promptAsync(discovery);
 
     if (result.type === 'success' && result.params?.id_token) {
       const { id_token } = result.params;
       const credential = GoogleAuthProvider.credential(id_token);
-      const userCredential = await signInWithCredential(auth, credential);
+      const userCredential = await signInWithCredential(auth as Auth, credential);
       return userCredential.user;
     } else {
       throw new Error('Google sign-in was cancelled or failed');
@@ -127,7 +124,7 @@ export const sendOTP = async (phoneNumber: string): Promise<PhoneConfirmationRes
     // Note: signInWithPhoneNumber requires reCAPTCHA verification on web
     // For React Native, you may need to use Firebase Phone Auth with a different approach
     // This is a simplified version - you may need to adjust based on your platform
-    const confirmationResult = await signInWithPhoneNumber(auth, formattedPhone);
+    const confirmationResult = await signInWithPhoneNumber(auth as Auth, formattedPhone);
     return confirmationResult;
   } catch (error: any) {
     console.error('Error sending OTP:', error);
@@ -156,7 +153,7 @@ export const verifyOTP = async (
  */
 export const signOut = async (): Promise<void> => {
   try {
-    await firebaseSignOut(auth);
+    await firebaseSignOut(auth as Auth);
   } catch (error: any) {
     console.error('Error signing out:', error);
     throw new Error(error.message || 'Failed to sign out');
@@ -168,7 +165,7 @@ export const signOut = async (): Promise<void> => {
  */
 export const resetPassword = async (email: string): Promise<void> => {
   try {
-    await sendPasswordResetEmail(auth, email);
+    await sendPasswordResetEmail(auth as Auth, email);
   } catch (error: any) {
     console.error('Error sending password reset email:', error);
     throw new Error(error.message || 'Failed to send password reset email');
@@ -179,7 +176,7 @@ export const resetPassword = async (email: string): Promise<void> => {
  * Get current authenticated user
  */
 export const getCurrentUser = (): FirebaseUser | null => {
-  return auth.currentUser;
+  return (auth as Auth).currentUser;
 };
 
 /**
@@ -188,6 +185,6 @@ export const getCurrentUser = (): FirebaseUser | null => {
 export const onAuthStateChanged = (
   callback: (user: FirebaseUser | null) => void
 ): (() => void) => {
-  return firebaseOnAuthStateChanged(auth, callback);
+  return firebaseOnAuthStateChanged(auth as Auth, callback);
 };
 

@@ -13,10 +13,11 @@ import { ArrowBackIcon, PlaceIcon, StarIcon, AccessTimeIcon, AutoAwesomeIcon, In
 import { AIRecommendation, generateFullAIAnalysis } from '../utils/gemini';
 import { getVisitedCategories } from '../utils/storage';
 import { getAllPlaces, getCategoryData, Place } from '../utils/api';
-import { colors } from '../theme/colors';
 import { spacing, radius } from '../theme/spacing';
 import { typography } from '../theme/typography';
 import { shadows } from '../theme/shadows';
+import { LottieAnimation } from '../components/LottieAnimation';
+import { LOTTIE_ANIMATIONS } from '../assets/lottie/animations';
 
 interface AIDetailScreenProps {
   route?: {
@@ -75,9 +76,9 @@ export default function AIDetailScreen({ route, navigation }: AIDetailScreenProp
   };
 
   const getColor = () => {
-    if (type === 'best_time') return colors.primary;
-    if (type === 'nearby_attraction') return colors.accent;
-    return colors.warning;
+    if (type === 'best_time') return '#0E7C86';
+    if (type === 'nearby_attraction') return '#2176FF';
+    return '#ED8936';
   };
 
   const handlePlacePress = (place: Place) => {
@@ -97,7 +98,7 @@ export default function AIDetailScreen({ route, navigation }: AIDetailScreenProp
       {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation?.goBack()} style={styles.backButton}>
-          <ArrowBackIcon size={24} color={colors.textPrimary} />
+          <ArrowBackIcon size={24} color="#000000" />
         </TouchableOpacity>
         <View style={styles.headerContent}>
           <View style={[styles.iconContainer, { backgroundColor: getColor() + '15' }]}>
@@ -124,7 +125,7 @@ export default function AIDetailScreen({ route, navigation }: AIDetailScreenProp
             activeOpacity={0.8}
           >
             <View style={styles.placeCardHeader}>
-              <PlaceIcon size={20} color={colors.primary} />
+              <PlaceIcon size={20} color="#0E7C86" />
               <Text style={styles.placeCardTitle}>Recommended Place</Text>
             </View>
             <Text style={styles.placeName}>{relatedPlace.name}</Text>
@@ -133,11 +134,11 @@ export default function AIDetailScreen({ route, navigation }: AIDetailScreenProp
             </Text>
             <View style={styles.placeInfo}>
               <View style={styles.placeInfoRow}>
-                <StarIcon size={16} color={colors.yellow} />
+                <StarIcon size={16} color="#F4C430" />
                 <Text style={styles.placeInfoText}>{relatedPlace.rating} ⭐</Text>
               </View>
               <View style={styles.placeInfoRow}>
-                <AccessTimeIcon size={16} color={colors.textSecondary} />
+                <AccessTimeIcon size={16} color="#666666" />
                 <Text style={styles.placeInfoText}>{relatedPlace.opening}</Text>
               </View>
             </View>
@@ -153,7 +154,7 @@ export default function AIDetailScreen({ route, navigation }: AIDetailScreenProp
         {/* Full Analysis */}
         <View style={styles.analysisSection}>
           <View style={styles.sectionHeader}>
-            <AutoAwesomeIcon size={20} color={colors.primary} />
+            <AutoAwesomeIcon size={20} color="#0E7C86" />
             <Text style={styles.sectionTitle}>Detailed Analysis</Text>
           </View>
 
@@ -172,7 +173,7 @@ export default function AIDetailScreen({ route, navigation }: AIDetailScreenProp
             <View style={styles.analysisCard}>
               <Text style={styles.analysisText}>{fullAnalysis}</Text>
               <View style={styles.placeholderNote}>
-                <InfoIcon size={16} color={colors.info} />
+                <InfoIcon size={16} color="#2176FF" />
                 <Text style={styles.placeholderNoteText}>
                   This is a placeholder recommendation. Add your Gemini API key in Settings for AI-powered suggestions.
                 </Text>
@@ -180,7 +181,7 @@ export default function AIDetailScreen({ route, navigation }: AIDetailScreenProp
             </View>
           ) : (
             <View style={styles.errorContainer}>
-              <ErrorOutlineIcon size={24} color={colors.error} />
+              <ErrorOutlineIcon size={24} color="#E84A4A" />
               <Text style={styles.errorText}>
                 Unable to generate analysis. Please check your API key in Settings.
               </Text>
@@ -195,7 +196,7 @@ export default function AIDetailScreen({ route, navigation }: AIDetailScreenProp
               style={[styles.actionButton, styles.mapButton, shadows.md]}
               onPress={handleOpenMaps}
             >
-              <MapIcon size={20} color={colors.textLight} />
+              <MapIcon size={20} color="#FFFFFF" />
               <Text style={styles.actionButtonText}>Open in Maps</Text>
             </TouchableOpacity>
           </View>
@@ -210,16 +211,16 @@ export default function AIDetailScreen({ route, navigation }: AIDetailScreenProp
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.background,
+    backgroundColor: '#FFFFFF',
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.md,
-    backgroundColor: colors.cardBackground,
+    backgroundColor: '#FFFFFF',
     borderBottomWidth: 1,
-    borderBottomColor: colors.border,
+    borderBottomColor: '#E2E8F0',
   },
   backButton: {
     marginRight: spacing.md,
@@ -239,10 +240,10 @@ const styles = StyleSheet.create({
   },
   headerTitle: {
     ...typography.h2,
-    color: colors.textPrimary,
+    color: '#000000',
   },
   summaryCard: {
-    backgroundColor: colors.cardBackground,
+    backgroundColor: '#FFFFFF',
     margin: spacing.md,
     padding: spacing.md,
     borderRadius: radius.lg,
@@ -250,16 +251,16 @@ const styles = StyleSheet.create({
   },
   summaryTitle: {
     ...typography.h4,
-    color: colors.textPrimary,
+    color: '#000000',
     marginBottom: spacing.sm,
   },
   summaryText: {
     ...typography.bodyMedium,
-    color: colors.textSecondary,
+    color: '#666666',
     lineHeight: 22,
   },
   placeCard: {
-    backgroundColor: colors.cardBackground,
+    backgroundColor: '#FFFFFF',
     marginHorizontal: spacing.md,
     marginBottom: spacing.md,
     padding: spacing.md,
@@ -272,18 +273,18 @@ const styles = StyleSheet.create({
   },
   placeCardTitle: {
     ...typography.labelMedium,
-    color: colors.textPrimary,
+    color: '#000000',
     marginLeft: spacing.xs,
     fontWeight: '600',
   },
   placeName: {
     ...typography.h4,
-    color: colors.textPrimary,
+    color: '#000000',
     marginBottom: spacing.xs,
   },
   placeDescription: {
     ...typography.bodySmall,
-    color: colors.textSecondary,
+    color: '#666666',
     marginBottom: spacing.sm,
     lineHeight: 18,
   },
@@ -298,7 +299,7 @@ const styles = StyleSheet.create({
   },
   placeInfoText: {
     ...typography.bodySmall,
-    color: colors.textSecondary,
+    color: '#666666',
     marginLeft: spacing.xs,
     fontSize: 12,
   },
@@ -309,7 +310,7 @@ const styles = StyleSheet.create({
   },
   viewPlaceButtonText: {
     ...typography.labelMedium,
-    color: colors.primary,
+    color: '#0E7C86',
   },
   analysisSection: {
     paddingHorizontal: spacing.md,
@@ -322,7 +323,7 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     ...typography.h3,
-    color: colors.textPrimary,
+    color: '#000000',
     marginLeft: spacing.sm,
   },
   loadingContainer: {
@@ -331,29 +332,29 @@ const styles = StyleSheet.create({
   },
   loadingText: {
     ...typography.bodyMedium,
-    color: colors.textSecondary,
+    color: '#666666',
     marginTop: spacing.md,
   },
   analysisCard: {
-    backgroundColor: colors.cardBackground,
+    backgroundColor: '#FFFFFF',
     padding: spacing.md,
     borderRadius: radius.lg,
     ...shadows.sm,
   },
   analysisText: {
     ...typography.bodyMedium,
-    color: colors.textSecondary,
+    color: '#666666',
     lineHeight: 24,
   },
   errorContainer: {
     alignItems: 'center',
     padding: spacing.lg,
-    backgroundColor: colors.cardBackground,
+    backgroundColor: '#FFFFFF',
     borderRadius: radius.lg,
   },
   errorText: {
     ...typography.bodyMedium,
-    color: colors.error,
+    color: '#E84A4A',
     textAlign: 'center',
     marginTop: spacing.md,
   },
@@ -362,14 +363,14 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     marginTop: spacing.md,
     padding: spacing.sm,
-    backgroundColor: colors.background,
+    backgroundColor: '#FFFFFF',
     borderRadius: radius.md,
     borderLeftWidth: 3,
-    borderLeftColor: colors.info,
+    borderLeftColor: '#2176FF',
   },
   placeholderNoteText: {
     ...typography.bodySmall,
-    color: colors.textSecondary,
+    color: '#666666',
     marginLeft: spacing.xs,
     flex: 1,
     fontSize: 11,
@@ -391,11 +392,11 @@ const styles = StyleSheet.create({
     gap: spacing.xs,
   },
   mapButton: {
-    backgroundColor: colors.primary,
+    backgroundColor: '#0E7C86',
   },
   actionButtonText: {
     ...typography.labelLarge,
-    color: colors.textLight,
+    color: '#FFFFFF',
   },
 });
 

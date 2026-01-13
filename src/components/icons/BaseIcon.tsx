@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import Svg from 'react-native-svg';
+import Svg, { Path } from 'react-native-svg';
 import { iconColors, iconStroke } from '../../theme/icons';
 
 interface BaseIconProps {

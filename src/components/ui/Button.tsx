@@ -1,6 +1,5 @@
 import React from 'react';
 import { TouchableOpacity, Text, StyleSheet, ViewStyle, TextStyle, ActivityIndicator, Animated, View } from 'react-native';
-import { colors } from '../../theme/colors';
 import { spacing, radius } from '../../theme/spacing';
 import { typography } from '../../theme/typography';
 import { shadows } from '../../theme/shadows';
@@ -33,22 +32,22 @@ export const Button: React.FC<ButtonProps> = ({
 }) => {
   const pulseStyle = pulse ? usePulseAnimation(0.98, 1.02, 2000) : null;
   const getBackgroundColor = () => {
-    if (disabled) return colors.border;
+    if (disabled) return '#E2E8F0';
     switch (variant) {
       case 'primary':
-        return colors.teal;
+        return '#0E7C86';
       case 'secondary':
-        return colors.blue;
+        return '#2176FF';
       case 'outline':
         return 'transparent';
       default:
-        return colors.teal;
+        return '#0E7C86';
     }
   };
 
   const getTextColor = () => {
-    if (variant === 'outline') return colors.teal;
-    return colors.textLight;
+    if (variant === 'outline') return '#0E7C86';
+    return '#FFFFFF';
   };
 
   const getPadding = () => {
@@ -69,7 +68,7 @@ export const Button: React.FC<ButtonProps> = ({
     {
       backgroundColor: getBackgroundColor(),
       borderWidth: variant === 'outline' ? 2 : 0,
-      borderColor: variant === 'outline' ? colors.teal : 'transparent',
+      borderColor: variant === 'outline' ? '#0E7C86' : 'transparent',
       ...getPadding(),
     },
     style,

@@ -16,7 +16,6 @@ import {
 import { ArrowBackIcon, FilterIcon, LanguageIcon } from '../components/icons';
 import { getAllReligionData, ReligionPlace, ReligionType, SubType, getSubTypesForReligion } from '../data/religion/religionDataFetcher';
 import { Place } from '../utils/api';
-import { colors } from '../theme/colors';
 import { spacing, radius } from '../theme/spacing';
 import { typography } from '../theme/typography';
 import { shadows } from '../theme/shadows';
@@ -213,7 +212,7 @@ export default function ReligiousPlacesScreen({ navigation }: ReligiousPlacesScr
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color={colors.teal} />
+          <ActivityIndicator size="large" color="#0E7C86" />
           <Text style={styles.loadingText}>Loading Temples...</Text>
         </View>
       </SafeAreaView>
@@ -226,7 +225,7 @@ export default function ReligiousPlacesScreen({ navigation }: ReligiousPlacesScr
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation?.goBack()}>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <ArrowBackIcon size={18} color={colors.teal} />
+            <ArrowBackIcon size={18} color="#0E7C86" />
             <Text style={[styles.backButton, { marginLeft: spacing.xs }]}>Back</Text>
           </View>
         </TouchableOpacity>
@@ -237,7 +236,7 @@ export default function ReligiousPlacesScreen({ navigation }: ReligiousPlacesScr
             onPress={() => setShowLanguageMenu(true)}
             style={styles.languageButton}
           >
-            <LanguageIcon size={20} color={colors.teal} />
+            <LanguageIcon size={20} color="#0E7C86" />
             <Text style={styles.languageText}>
               {language === 'English' ? 'EN' : 
                language === 'Tamil' ? 'TA' :
@@ -254,7 +253,7 @@ export default function ReligiousPlacesScreen({ navigation }: ReligiousPlacesScr
             onPress={() => setShowFilters(true)}
             style={styles.filterButton}
           >
-            <FilterIcon size={20} color={colors.teal} />
+            <FilterIcon size={20} color="#0E7C86" />
           </TouchableOpacity>
         </View>
       </View>
@@ -556,7 +555,7 @@ export default function ReligiousPlacesScreen({ navigation }: ReligiousPlacesScr
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.background,
+    backgroundColor: '#FFFFFF',
     paddingTop: Platform.OS === 'android' ? STATUSBAR_HEIGHT : 0,
   },
   header: {
@@ -564,17 +563,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.sm,
-    backgroundColor: colors.cardBackground,
+    backgroundColor: '#FFFFFF',
     borderBottomWidth: 1,
-    borderBottomColor: colors.border,
+    borderBottomColor: '#E2E8F0',
   },
   backButton: {
     ...typography.labelMedium,
-    color: colors.teal,
+    color: '#0E7C86',
   },
   headerTitle: {
     ...typography.h3,
-    color: colors.textPrimary,
+    color: '#000000',
     flex: 1,
     marginLeft: spacing.md,
   },
@@ -588,13 +587,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: spacing.sm,
     paddingVertical: spacing.xs,
-    backgroundColor: colors.teal + '15',
+    backgroundColor: '#0E7C86' + '15',
     borderRadius: radius.sm,
     gap: spacing.xs,
   },
   languageText: {
     ...typography.labelSmall,
-    color: colors.teal,
+    color: '#0E7C86',
     fontWeight: '600',
   },
   filterButton: {
@@ -603,14 +602,14 @@ const styles = StyleSheet.create({
   activeFilters: {
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.sm,
-    backgroundColor: colors.background,
+    backgroundColor: '#FFFFFF',
     borderBottomWidth: 1,
-    borderBottomColor: colors.border,
+    borderBottomColor: '#E2E8F0',
   },
   activeFilterTag: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: colors.teal + '20',
+    backgroundColor: '#0E7C8620',
     paddingHorizontal: spacing.sm,
     paddingVertical: spacing.xs,
     borderRadius: radius.full,
@@ -619,21 +618,21 @@ const styles = StyleSheet.create({
   },
   activeFilterText: {
     ...typography.labelSmall,
-    color: colors.teal,
+    color: '#0E7C86',
   },
   removeFilter: {
     fontSize: 18,
-    color: colors.teal,
+    color: '#0E7C86',
     fontWeight: 'bold',
   },
   resultsCount: {
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.xs,
-    backgroundColor: colors.cardBackground,
+    backgroundColor: '#FFFFFF',
   },
   resultsText: {
     ...typography.bodySmall,
-    color: colors.textSecondary,
+    color: '#666666',
   },
   listContent: {
     paddingHorizontal: spacing.sm,
@@ -644,7 +643,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.xs,
   },
   card: {
-    backgroundColor: colors.cardBackground,
+    backgroundColor: '#FFFFFF',
     borderRadius: radius.md,
     overflow: 'hidden',
     marginBottom: spacing.md,
@@ -654,7 +653,7 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     height: 140,
-    backgroundColor: colors.background,
+    backgroundColor: '#FFFFFF',
     position: 'relative',
   },
   imageCover: {
@@ -664,34 +663,34 @@ const styles = StyleSheet.create({
   fallbackImage: {
     width: '100%',
     height: '100%',
-    backgroundColor: colors.border,
+    backgroundColor: '#E2E8F0',
   },
   ratingBadge: {
     position: 'absolute',
     top: spacing.sm,
     right: spacing.sm,
-    backgroundColor: colors.teal,
+    backgroundColor: '#0E7C86',
     paddingHorizontal: spacing.sm,
     paddingVertical: 4,
     borderRadius: radius.full,
   },
   rating: {
     ...typography.labelSmall,
-    color: colors.textLight,
+    color: '#FFFFFF',
     fontSize: 11,
   },
   religionBadge: {
     position: 'absolute',
     top: spacing.sm,
     left: spacing.sm,
-    backgroundColor: colors.blue,
+    backgroundColor: '#2176FF',
     paddingHorizontal: spacing.sm,
     paddingVertical: 4,
     borderRadius: radius.sm,
   },
   religionText: {
     ...typography.labelSmall,
-    color: colors.textLight,
+    color: '#FFFFFF',
     fontSize: 10,
     fontWeight: '600',
   },
@@ -700,34 +699,34 @@ const styles = StyleSheet.create({
   },
   placeName: {
     ...typography.labelMedium,
-    color: colors.textPrimary,
+    color: '#000000',
     marginBottom: 4,
     fontWeight: '600',
     fontSize: 13,
   },
   subType: {
     ...typography.bodySmall,
-    color: colors.teal,
+    color: '#0E7C86',
     marginBottom: 2,
     fontWeight: '500',
     fontSize: 10,
   },
   deity: {
     ...typography.bodySmall,
-    color: colors.textSecondary,
+    color: '#666666',
     marginBottom: 2,
     fontSize: 10,
   },
   description: {
     ...typography.bodySmall,
-    color: colors.textSecondary,
+    color: '#666666',
     marginBottom: spacing.xs,
     lineHeight: 14,
     fontSize: 10,
   },
   location: {
     ...typography.bodySmall,
-    color: colors.textSecondary,
+    color: '#666666',
     marginBottom: 2,
     fontSize: 9,
   },
@@ -738,20 +737,20 @@ const styles = StyleSheet.create({
   },
   infoLabel: {
     ...typography.labelSmall,
-    color: colors.textSecondary,
+    color: '#666666',
     marginRight: 2,
     fontWeight: '600',
     fontSize: 9,
   },
   infoText: {
     ...typography.bodySmall,
-    color: colors.textSecondary,
+    color: '#666666',
     flex: 1,
     fontSize: 9,
   },
   crowdBadge: {
     alignSelf: 'flex-start',
-    backgroundColor: colors.yellow + '20',
+    backgroundColor: '#F4C430' + '20',
     paddingHorizontal: 6,
     paddingVertical: 2,
     borderRadius: radius.sm,
@@ -759,7 +758,7 @@ const styles = StyleSheet.create({
   },
   crowdText: {
     ...typography.labelSmall,
-    color: colors.yellow,
+    color: '#F4C430',
     fontSize: 9,
   },
   loadingContainer: {
@@ -769,7 +768,7 @@ const styles = StyleSheet.create({
   },
   loadingText: {
     ...typography.bodyMedium,
-    color: colors.textSecondary,
+    color: '#666666',
     marginTop: spacing.md,
   },
   emptyContainer: {
@@ -784,24 +783,24 @@ const styles = StyleSheet.create({
   },
   emptyTitle: {
     ...typography.h3,
-    color: colors.textPrimary,
+    color: '#000000',
     marginBottom: spacing.xs,
   },
   emptyText: {
     ...typography.bodyMedium,
-    color: colors.textSecondary,
+    color: '#666666',
     textAlign: 'center',
     marginBottom: spacing.lg,
   },
   emptyButton: {
-    backgroundColor: colors.teal,
+    backgroundColor: '#0E7C86',
     paddingVertical: spacing.md,
     paddingHorizontal: spacing.lg,
     borderRadius: radius.md,
   },
   emptyButtonText: {
     ...typography.labelMedium,
-    color: colors.textLight,
+    color: '#FFFFFF',
   },
   // Modal Styles
   modalOverlay: {
@@ -810,7 +809,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   modalContent: {
-    backgroundColor: colors.cardBackground,
+    backgroundColor: '#FFFFFF',
     borderTopLeftRadius: radius.xl,
     borderTopRightRadius: radius.xl,
     maxHeight: '80%',
@@ -821,15 +820,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: spacing.lg,
     borderBottomWidth: 1,
-    borderBottomColor: colors.border,
+    borderBottomColor: '#E2E8F0',
   },
   modalTitle: {
     ...typography.h3,
-    color: colors.textPrimary,
+    color: '#000000',
   },
   modalClose: {
     fontSize: 24,
-    color: colors.textSecondary,
+    color: '#666666',
   },
   modalBody: {
     padding: spacing.lg,
@@ -839,7 +838,7 @@ const styles = StyleSheet.create({
   },
   filterSectionTitle: {
     ...typography.labelLarge,
-    color: colors.textPrimary,
+    color: '#000000',
     marginBottom: spacing.md,
   },
   filterOptions: {
@@ -851,38 +850,38 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.sm,
     borderRadius: radius.md,
-    backgroundColor: colors.background,
+    backgroundColor: '#FFFFFF',
     borderWidth: 1,
-    borderColor: colors.border,
+    borderColor: '#E2E8F0',
   },
   filterOptionActive: {
-    backgroundColor: colors.teal,
-    borderColor: colors.teal,
+    backgroundColor: '#0E7C86',
+    borderColor: '#0E7C86',
   },
   filterOptionText: {
     ...typography.labelMedium,
-    color: colors.textSecondary,
+    color: '#666666',
   },
   filterOptionTextActive: {
-    color: colors.textLight,
+    color: '#FFFFFF',
   },
   modalFooter: {
     padding: spacing.lg,
     borderTopWidth: 1,
-    borderTopColor: colors.border,
+    borderTopColor: '#E2E8F0',
   },
   applyButton: {
-    backgroundColor: colors.teal,
+    backgroundColor: '#0E7C86',
     paddingVertical: spacing.md,
     borderRadius: radius.md,
     alignItems: 'center',
   },
   applyButtonText: {
     ...typography.labelMedium,
-    color: colors.textLight,
+    color: '#FFFFFF',
   },
   languageMenu: {
-    backgroundColor: colors.cardBackground,
+    backgroundColor: '#FFFFFF',
     borderRadius: radius.xl,
     margin: spacing.lg,
     maxHeight: '70%',
@@ -895,16 +894,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: spacing.lg,
     borderBottomWidth: 1,
-    borderBottomColor: colors.border,
+    borderBottomColor: '#E2E8F0',
   },
   languageMenuTitle: {
     ...typography.h3,
-    color: colors.textPrimary,
+    color: '#000000',
     fontWeight: '700',
   },
   languageMenuClose: {
     fontSize: 24,
-    color: colors.textSecondary,
+    color: '#666666',
   },
   languageMenuBody: {
     maxHeight: 400,
@@ -912,17 +911,17 @@ const styles = StyleSheet.create({
   languageOption: {
     padding: spacing.lg,
     borderBottomWidth: 1,
-    borderBottomColor: colors.border,
+    borderBottomColor: '#E2E8F0',
   },
   languageOptionActive: {
-    backgroundColor: colors.teal + '15',
+    backgroundColor: '#0E7C86' + '15',
   },
   languageOptionText: {
     ...typography.labelLarge,
-    color: colors.textPrimary,
+    color: '#000000',
   },
   languageOptionTextActive: {
-    color: colors.teal,
+    color: '#0E7C86',
     fontWeight: '600',
   },
 });

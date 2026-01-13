@@ -1,12 +1,11 @@
 import React from 'react';
-import { View, StyleSheet, ViewStyle, TouchableOpacity, TouchableOpacityProps } from 'react-native';
-import { colors } from '../../theme/colors';
+import { View, StyleSheet, ViewStyle, StyleProp, TouchableOpacity, TouchableOpacityProps } from 'react-native';
 import { spacing, radius } from '../../theme/spacing';
 import { shadows } from '../../theme/shadows';
 
 interface CardProps extends TouchableOpacityProps {
   children: React.ReactNode;
-  style?: ViewStyle;
+  style?: StyleProp<ViewStyle>;
   onPress?: () => void;
   padding?: number;
 }
@@ -46,7 +45,7 @@ export const Card: React.FC<CardProps> = ({
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: colors.cardBackground,
+    backgroundColor: '#FFFFFF',
     borderRadius: radius.lg,
     ...shadows.md,
   },
