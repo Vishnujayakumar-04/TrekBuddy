@@ -32,11 +32,11 @@ export default function CategoryDetailPage({ params }: PageProps) {
     return (
         <div className="container py-8">
             <div className="flex items-center gap-4 mb-8">
-                <Link href="/dashboard/categories">
-                    <Button variant="ghost" size="icon">
+                <Button variant="ghost" size="icon" asChild>
+                    <Link href="/dashboard/categories">
                         <ArrowLeft className="w-5 h-5" />
-                    </Button>
-                </Link>
+                    </Link>
+                </Button>
                 <div>
                     <h1 className="text-3xl font-bold tracking-tight">{categoryName}</h1>
                     <p className="text-muted-foreground">{places.length} places found</p>

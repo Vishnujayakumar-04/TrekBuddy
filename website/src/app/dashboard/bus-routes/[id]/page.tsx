@@ -42,11 +42,11 @@ export default function BusRouteDetailPage({ params }: PageProps) {
     return (
         <div className="container py-8 max-w-3xl">
             <div className="mb-6">
-                <Link href="/dashboard/bus-routes">
-                    <Button variant="ghost" className="gap-2 pl-0 hover:pl-2 transition-all">
+                <Button variant="ghost" className="gap-2 pl-0 hover:pl-2 transition-all" asChild>
+                    <Link href="/dashboard/bus-routes">
                         <ArrowLeft className="w-4 h-4" /> Back to Routes
-                    </Button>
-                </Link>
+                    </Link>
+                </Button>
             </div>
 
             <div className="flex flex-col md:flex-row justify-between items-start gap-4 mb-8">

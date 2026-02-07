@@ -77,12 +77,13 @@ function PlaceDetailView({ id, place }: { id: string, place: typeof PLACE_DATA }
     return (
         <div className="container py-8 max-w-5xl">
             {/* Breadcrumb / Back */}
+            {/* Breadcrumb / Back */}
             <div className="mb-6">
-                <Link href="/dashboard/categories">
-                    <Button variant="ghost" className="gap-2 pl-0 hover:pl-2 transition-all">
+                <Button variant="ghost" className="gap-2 pl-0 hover:pl-2 transition-all" asChild>
+                    <Link href="/dashboard/categories">
                         <ArrowLeft className="w-4 h-4" /> Back to Explore
-                    </Button>
-                </Link>
+                    </Link>
+                </Button>
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">

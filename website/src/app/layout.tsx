@@ -24,6 +24,8 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { ThemeProvider } from "@/components/theme-provider";
 
+import { AppLoader } from "@/components/layout/AppLoader";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -41,11 +43,13 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <AuthProvider>
-            <Navbar />
-            <main className="flex-1">
-              {children}
-            </main>
-            <Footer />
+            <AppLoader>
+              <Navbar />
+              <main className="flex-1">
+                {children}
+              </main>
+              <Footer />
+            </AppLoader>
             <Toaster />
           </AuthProvider>
         </ThemeProvider>
