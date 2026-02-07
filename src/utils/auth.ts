@@ -120,7 +120,7 @@ export const sendOTP = async (phoneNumber: string): Promise<PhoneConfirmationRes
   try {
     // Format phone number (ensure it starts with +)
     const formattedPhone = phoneNumber.startsWith('+') ? phoneNumber : `+${phoneNumber}`;
-    
+
     // Note: signInWithPhoneNumber requires reCAPTCHA verification on web
     // For React Native, you may need to use Firebase Phone Auth with a different approach
     // This is a simplified version - you may need to adjust based on your platform

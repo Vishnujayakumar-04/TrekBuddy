@@ -44,12 +44,15 @@ export default function BusRoutesPage() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <Link href="/dashboard/bus-routes/map">
-                    <Card className="bg-primary text-primary-foreground h-full cursor-pointer hover:shadow-lg transition-all group">
-                        <CardContent className="flex flex-col items-center justify-center p-8 h-full space-y-4">
-                            <MapPin className="w-12 h-12 group-hover:scale-110 transition-transform duration-300" />
-                            <div className="text-center">
-                                <h3 className="font-bold text-xl">Find Nearby Stops</h3>
-                                <p className="text-primary-foreground/80 text-sm">Locate bus stops near you</p>
+                    <Card className="bg-gradient-to-br from-cyan-600 to-blue-600 text-white h-full cursor-pointer hover:shadow-xl hover:shadow-cyan-500/20 transition-all group overflow-hidden relative border-none">
+                        <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-3xl -mr-10 -mt-10 pointer-events-none" />
+                        <CardContent className="flex flex-col items-center justify-center p-8 h-full space-y-4 relative z-10">
+                            <div className="bg-white/20 p-4 rounded-full backdrop-blur-sm group-hover:scale-110 transition-transform duration-300">
+                                <MapPin className="w-8 h-8 text-white" />
+                            </div>
+                            <div className="text-center space-y-1">
+                                <h3 className="font-bold text-xl tracking-tight">Find Nearby Stops</h3>
+                                <p className="text-white/80 text-sm font-medium">Locate bus stops near you</p>
                             </div>
                         </CardContent>
                     </Card>
@@ -57,27 +60,34 @@ export default function BusRoutesPage() {
 
                 {filteredRoutes.map((route) => (
                     <Link key={route.id} href={`/dashboard/bus-routes/${route.id}`}>
-                        <Card className="hover:border-primary cursor-pointer transition-colors h-full">
+                        <Card className="hover:border-cyan-500/50 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 h-full cursor-pointer bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm border-slate-200 dark:border-slate-800">
                             <CardContent className="p-6 space-y-4">
                                 <div className="flex justify-between items-start">
-                                    <div className="bg-muted px-3 py-1 rounded text-lg font-bold font-mono">
+                                    <div className="bg-slate-100 dark:bg-slate-800 px-3 py-1.5 rounded-lg text-lg font-bold font-mono text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 group-hover:border-cyan-500/30 transition-colors">
                                         {route.id}
                                     </div>
-                                    <div className="text-xs font-semibold bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full">
+                                    <div className={`text-xs font-semibold px-2.5 py-1 rounded-full ${route.type === 'Intercity'
+                                            ? 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300'
+                                            : 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300'
+                                        }`}>
                                         {route.type}
                                     </div>
                                 </div>
 
                                 <div>
-                                    <h3 className="font-semibold text-lg line-clamp-2 leading-tight">{route.name}</h3>
+                                    <h3 className="font-bold text-lg line-clamp-2 leading-tight text-slate-900 dark:text-slate-100 group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors">
+                                        {route.name}
+                                    </h3>
                                 </div>
 
-                                <div className="flex items-center justify-between text-sm text-muted-foreground pt-2 border-t">
-                                    <div className="flex items-center gap-1">
-                                        <MapPin className="w-3 h-3" /> {route.stops} Stops
+                                <div className="flex items-center justify-between text-sm text-slate-500 dark:text-slate-400 pt-4 border-t border-slate-100 dark:border-slate-800">
+                                    <div className="flex items-center gap-1.5">
+                                        <MapPin className="w-3.5 h-3.5 text-cyan-500" />
+                                        <span>{route.stops} Stops</span>
                                     </div>
-                                    <div className="flex items-center gap-1">
-                                        <Clock className="w-3 h-3" /> {route.frequency}
+                                    <div className="flex items-center gap-1.5">
+                                        <Clock className="w-3.5 h-3.5 text-orange-500" />
+                                        <span>{route.frequency}</span>
                                     </div>
                                 </div>
                             </CardContent>

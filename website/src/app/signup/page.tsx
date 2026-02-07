@@ -14,6 +14,7 @@ import { toast } from 'sonner';
 import { Loader2, ArrowLeft } from 'lucide-react';
 
 export default function SignupPage() {
+    const [showPassword, setShowPassword] = useState(false);
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -57,9 +58,9 @@ export default function SignupPage() {
 
             toast.success('Account created successfully!');
             router.push('/dashboard/planner?welcome=true');
-        } catch (error: any) {
+        } catch (error: unknown) {
             console.error(error);
-            const message = error.message || 'Failed to create account';
+            const message = (error as Error).message || 'Failed to create account';
             toast.error(message);
         } finally {
             setLoading(false);
@@ -67,68 +68,82 @@ export default function SignupPage() {
     };
 
     return (
-        <div className="flex min-h-screen bg-slate-50 dark:bg-slate-950">
-            {/* Left Box - Image & Branding */}
+        <div className="flex min-h-screen bg-white dark:bg-slate-950 font-sans selection:bg-cyan-100 selection:text-cyan-900">
+            {/* Left Box - Image & Branding (50%) */}
             <div className="hidden lg:flex lg:w-1/2 relative bg-slate-900 overflow-hidden">
                 <Image
-                    src="/images/hero-bg.svg"
-                    alt="Pondicherry Coast"
+                    src="https://images.unsplash.com/photo-1596422846543-75c6fc197f07?q=80&w=2669&auto=format&fit=crop"
+                    alt="Pondicherry Architecture"
                     fill
-                    className="object-cover opacity-60 mix-blend-overlay"
+                    className="object-cover opacity-60 mix-blend-overlay scale-105 animate-[zoom_25s_infinite_alternate]"
                     priority
                 />
-                <div className="absolute inset-0 bg-gradient-to-tr from-cyan-900/90 to-blue-900/60" />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/40 to-transparent" />
+                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-blue-900/20 via-slate-950/40 to-slate-950/80" />
 
-                <div className="relative z-10 flex flex-col justify-between p-16 h-full text-white">
+                <div className="relative z-10 flex flex-col justify-between p-12 xl:p-20 h-full text-white">
                     <div>
-                        <Link href="/" className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md hover:bg-white/20 transition-colors">
-                            <ArrowLeft className="w-4 h-4" /> Back to Home
+                        <Link href="/" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/10 backdrop-blur-md hover:bg-white/20 transition-all border border-white/10 hover:pr-6 group">
+                            <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> Back to Home
                         </Link>
                     </div>
-                    <div className="space-y-6 max-w-lg">
-                        <div className="inline-block px-3 py-1 bg-cyan-500/20 border border-cyan-400/30 rounded-full text-cyan-300 text-xs font-semibold tracking-wider uppercase">
-                            Join Us
+                    <div className="space-y-8 max-w-lg">
+                        <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue-500/10 border border-blue-400/20 rounded-full text-blue-300 text-xs font-bold tracking-widest uppercase backdrop-blur-sm">
+                            <span className="w-2 h-2 rounded-full bg-blue-400 animate-pulse"></span>
+                            Join Community
                         </div>
-                        <h1 className="text-5xl font-bold leading-tight font-display tracking-tight">
-                            Join the community of <br />
-                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-400">modern explorers</span>
+                        <h1 className="text-5xl xl:text-6xl font-black leading-tight tracking-tight drop-shadow-xl">
+                            Unlock the best of <br />
+                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 to-blue-300">Puducherry</span> <br />
+                            today.
                         </h1>
-                        <p className="text-lg text-slate-300 leading-relaxed">
-                            Create an account to save your itineraries, bookmark favorite spots, and get personalized recommendations.
+                        <p className="text-lg text-slate-200/90 leading-relaxed font-light border-l-2 border-cyan-500/50 pl-6">
+                            Create your free account to access AI-powered itineraries, save your favorite spots, and sync your travel plans across devices.
                         </p>
                     </div>
-                    <div className="text-sm text-slate-400 flex justify-between items-center border-t border-white/10 pt-8">
-                        <span>© 2026 TrekBuddy Tourism</span>
+                    <div className="text-xs text-slate-400/80 flex justify-between items-center border-t border-white/10 pt-8 uppercase tracking-widest">
+                        <span>© 2026 TrekBuddy</span>
                     </div>
                 </div>
             </div>
 
-            {/* Right Box - Signup Form */}
-            <div className="flex-1 flex items-center justify-center p-8">
-                <div className="w-full max-w-md space-y-8">
-                    <div className="text-center space-y-2 lg:text-left">
+            {/* Right Box - Signup Form (50%) */}
+            <div className="flex-1 flex items-center justify-center p-8 lg:p-16 xl:p-24 bg-white dark:bg-slate-950 relative">
+                {/* Mobile Background (Absolute) */}
+                <div className="lg:hidden absolute inset-0 z-0">
+                    <Image
+                        src="https://images.unsplash.com/photo-1596422846543-75c6fc197f07?q=80&w=2669&auto=format&fit=crop"
+                        alt="Background"
+                        fill
+                        className="object-cover opacity-5"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-b from-white/90 to-white dark:from-slate-950/90 dark:to-slate-950" />
+                </div>
+
+                <div className="w-full max-w-sm space-y-8 relative z-10">
+                    <div className="text-center space-y-2">
                         <h2 className="text-3xl font-bold text-slate-900 dark:text-white tracking-tight">Create an account</h2>
                         <p className="text-slate-500 dark:text-slate-400">
-                            Start your journey with TrekBuddy today.
+                            Start planning your dream trip in seconds.
                         </p>
                     </div>
 
                     <form onSubmit={handleSignup} className="space-y-5">
                         <div className="space-y-4">
                             <div className="space-y-2">
-                                <Label htmlFor="name">Full Name</Label>
+                                <Label htmlFor="name" className="text-slate-700 dark:text-slate-300 font-medium">Full Name</Label>
                                 <Input
                                     id="name"
                                     type="text"
-                                    placeholder="John Doe"
+                                    placeholder="e.g. Alex Toutou"
                                     required
                                     value={name}
                                     onChange={(e) => setName(e.target.value)}
-                                    className="h-11 bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 focus-visible:ring-cyan-500"
+                                    className="h-11 bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-slate-800 focus-visible:ring-2 focus-visible:ring-cyan-500 rounded-xl transition-all hover:bg-white dark:hover:bg-slate-800"
                                 />
                             </div>
                             <div className="space-y-2">
-                                <Label htmlFor="email">Email Address</Label>
+                                <Label htmlFor="email" className="text-slate-700 dark:text-slate-300 font-medium">Email Address</Label>
                                 <Input
                                     id="email"
                                     type="email"
@@ -136,40 +151,53 @@ export default function SignupPage() {
                                     required
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
-                                    className="h-11 bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 focus-visible:ring-cyan-500"
+                                    className="h-11 bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-slate-800 focus-visible:ring-2 focus-visible:ring-cyan-500 rounded-xl transition-all hover:bg-white dark:hover:bg-slate-800"
                                 />
                             </div>
                             <div className="grid grid-cols-2 gap-4">
                                 <div className="space-y-2">
-                                    <Label htmlFor="password">Password</Label>
-                                    <Input
-                                        id="password"
-                                        type="password"
-                                        placeholder="Min 6 chars"
-                                        required
-                                        value={password}
-                                        onChange={(e) => setPassword(e.target.value)}
-                                        className="h-11 bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 focus-visible:ring-cyan-500"
-                                    />
+                                    <Label htmlFor="password" className="text-slate-700 dark:text-slate-300 font-medium">Password</Label>
+                                    <div className="relative">
+                                        <Input
+                                            id="password"
+                                            type={showPassword ? "text" : "password"}
+                                            placeholder="Min 6 chars"
+                                            required
+                                            value={password}
+                                            onChange={(e) => setPassword(e.target.value)}
+                                            className="h-11 bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-slate-800 focus-visible:ring-2 focus-visible:ring-cyan-500 rounded-xl pr-10"
+                                        />
+                                        <button
+                                            type="button"
+                                            onClick={() => setShowPassword(!showPassword)}
+                                            className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-cyan-600 transition-colors"
+                                        >
+                                            {showPassword ? (
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-eye-off"><path d="M9.88 9.88a3 3 0 1 0 4.24 4.24" /><path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68" /><path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61" /><line x1="2" x2="22" y1="2" y2="22" /></svg>
+                                            ) : (
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-eye"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0" /><circle cx="12" cy="12" r="3" /></svg>
+                                            )}
+                                        </button>
+                                    </div>
                                 </div>
                                 <div className="space-y-2">
-                                    <Label htmlFor="confirmPassword">Confirm</Label>
+                                    <Label htmlFor="confirmPassword" className="text-slate-700 dark:text-slate-300 font-medium">Confirm</Label>
                                     <Input
                                         id="confirmPassword"
-                                        type="password"
-                                        placeholder="Confirm"
+                                        type={showPassword ? "text" : "password"}
+                                        placeholder="Repeat"
                                         required
                                         value={confirmPassword}
                                         onChange={(e) => setConfirmPassword(e.target.value)}
-                                        className="h-11 bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 focus-visible:ring-cyan-500"
+                                        className="h-11 bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-slate-800 focus-visible:ring-2 focus-visible:ring-cyan-500 rounded-xl"
                                     />
                                 </div>
                             </div>
                         </div>
 
-                        <Button type="submit" className="w-full h-12 text-base font-semibold bg-cyan-600 hover:bg-cyan-700 text-white shadow-lg hover:shadow-cyan-500/25 transition-all mt-2" disabled={loading}>
+                        <Button type="submit" className="w-full h-12 text-base font-semibold bg-slate-900 hover:bg-slate-800 dark:bg-white dark:text-slate-900 dark:hover:bg-slate-200 rounded-xl shadow-xl hover:shadow-2xl hover:-translate-y-0.5 transition-all duration-300 mt-2" disabled={loading}>
                             {loading ? (
-                                <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Creating Account...</>
+                                <><Loader2 className="w-5 h-5 mr-2 animate-spin text-cyan-500" /> Creating Account...</>
                             ) : 'Sign Up'}
                         </Button>
                     </form>
@@ -178,15 +206,15 @@ export default function SignupPage() {
                         <div className="absolute inset-0 flex items-center">
                             <span className="w-full border-t border-slate-200 dark:border-slate-800" />
                         </div>
-                        <div className="relative flex justify-center text-xs uppercase">
-                            <span className="bg-slate-50 dark:bg-slate-950 px-2 text-slate-500">
+                        <div className="relative flex justify-center text-xs uppercase tracking-widest">
+                            <span className="bg-white dark:bg-slate-950 px-4 text-slate-400 font-medium">
                                 Or continue with
                             </span>
                         </div>
                     </div>
 
-                    <Button variant="outline" className="w-full h-12 bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 font-medium" type="button">
-                        <svg className="mr-2 h-5 w-5" viewBox="0 0 24 24">
+                    <Button variant="outline" className="w-full h-12 bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 font-medium rounded-xl gap-3 transition-all hover:border-slate-300 dark:hover:border-slate-700" type="button">
+                        <svg className="h-5 w-5" viewBox="0 0 24 24">
                             <path
                                 d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
                                 fill="#4285F4"
@@ -207,9 +235,9 @@ export default function SignupPage() {
                         Sign up with Google
                     </Button>
 
-                    <p className="text-center text-sm text-slate-500">
+                    <p className="text-center text-sm text-slate-500 dark:text-slate-400">
                         Already have an account?{' '}
-                        <Link href="/login" className="text-cyan-600 hover:text-cyan-700 font-semibold transition-colors">
+                        <Link href="/login" className="text-cyan-600 hover:text-cyan-500 font-bold hover:underline underline-offset-4 transition-colors">
                             Login
                         </Link>
                     </p>

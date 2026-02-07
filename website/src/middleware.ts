@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
 
-export function middleware(request: NextRequest) {
+
+export function middleware() {
     // Add authentication logic here if using server-side auth tokens (e.g. cookies)
     // Since we are using Firebase Client SDK, we might not be able to fully protect via middleware 
     // without session cookies. However, we can check for common patterns.

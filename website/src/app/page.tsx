@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Input } from '@/components/ui/input';
@@ -9,13 +9,13 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { LoadingScreen } from '@/components/layout/LoadingScreen';
 import {
+  MapPin,
   Map,
   Search,
   MessageCircle,
   Bus,
   ArrowRight,
   Star,
-  Compass,
   Sunset,
   Landmark,
   Utensils,
@@ -26,6 +26,34 @@ import {
 export default function HomePage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(true);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+
+  // Combined searchable data
+  const SEARCH_DATA = [
+    { name: 'Promenade Beach', category: 'Beaches', path: '/dashboard/places/promenade-beach' },
+    { name: 'Paradise Beach', category: 'Beaches', path: '/dashboard/places/paradise-beach' },
+    { name: 'Serenity Beach', category: 'Beaches', path: '/dashboard/places/serenity-beach' },
+    { name: 'Auroville Beach', category: 'Beaches', path: '/dashboard/places/auroville-beach' },
+    { name: 'Auroville', category: 'Spiritual', path: '/dashboard/places/auroville' },
+    { name: 'Matrimandir', category: 'Spiritual', path: '/dashboard/places/matrimandir' },
+    { name: 'Sri Aurobindo Ashram', category: 'Spiritual', path: '/dashboard/places/ashram' },
+    { name: 'White Town', category: 'Heritage', path: '/dashboard/places/white-town' },
+    { name: 'French Quarter', category: 'Heritage', path: '/dashboard/places/french-quarter' },
+    { name: 'Manakula Vinayagar Temple', category: 'Temples', path: '/dashboard/places/manakula-temple' },
+    { name: 'Baker Street', category: 'Cafes', path: '/dashboard/places/baker-street' },
+    { name: 'Cafe des Arts', category: 'Cafes', path: '/dashboard/places/cafe-des-arts' },
+    { name: 'Surguru', category: 'Restaurants', path: '/dashboard/places/surguru' },
+    { name: 'Le Club', category: 'Restaurants', path: '/dashboard/places/le-club' },
+    { name: 'Rock Beach Park', category: 'Parks', path: '/dashboard/places/rock-beach-park' },
+    { name: 'Botanical Garden', category: 'Parks', path: '/dashboard/places/botanical-garden' },
+  ];
+
+  const filteredSuggestions = searchQuery.length > 0
+    ? SEARCH_DATA.filter(item =>
+      item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.category.toLowerCase().includes(searchQuery.toLowerCase())
+    ).slice(0, 6)
+    : [];
 
   useEffect(() => {
     // Simulate initial loading
@@ -184,15 +212,54 @@ export default function HomePage() {
                   <Search className="ml-5 w-6 h-6 text-slate-300" />
                   <Input
                     type="text"
-                    placeholder="Where do you want to go?"
+                    placeholder="Search beaches, cafes, temples..."
                     className="flex-1 border-none bg-transparent text-white placeholder:text-slate-300 focus-visible:ring-0 focus-visible:ring-offset-0 h-14 text-lg px-4 font-light tracking-wide"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
+                    onFocus={() => setShowSuggestions(true)}
+                    onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
                   />
                   <Button size="lg" className="rounded-full px-8 h-12 bg-cyan-500 hover:bg-cyan-400 text-white font-semibold text-lg border-none shadow-lg transition-all hover:scale-105">
                     Explore
                   </Button>
                 </div>
+
+                {/* Search Suggestions Dropdown */}
+                {showSuggestions && filteredSuggestions.length > 0 && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-700 overflow-hidden"
+                  >
+                    {filteredSuggestions.map((item, index) => (
+                      <Link
+                        key={index}
+                        href={item.path}
+                        className="flex items-center justify-between px-6 py-4 hover:bg-cyan-50 dark:hover:bg-slate-800 transition-colors cursor-pointer border-b last:border-b-0 border-slate-100 dark:border-slate-800"
+                      >
+                        <div className="flex items-center gap-3">
+                          <MapPin className="w-4 h-4 text-cyan-500" />
+                          <span className="text-slate-900 dark:text-white font-medium">{item.name}</span>
+                        </div>
+                        <span className="text-xs px-2 py-1 rounded-full bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300">
+                          {item.category}
+                        </span>
+                      </Link>
+                    ))}
+                  </motion.div>
+                )}
+
+                {/* No results message */}
+                {showSuggestions && searchQuery.length > 2 && filteredSuggestions.length === 0 && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-700 p-6 text-center"
+                  >
+                    <p className="text-slate-500">No places found for &quot;{searchQuery}&quot;</p>
+                    <p className="text-sm text-slate-400 mt-1">Try searching for beaches, temples, or cafes</p>
+                  </motion.div>
+                )}
               </div>
             </motion.div>
           </motion.div>

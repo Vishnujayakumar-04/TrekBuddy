@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { ArrowLeft, Calendar, MapPin, GripVertical, Trash2, PlusCircle, Share2, Loader2, AlertCircle } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { db } from '@/lib/firebase';
-import { doc, getDoc, collection, getDocs, deleteDoc } from 'firebase/firestore';
+import { doc, getDoc } from 'firebase/firestore';
 import { useAuthContext } from '@/context/AuthContext';
 import { toast } from 'sonner';
 
@@ -58,13 +58,8 @@ export default function TripDetailPage({ params }: PageProps) {
 
                     setTrip({ id: docSnap.id, ...data } as Trip);
 
-                    // Fetch subcollection 'itinerary' if it exists (assuming future implementation)
-                    // For now, checks if there's an 'items' array in the doc, or just mock it empty
-                    // Since we haven't implemented adding items yet, we'll start with empty.
-                    // const itinerarySnap = await getDocs(collection(db, 'trips', id, 'itinerary'));
-                    // const loadedItems = itinerarySnap.docs.map(d => ({id: d.id, ...d.data()})) as TripItem[];
-                    // setItems(loadedItems);
-                    setItems([]); // Initialize empty for now as we don't have adding logic yet
+                    // Initialize empty items
+                    setItems([]);
 
                 } else {
                     setError('Trip not found.');
@@ -83,7 +78,7 @@ export default function TripDetailPage({ params }: PageProps) {
             // If authentication finished and no user
             setLoading(false);
         }
-    }, [id, user]);
+    }, [id, user, loading]);
 
     const handleDelete = async (itemId: string) => {
         // Placeholder for future delete logic

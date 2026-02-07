@@ -10,16 +10,16 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Heart, MapPin, Settings as SettingsIcon, LogOut, User } from 'lucide-react';
 import { useState } from 'react';
 import { toast } from 'sonner';
+import Link from 'next/link';
+import { DashboardHeader } from '@/components/layout/DashboardHeader';
 
 export default function ProfilePage() {
     const { user, logout } = useAuth();
-    const [isEditing, setIsEditing] = useState(false);
     const [displayName, setDisplayName] = useState(user?.displayName || '');
 
     const handleUpdateProfile = () => {
         // Implement update profile logic with Firebase
         toast.success('Profile updated successfully');
-        setIsEditing(false);
     };
 
     if (!user) {
@@ -27,13 +27,20 @@ export default function ProfilePage() {
             <div className="container py-20 text-center">
                 <h1 className="text-2xl font-bold mb-4">Please Login</h1>
                 <p className="mb-4 text-muted-foreground">You need to be logged in to view your profile.</p>
-                <Button asChild><a href="/login">Login</a></Button>
+                <Button asChild><Link href="/login">Login</Link></Button>
             </div>
         );
     }
 
     return (
-        <div className="container py-8 max-w-4xl">
+        <div className="container py-8 max-w-4xl space-y-8">
+            <DashboardHeader
+                title="My Profile"
+                subtitle="Manage your personal information and preferences"
+                backHref="/"
+                backLabel="Home"
+                showHome={false}
+            />
             <div className="flex flex-col md:flex-row gap-8">
                 {/* Sidebar */}
                 <div className="w-full md:w-1/3 space-y-6">
@@ -88,13 +95,13 @@ export default function ProfilePage() {
                             <Card>
                                 <CardHeader>
                                     <CardTitle>Saved Places</CardTitle>
-                                    <CardDescription>Destinations you've bookmarked for later.</CardDescription>
+                                    <CardDescription>Destinations you&apos;ve bookmarked for later.</CardDescription>
                                 </CardHeader>
                                 <CardContent>
                                     <div className="text-center py-10 text-muted-foreground">
                                         <Heart className="w-12 h-12 mx-auto mb-3 opacity-20" />
-                                        <p>You haven't saved any places yet.</p>
-                                        <Button variant="link" asChild><a href="/dashboard/categories">Explore Places</a></Button>
+                                        <p>You haven&apos;t saved any places yet.</p>
+                                        <Button variant="link" asChild><Link href="/dashboard/categories">Explore Places</Link></Button>
                                     </div>
                                 </CardContent>
                             </Card>
@@ -110,7 +117,7 @@ export default function ProfilePage() {
                                     <div className="text-center py-10 text-muted-foreground">
                                         <MapPin className="w-12 h-12 mx-auto mb-3 opacity-20" />
                                         <p>No upcoming trips.</p>
-                                        <Button variant="link" asChild><a href="/dashboard/planner">Plan a Trip</a></Button>
+                                        <Button variant="link" asChild><Link href="/dashboard/planner">Plan a Trip</Link></Button>
                                     </div>
                                 </CardContent>
                             </Card>

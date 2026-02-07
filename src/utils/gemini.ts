@@ -45,14 +45,14 @@ const generatePlaceholderRecommendation = (
 ): AIRecommendation => {
   const weatherHint = getWeatherHint();
   const currentHour = new Date().getHours();
-  
+
   switch (type) {
     case 'best_time': {
       // Find a popular place based on visited categories or use a default
       const preferredCategory = visitedCategories[0] || 'beaches';
       // Note: getCategoryData is now async, but for placeholder we use allPlaces directly
       const suggestedPlace = allPlaces.find(p => p.category === preferredCategory) || allPlaces[0];
-      
+
       let bestTime = '';
       if (currentHour < 10) {
         bestTime = 'Early morning (6-10 AM) is perfect for visiting';
@@ -63,7 +63,7 @@ const generatePlaceholderRecommendation = (
       } else {
         bestTime = 'Evening (6-9 PM) provides pleasant weather and beautiful views';
       }
-      
+
       return {
         type,
         title: 'Best Time to Visit',
@@ -72,11 +72,11 @@ const generatePlaceholderRecommendation = (
         placeId: suggestedPlace?.id,
       };
     }
-    
+
     case 'nearby_attraction': {
       // Suggest a place based on visited categories using allPlaces (already fetched)
       let suggestedPlace: Place | null = null;
-      
+
       if (visitedCategories.length > 0) {
         // Find a place from a different category than the most visited one
         const allCategories = ['beaches', 'temples', 'parks', 'nature', 'restaurants', 'hotels', 'pubs', 'shopping', 'photoshoot', 'theatres'];
@@ -88,13 +88,13 @@ const generatePlaceholderRecommendation = (
           suggestedPlace = placesInCategory[0] || null;
         }
       }
-      
+
       if (!suggestedPlace) {
         // Default to a highly rated place
         const sortedPlaces = [...allPlaces].sort((a, b) => b.rating - a.rating);
         suggestedPlace = sortedPlaces[0];
       }
-      
+
       if (!suggestedPlace) {
         return {
           type,
@@ -102,7 +102,7 @@ const generatePlaceholderRecommendation = (
           content: 'Explore the beautiful beaches and temples of Pondicherry. Perfect for today\'s weather!',
         };
       }
-      
+
       return {
         type,
         title: 'Suggested Nearby Attraction',
@@ -111,7 +111,7 @@ const generatePlaceholderRecommendation = (
         placeId: suggestedPlace.id,
       };
     }
-    
+
     case 'safety_tip': {
       let tip = '';
       if (currentHour >= 6 && currentHour < 12) {
@@ -123,7 +123,7 @@ const generatePlaceholderRecommendation = (
       } else {
         tip = 'Night time: Stay in well-lit areas, travel in groups, and keep emergency contacts handy.';
       }
-      
+
       return {
         type,
         title: 'Safety & Weather Tip',
@@ -244,12 +244,12 @@ Provide a concise safety or weather tip (2-3 sentences) that would be helpful fo
       if (firstLine.includes(':')) {
         placeName = firstLine.split(':')[0].trim();
         content = lines.slice(1).join('\n').trim() || firstLine.split(':').slice(1).join(':').trim();
-        
+
         // Try to find matching place
         if (placeName) {
           const matchingPlace = allPlaces.find(
-            p => p.name.toLowerCase().includes(placeName.toLowerCase()) ||
-                 placeName.toLowerCase().includes(p.name.toLowerCase())
+            p => (placeName && p.name.toLowerCase().includes(placeName.toLowerCase())) ||
+              (placeName && placeName.toLowerCase().includes(p.name.toLowerCase()))
           );
           if (matchingPlace) {
             placeId = matchingPlace.id;
@@ -282,7 +282,7 @@ const generatePlaceholderFullAnalysis = (
 ): string => {
   const weatherHint = getWeatherHint();
   const currentHour = new Date().getHours();
-  
+
   switch (type) {
     case 'best_time': {
       const topPlaces = allPlaces.sort((a, b) => b.rating - a.rating).slice(0, 5);
@@ -302,16 +302,16 @@ Evening (6 PM - 9 PM): Ideal for restaurants, pubs, and sunset views. This is th
 
 Tips: Avoid peak hours (12-2 PM) for outdoor activities. Always check opening hours before visiting.`;
     }
-    
+
     case 'nearby_attraction': {
       const recommendedPlaces = allPlaces
         .sort((a, b) => b.rating - a.rating)
         .slice(0, 5);
-      
-      const categoryText = visitedCategories.length > 0 
+
+      const categoryText = visitedCategories.length > 0
         ? `Based on your interest in ${visitedCategories.join(', ')}, here are some great recommendations:`
         : 'Here are some top-rated attractions in Pondicherry:';
-      
+
       return `Nearby Attractions in Pondicherry
 
 ${categoryText}
@@ -334,7 +334,7 @@ ${categoryText}
 Weather: ${weatherHint}
 All recommendations consider today's weather conditions for the best experience.`;
     }
-    
+
     case 'safety_tip': {
       return `Safety & Weather Tips for Pondicherry Today
 
@@ -522,10 +522,10 @@ export const generateTripItinerary = async (
   const start = new Date(startDate);
   const end = new Date(endDate);
   const totalDays = Math.ceil((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24)) + 1;
-  
+
   try {
     const apiKey = await getGeminiApiKey();
-    
+
     // Get places for selected categories (map food->restaurants, nightlife->pubs)
     const categoryPlacesPromises = categories.map(async cat => {
       // Map UI category names to actual category keys
@@ -534,7 +534,7 @@ export const generateTripItinerary = async (
     });
     const categoryPlacesArrays = await Promise.all(categoryPlacesPromises);
     const categoryPlaces = categoryPlacesArrays.flat();
-    
+
     // If no API key, return placeholder itinerary
     if (!apiKey) {
       return generatePlaceholderItinerary(startDate, endDate, budget, categories, travelMode, totalDays, categoryPlaces);
@@ -542,17 +542,17 @@ export const generateTripItinerary = async (
 
     const weatherHint = getWeatherHint();
     const budgetNum = Number(budget);
-    
+
     // Use smart ordering for better itinerary
     const orderedPlaces = smartOrderPlaces(categoryPlaces, 9, travelMode as 'Driving' | 'Walking' | 'Public Transport');
-    
+
     // Get restaurants for meal recommendations
-    const restaurants = categoryPlaces.filter(p => 
-      p.category === 'restaurants' || 
-      p.name.toLowerCase().includes('restaurant') || 
+    const restaurants = categoryPlaces.filter(p =>
+      p.category === 'restaurants' ||
+      p.name.toLowerCase().includes('restaurant') ||
       p.name.toLowerCase().includes('cafe')
     );
-    
+
     const prompt = `You are a travel assistant for Pondicherry, India. Create a detailed day-wise itinerary using REAL data.
 
 Trip Details:
@@ -566,12 +566,12 @@ Trip Details:
 
 Available Places in Pondicherry (with REAL opening hours and locations):
 ${orderedPlaces.map(p => {
-  const isOpen = isPlaceOpen(p, 12, 0); // Check if open at noon
-  return `- ${p.name} (${p.rating}⭐): ${p.description}
+      const isOpen = isPlaceOpen(p, 12, 0); // Check if open at noon
+      return `- ${p.name} (${p.rating}⭐): ${p.description}
   Opening Hours: ${p.opening} ${isOpen ? '(Open at noon)' : '(Closed at noon)'}
   Entry Fee: ${p.entryFee}
   Location: ${p.mapUrl}`;
-}).join('\n')}
+    }).join('\n')}
 
 IMPORTANT: Use REAL opening hours to schedule activities. Consider:
 1. Places that open early (6-8 AM) should be scheduled in the morning
@@ -657,7 +657,7 @@ Make sure:
       const jsonMatch = generatedText.match(/```json\n([\s\S]*?)\n```/) || generatedText.match(/```\n([\s\S]*?)\n```/);
       const jsonText = jsonMatch ? jsonMatch[1] : generatedText;
       const parsed = JSON.parse(jsonText.trim());
-      
+
       return {
         startDate,
         endDate,
@@ -693,37 +693,37 @@ const generatePlaceholderItinerary = (
 ): TripItinerary => {
   const budgetNum = Number(budget);
   const costPerDay = Math.floor(budgetNum / totalDays);
-  
+
   const days: DayItinerary[] = [];
   const start = new Date(startDate);
-  
+
   // Get restaurants for meal recommendations
-  const restaurants = availablePlaces.filter(p => 
-    p.category === 'restaurants' || 
-    p.name.toLowerCase().includes('restaurant') || 
+  const restaurants = availablePlaces.filter(p =>
+    p.category === 'restaurants' ||
+    p.name.toLowerCase().includes('restaurant') ||
     p.name.toLowerCase().includes('cafe')
   );
-  
+
   // Distribute places across days using smart ordering
   const placesPerDay = Math.max(2, Math.ceil(availablePlaces.length / totalDays));
-  
+
   for (let i = 0; i < totalDays; i++) {
     const currentDate = new Date(start);
     currentDate.setDate(start.getDate() + i);
     const dateStr = currentDate.toISOString().split('T')[0];
-    
+
     // Get places for this day
     const dayPlacesRaw = availablePlaces.slice(i * placesPerDay, (i + 1) * placesPerDay);
-    
+
     // Use smart ordering based on opening hours and time of day
     const dayPlaces = smartOrderPlaces(dayPlacesRaw, 9, travelMode as 'Driving' | 'Walking' | 'Public Transport');
-    
+
     // Calculate activity timings with real travel times
     const activitiesWithTimings = calculateActivityTimings(dayPlaces, 9, travelMode as 'Driving' | 'Walking' | 'Public Transport');
-    
+
     const activities: Activity[] = activitiesWithTimings.map((activity, index) => {
       const place = activity.place;
-      
+
       // Extract cost from entryFee
       let cost = 0;
       const costMatch = place.entryFee.match(/₹?(\d+)/);
@@ -735,10 +735,10 @@ const generatePlaceholderItinerary = (
         // Default cost based on category
         cost = index === 0 ? Math.floor(costPerDay * 0.4) : Math.floor(costPerDay * 0.3);
       }
-      
+
       // Calculate duration from start and end times
       const duration = calculateDuration(activity.startTime, activity.endTime);
-      
+
       return {
         time: activity.startTime,
         place: place.name,
@@ -750,11 +750,11 @@ const generatePlaceholderItinerary = (
         travelTime: activity.travelTime, // Include travel time from previous place
       };
     });
-    
+
     // Get meal recommendations based on time of day
     const lunchRecommendation = getMealRecommendation(13, restaurants); // 1 PM for lunch
     const dinnerRecommendation = getMealRecommendation(19, restaurants); // 7 PM for dinner
-    
+
     const diningSuggestions: string[] = [];
     if (lunchRecommendation.places.length > 0) {
       diningSuggestions.push(`${lunchRecommendation.places[0].name} (Lunch)`);
@@ -762,14 +762,14 @@ const generatePlaceholderItinerary = (
     if (dinnerRecommendation.places.length > 0) {
       diningSuggestions.push(`${dinnerRecommendation.places[0].name} (Dinner)`);
     }
-    
+
     // Fallback if no restaurants found
     if (diningSuggestions.length === 0) {
       diningSuggestions.push('Local Restaurant', 'Street Food');
     }
-    
+
     const dayCost = activities.reduce((sum, a) => sum + a.cost, 0) + Math.floor(costPerDay * 0.3);
-    
+
     days.push({
       day: i + 1,
       date: dateStr,
@@ -778,9 +778,9 @@ const generatePlaceholderItinerary = (
       diningSuggestions,
     });
   }
-  
+
   const estimatedCost = days.reduce((sum, d) => sum + d.totalCost, 0);
-  
+
   return {
     startDate,
     endDate,
@@ -800,20 +800,20 @@ const calculateDuration = (startTime: string, endTime: string): string => {
     const [time, period] = timeStr.split(' ');
     const [hours, minutes] = time.split(':').map(Number);
     let hour24 = hours;
-    
+
     if (period === 'PM' && hours !== 12) {
       hour24 = hours + 12;
     } else if (period === 'AM' && hours === 12) {
       hour24 = 0;
     }
-    
+
     return hour24 * 60 + minutes;
   };
-  
+
   const start = parseTime(startTime);
   const end = parseTime(endTime);
   const durationMinutes = end - start;
-  
+
   if (durationMinutes < 60) {
     return `${durationMinutes} minutes`;
   } else {

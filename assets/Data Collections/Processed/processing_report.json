@@ -1,0 +1,271 @@
+{
+  "files": {
+    "AdventureActivities.xlsx": {
+      "validPlaces": 18,
+      "removedRows": 0,
+      "schema": "Standardized v1",
+      "sheets": "Cycling, Beach Activities, Trekking, Theme Parks"
+    },
+    "Beaches.xlsx": {
+      "validPlaces": 8,
+      "removedRows": 0,
+      "schema": "Standardized v1",
+      "sheets": "Beaches"
+    },
+    "Hotels.xlsx": {
+      "validPlaces": 17,
+      "removedRows": 0,
+      "schema": "Standardized v1",
+      "sheets": "Hotels, Resorts, PG, Stay"
+    },
+    "Nature.xlsx": {
+      "validPlaces": 4,
+      "removedRows": 0,
+      "schema": "Standardized v1",
+      "sheets": "Gardens_Parks, Zoo, Lakes"
+    },
+    "Pubs & Bars.xlsx": {
+      "validPlaces": 11,
+      "removedRows": 0,
+      "schema": "Standardized v1",
+      "sheets": "Pubs, Bars, Lounge Bars, Live Music Bars, Dance Clubs"
+    },
+    "Restraunts.xlsx": {
+      "validPlaces": 14,
+      "removedRows": 1,
+      "schema": "Standardized v1",
+      "sheets": "Restaurants, Cafes, Bakeries_Snack_Desserts, Chats, StreetFood"
+    },
+    "sos.xlsx": {
+      "validPlaces": 30,
+      "removedRows": 0,
+      "schema": "Standardized v1",
+      "sheets": "Hospitals, Medical, Police Stations, Fire Stations"
+    },
+    "Temples.xlsx": {
+      "validPlaces": 27,
+      "removedRows": 0,
+      "schema": "Standardized v1",
+      "sheets": "Hindu, Christian, Muslim, Jain, Buddist"
+    }
+  },
+  "firestoreStructure": {
+    "AdventureActivities": {
+      "collectionPath": "places/AdventureActivities/items",
+      "documentId": "{id}",
+      "fields": [
+        "id",
+        "category",
+        "subCategory",
+        "name",
+        "location",
+        "address",
+        "googleMapsUrl",
+        "openingTimeWeekdays",
+        "closingTimeWeekdays",
+        "openingTimeWeekends",
+        "closingTimeWeekends",
+        "description",
+        "images",
+        "entryFee",
+        "dressCode",
+        "phoneNumber",
+        "crowdLevel",
+        "bestTimeToVisit",
+        "famousFor",
+        "safetyNotes",
+        "lastVerified"
+      ]
+    },
+    "Beaches": {
+      "collectionPath": "places/Beaches/items",
+      "documentId": "{id}",
+      "fields": [
+        "id",
+        "category",
+        "subCategory",
+        "name",
+        "location",
+        "address",
+        "googleMapsUrl",
+        "openingTimeWeekdays",
+        "closingTimeWeekdays",
+        "openingTimeWeekends",
+        "closingTimeWeekends",
+        "description",
+        "images",
+        "entryFee",
+        "dressCode",
+        "phoneNumber",
+        "crowdLevel",
+        "bestTimeToVisit",
+        "famousFor",
+        "safetyNotes",
+        "lastVerified"
+      ]
+    },
+    "Hotels": {
+      "collectionPath": "places/Hotels/items",
+      "documentId": "{id}",
+      "fields": [
+        "id",
+        "category",
+        "subCategory",
+        "name",
+        "location",
+        "address",
+        "googleMapsUrl",
+        "openingTimeWeekdays",
+        "closingTimeWeekdays",
+        "openingTimeWeekends",
+        "closingTimeWeekends",
+        "description",
+        "images",
+        "entryFee",
+        "dressCode",
+        "phoneNumber",
+        "crowdLevel",
+        "bestTimeToVisit",
+        "famousFor",
+        "safetyNotes",
+        "lastVerified"
+      ]
+    },
+    "Nature": {
+      "collectionPath": "places/Nature/items",
+      "documentId": "{id}",
+      "fields": [
+        "id",
+        "category",
+        "subCategory",
+        "name",
+        "location",
+        "address",
+        "googleMapsUrl",
+        "openingTimeWeekdays",
+        "closingTimeWeekdays",
+        "openingTimeWeekends",
+        "closingTimeWeekends",
+        "description",
+        "images",
+        "entryFee",
+        "dressCode",
+        "phoneNumber",
+        "crowdLevel",
+        "bestTimeToVisit",
+        "famousFor",
+        "safetyNotes",
+        "lastVerified"
+      ]
+    },
+    "Pubs & Bars": {
+      "collectionPath": "places/Pubs & Bars/items",
+      "documentId": "{id}",
+      "fields": [
+        "id",
+        "category",
+        "subCategory",
+        "name",
+        "location",
+        "address",
+        "googleMapsUrl",
+        "openingTimeWeekdays",
+        "closingTimeWeekdays",
+        "openingTimeWeekends",
+        "closingTimeWeekends",
+        "description",
+        "images",
+        "entryFee",
+        "dressCode",
+        "phoneNumber",
+        "crowdLevel",
+        "bestTimeToVisit",
+        "famousFor",
+        "safetyNotes",
+        "lastVerified"
+      ]
+    },
+    "Restraunts": {
+      "collectionPath": "places/Restraunts/items",
+      "documentId": "{id}",
+      "fields": [
+        "id",
+        "category",
+        "subCategory",
+        "name",
+        "location",
+        "address",
+        "googleMapsUrl",
+        "openingTimeWeekdays",
+        "closingTimeWeekdays",
+        "openingTimeWeekends",
+        "closingTimeWeekends",
+        "description",
+        "images",
+        "entryFee",
+        "dressCode",
+        "phoneNumber",
+        "crowdLevel",
+        "bestTimeToVisit",
+        "famousFor",
+        "safetyNotes",
+        "lastVerified"
+      ]
+    },
+    "sos": {
+      "collectionPath": "places/sos/items",
+      "documentId": "{id}",
+      "fields": [
+        "id",
+        "category",
+        "subCategory",
+        "name",
+        "location",
+        "address",
+        "googleMapsUrl",
+        "openingTimeWeekdays",
+        "closingTimeWeekdays",
+        "openingTimeWeekends",
+        "closingTimeWeekends",
+        "description",
+        "images",
+        "entryFee",
+        "dressCode",
+        "phoneNumber",
+        "crowdLevel",
+        "bestTimeToVisit",
+        "famousFor",
+        "safetyNotes",
+        "lastVerified"
+      ]
+    },
+    "Temples": {
+      "collectionPath": "places/Temples/items",
+      "documentId": "{id}",
+      "fields": [
+        "id",
+        "category",
+        "subCategory",
+        "name",
+        "location",
+        "address",
+        "googleMapsUrl",
+        "openingTimeWeekdays",
+        "closingTimeWeekdays",
+        "openingTimeWeekends",
+        "closingTimeWeekends",
+        "description",
+        "images",
+        "entryFee",
+        "dressCode",
+        "phoneNumber",
+        "crowdLevel",
+        "bestTimeToVisit",
+        "famousFor",
+        "safetyNotes",
+        "lastVerified",
+        "religion"
+      ]
+    }
+  }
+}

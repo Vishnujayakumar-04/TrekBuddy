@@ -3,6 +3,12 @@
   "compilerOptions": {
     "strict": true,
     "resolveJsonModule": true,
-    "esModuleInterop": true
-  }
+    "esModuleInterop": true,
+    "module": "esnext",
+    "forceConsistentCasingInFileNames": true
+  },
+  "exclude": [
+    "website",
+    "node_modules"
+  ]
 }

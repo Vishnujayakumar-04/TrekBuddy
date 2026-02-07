@@ -1,10 +1,10 @@
-import { initializeAuth, getAuth } from "firebase/auth";
+import { initializeAuth, getAuth, Auth } from "firebase/auth";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { firebaseApp } from "./firebaseConfig";
 
 // For React Native, Firebase handles persistence automatically
 // We use getAuth which works for both web and React Native
-let auth;
+let auth: Auth;
 try {
   // Try to initialize with persistence if available
   // Note: getReactNativePersistence may not be available in all Firebase versions

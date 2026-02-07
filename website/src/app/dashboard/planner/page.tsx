@@ -2,10 +2,9 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Plus, Calendar, MapPin, MoreVertical, Trash, Edit, ArrowRight, Loader2, PlayCircle } from 'lucide-react';
 import {
     DropdownMenu,
@@ -19,7 +18,7 @@ import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
 
 import { db } from '@/lib/firebase';
-import { collection, addDoc, query, where, onSnapshot, deleteDoc, doc, orderBy, serverTimestamp, Timestamp } from 'firebase/firestore';
+import { collection, addDoc, query, where, onSnapshot, deleteDoc, doc, orderBy, serverTimestamp } from 'firebase/firestore';
 import { useAuth } from '@/hooks/useAuth'; // Changed from useAuthContext to match Navbar usage if possible, or consistent hook
 
 interface Trip {
@@ -71,26 +70,50 @@ export default function TripPlannerPage() {
     }, [user]);
 
     const handleCreateTrip = async () => {
-        if (!newTripName.trim() || !user || !db) return;
+        if (!newTripName.trim()) {
+            toast.error('Please enter a name for your trip');
+            return;
+        }
 
+        if (!user) {
+            toast.error('Please log in to create a trip');
+            return;
+        }
+
+        // Optimistic UI update
         setIsCreating(true);
+
         try {
+            // Firestore Write
             await addDoc(collection(db, 'trips'), {
-                name: newTripName,
+                name: newTripName.trim(),
                 userId: user.uid,
-                startDate: new Date().toISOString().split('T')[0],
-                endDate: new Date().toISOString().split('T')[0],
+                startDate: new Date().toISOString(), // Use full ISO string for better sorting
+                endDate: new Date().toISOString(),
                 places: 0,
-                image: '/images/hero-bg.svg', // Default placeholder
+                image: `https://source.unsplash.com/random/800x600/?puducherry,beach,travel&sig=${Date.now()}`, // Dynamic placeholder
+                status: 'planning', // Add status field
                 createdAt: serverTimestamp()
             });
 
             setIsCreateOpen(false);
             setNewTripName('');
-            toast.success('Trip created successfully!');
-        } catch (error) {
+            toast.success('Trip created successfully!', {
+                description: 'Ready to start planning your adventure.',
+            });
+        } catch (error: unknown) {
             console.error("Error creating trip:", error);
-            toast.error('Failed to create trip');
+            let errorMessage = 'Failed to create trip. Please try again.';
+
+            // @ts-expect-error - Error code handling for Firebase
+            if (error?.code === 'permission-denied') {
+                errorMessage = 'You do not have permission to create trips.';
+                // @ts-expect-error - Error code handling for Firebase
+            } else if (error?.code === 'unavailable') {
+                errorMessage = 'Network error. Please check your connection.';
+            }
+
+            toast.error(errorMessage);
         } finally {
             setIsCreating(false);
         }

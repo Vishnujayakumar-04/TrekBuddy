@@ -18,11 +18,11 @@ import { spacing, radius } from '../theme/spacing';
 import { typography } from '../theme/typography';
 import { shadows } from '../theme/shadows';
 import { auth } from '../firebase/auth';
-import { 
-  sendAIMessage, 
-  getChatHistory, 
+import {
+  sendAIMessage,
+  getChatHistory,
   subscribeToChatHistory,
-  ChatMessage 
+  ChatMessage
 } from '../utils/firebaseAI';
 
 const STATUSBAR_HEIGHT = Platform.OS === 'android' ? StatusBar.currentHeight || 24 : 0;
@@ -53,7 +53,7 @@ export default function AIChatbotScreen({ navigation }: AIChatbotScreenProps) {
 
     // Subscribe to real-time updates
     const unsubscribe = setupChatSubscription();
-    
+
     // Listen to auth state changes
     const authUnsubscribe = auth.onAuthStateChanged((user) => {
       if (!user) {
@@ -82,7 +82,7 @@ export default function AIChatbotScreen({ navigation }: AIChatbotScreenProps) {
   };
 
   const setupChatSubscription = () => {
-    if (!auth.currentUser) return () => {};
+    if (!auth.currentUser) return () => { };
 
     try {
       return subscribeToChatHistory(auth.currentUser.uid, (messages) => {
@@ -92,7 +92,7 @@ export default function AIChatbotScreen({ navigation }: AIChatbotScreenProps) {
     } catch (error) {
       console.error('Error setting up chat subscription:', error);
       setLoadingHistory(false);
-      return () => {};
+      return () => { };
     }
   };
 
@@ -144,7 +144,7 @@ export default function AIChatbotScreen({ navigation }: AIChatbotScreenProps) {
       setMessages((prev) => prev.map((msg) => (msg.id === userMessage.id ? updatedMessage : msg)));
     } catch (error: any) {
       console.error('Error getting AI response:', error);
-      
+
       // Check if it's a network error
       const errorMessage = error.message || '';
       if (errorMessage.includes('Network') || errorMessage.includes('fetch') || errorMessage.includes('Failed to fetch')) {
@@ -152,7 +152,7 @@ export default function AIChatbotScreen({ navigation }: AIChatbotScreenProps) {
       } else {
         Alert.alert('Error', errorMessage || 'Failed to get AI response. Please try again.');
       }
-      
+
       // Remove the message if it failed
       setMessages((prev) => prev.filter((msg) => msg.id !== userMessage.id));
     } finally {
@@ -182,7 +182,7 @@ export default function AIChatbotScreen({ navigation }: AIChatbotScreenProps) {
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="dark-content" backgroundColor="#FFFFFF" />
-      
+
       {/* Header */}
       <LinearGradient
         colors={['#0E7C86', '#4ECDC4']}

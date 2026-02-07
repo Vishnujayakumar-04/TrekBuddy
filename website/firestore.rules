@@ -1,0 +1,53 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Trips Collection - User-specific trip planning
+    match /trips/{tripId} {
+      // Allow read if user owns the trip
+      allow read: if request.auth != null && resource.data.userId == request.auth.uid;
+      
+      // Allow create if user is authenticated and sets their own userId
+      allow create: if request.auth != null && request.resource.data.userId == request.auth.uid;
+      
+      // Allow update/delete if user owns the trip
+      allow update, delete: if request.auth != null && resource.data.userId == request.auth.uid;
+    }
+    
+    // Itinerary Items - Nested under trips
+    match /trips/{tripId}/items/{itemId} {
+      // Allow if user owns the parent trip
+      allow read, write: if request.auth != null && 
+        get(/databases/$(database)/documents/trips/$(tripId)).data.userId == request.auth.uid;
+    }
+    
+    // Places Collection - Public read, admin write
+    match /places/{placeId} {
+      allow read: if true;
+      allow write: if false; // Admin-only via Firebase Console
+    }
+    
+    // Knowledge Base - For AI Guide caching
+    match /knowledge/{docId} {
+      allow read: if true;
+      allow write: if false; // Admin-only
+    }
+    
+    // Transit Data - Public read
+    match /transit/{docId} {
+      allow read: if true;
+      allow write: if false;
+    }
+    
+    // User Profiles
+    match /users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+    
+    // Chat History - User-specific
+    match /chats/{chatId} {
+      allow read, write: if request.auth != null && resource.data.userId == request.auth.uid;
+      allow create: if request.auth != null && request.resource.data.userId == request.auth.uid;
+    }
+  }
+}

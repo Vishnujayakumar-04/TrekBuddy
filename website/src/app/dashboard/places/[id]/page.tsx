@@ -2,6 +2,7 @@
 
 import { useState, use } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
@@ -114,10 +115,11 @@ function PlaceDetailView({ id, place }: { id: string, place: typeof PLACE_DATA }
 
                     {/* Image Gallery */}
                     <div className="aspect-video bg-muted rounded-xl overflow-hidden relative group">
-                        <img
+                        <Image
                             src={place.images[0]}
                             alt={place.name}
-                            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                            fill
+                            className="object-cover transition-transform duration-500 group-hover:scale-105"
                         />
                         <Dialog>
                             <DialogTrigger asChild>

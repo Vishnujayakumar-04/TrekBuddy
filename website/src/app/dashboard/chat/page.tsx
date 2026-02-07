@@ -5,8 +5,14 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Card } from '@/components/ui/card';
-import { Send, Bot, User, Trash2, Sparkles, MapPin, Compass } from 'lucide-react';
+import { Send, Bot, User, Trash2, MapPin, Compass } from 'lucide-react';
 import { toast } from 'sonner';
+import { db } from '@/lib/firebase';
+import { collection, addDoc, query, where, getDocs, limit, serverTimestamp } from 'firebase/firestore';
+import { getGeminiResponse } from '@/utils/gemini';
+import { getLocalResponse } from '@/utils/localKnowledge';
+
+import { DashboardHeader } from '@/components/layout/DashboardHeader';
 
 interface Message {
     id: string;
@@ -40,9 +46,10 @@ export default function AIChatPage() {
         e.preventDefault();
         if (!inputText.trim()) return;
 
+        const userText = inputText.trim(); // Normalize
         const userMessage: Message = {
             id: Date.now().toString(),
-            text: inputText,
+            text: userText,
             sender: 'user',
             timestamp: new Date()
         };
@@ -51,18 +58,80 @@ export default function AIChatPage() {
         setInputText('');
         setIsTyping(true);
 
-        // Simulate AI response delay
-        setTimeout(() => {
+        try {
+            // 1. Check Local Knowledge (Instant)
+            const localAnswer = getLocalResponse(userText);
+            if (localAnswer) {
+                const botMessage: Message = {
+                    id: (Date.now() + 1).toString(),
+                    text: localAnswer,
+                    sender: 'bot',
+                    timestamp: new Date()
+                };
+                setMessages(prev => [...prev, botMessage]);
+                setIsTyping(false);
+                return;
+            }
+
+            // 2. Check Firestore Cache
+            const cacheQuery = query(
+                collection(db, 'ai_cache'),
+                where('question', '==', userText.toLowerCase()),
+                limit(1)
+            );
+            const cacheSnapshot = await getDocs(cacheQuery);
+
+            if (!cacheSnapshot.empty) {
+                const cachedData = cacheSnapshot.docs[0].data();
+                const botMessage: Message = {
+                    id: (Date.now() + 1).toString(),
+                    text: cachedData.answer,
+                    sender: 'bot',
+                    timestamp: new Date()
+                };
+                setMessages(prev => [...prev, botMessage]);
+                setIsTyping(false);
+                return;
+            }
+
+            // 3. Fallback to Gemini API
+            const chatHistory = messages.map(m => ({ text: m.text, sender: m.sender }));
+            const responseText = await getGeminiResponse(userText, chatHistory);
+
             const botMessage: Message = {
                 id: (Date.now() + 1).toString(),
-                text: getMockResponse(userMessage.text),
+                text: responseText,
                 sender: 'bot',
                 timestamp: new Date()
             };
             setMessages(prev => [...prev, botMessage]);
+
+            // 4. Save to Firestore Cache (Async, don't block UI)
+            try {
+                await addDoc(collection(db, 'ai_cache'), {
+                    question: userText.toLowerCase(),
+                    answer: responseText,
+                    createdAt: serverTimestamp()
+                });
+            } catch (cacheError) {
+                console.error("Failed to cache response:", cacheError);
+            }
+
+        } catch (error) {
+            console.error('AI response error:', error);
+            const errorMessage: Message = {
+                id: (Date.now() + 1).toString(),
+                text: "I'm having trouble connecting right now. Please try again in a moment.",
+                sender: 'bot',
+                timestamp: new Date()
+            };
+            setMessages(prev => [...prev, errorMessage]);
+            toast.error('Failed to get AI response');
+        } finally {
             setIsTyping(false);
-        }, 1500);
+        }
     };
+    // ... rest of file
 
     const clearChat = () => {
         setMessages([
@@ -78,18 +147,16 @@ export default function AIChatPage() {
 
     return (
         <div className="container mx-auto py-8 max-w-5xl h-[calc(100vh-80px)] flex flex-col px-4">
-            <div className="flex justify-between items-center mb-6 flex-shrink-0">
-                <div className="space-y-1">
-                    <h1 className="text-3xl font-bold tracking-tight text-slate-900 dark:text-white flex items-center gap-2">
-                        <Sparkles className="w-6 h-6 text-cyan-500" />
-                        AI <span className="text-cyan-500">Travel Guide</span>
-                    </h1>
-                    <p className="text-sm text-slate-500 dark:text-slate-400 font-medium">Your 24/7 personal assistant for Puducherry</p>
-                </div>
+            <DashboardHeader
+                title="AI Travel Guide"
+                subtitle="Your 24/7 personal assistant for Puducherry"
+                backHref="/"
+                backLabel="Home"
+            >
                 <Button variant="outline" size="sm" onClick={clearChat} className="gap-2 text-slate-500 hover:text-red-600 hover:bg-red-50 hover:border-red-200 transition-colors rounded-full px-4">
                     <Trash2 className="w-4 h-4" /> Clear History
                 </Button>
-            </div>
+            </DashboardHeader>
 
             <Card className="flex-1 flex flex-col overflow-hidden shadow-2xl border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl rounded-2xl">
                 {/* Chat Area */}
@@ -113,8 +180,8 @@ export default function AIChatPage() {
                             </Avatar>
                             <div
                                 className={`max-w-[85%] md:max-w-[75%] rounded-2xl px-5 py-3.5 text-sm md:text-base shadow-sm leading-relaxed ${message.sender === 'user'
-                                        ? 'bg-gradient-to-br from-cyan-600 to-blue-600 text-white rounded-tr-none'
-                                        : 'bg-white dark:bg-slate-800 border-slate-100 dark:border-slate-700 text-slate-800 dark:text-slate-100 rounded-tl-none'
+                                    ? 'bg-gradient-to-br from-cyan-600 to-blue-600 text-white rounded-tr-none'
+                                    : 'bg-white dark:bg-slate-800 border-slate-100 dark:border-slate-700 text-slate-800 dark:text-slate-100 rounded-tl-none'
                                     }`}
                             >
                                 {message.text}
@@ -168,26 +235,4 @@ export default function AIChatPage() {
     );
 }
 
-// Simple mock logic for demo
-function getMockResponse(query: string): string {
-    const q = query.toLowerCase();
-    if (q.includes('beach') || q.includes('sea')) {
-        return "You must visit Promenade Beach for the sunrise and Paradise Beach for water sports! Serenity Beach is also great for surfing.";
-    }
-    if (q.includes('food') || q.includes('restaurant') || q.includes('eat') || q.includes('cafe')) {
-        return "For French cuisine, try Villa Shanti or Carte Blanche. For local Chettinad style, Appachi is highly recommended. Don't forget to try the wood-fired pizzas at Cafe Xtasi and gelato at GMT!";
-    }
-    if (q.includes('temple') || q.includes('church') || q.includes('ashram')) {
-        return "Manakula Vinayagar Temple is famous for its elephant blessings. The Immaculate Conception Cathedral is stunning. And of course, Sri Aurobindo Ashram is the spiritual heart of the city.";
-    }
-    if (q.includes('hotel') || q.includes('stay')) {
-        return "If you want heritage, try Palais de Mahe. for luxury, The Promenade. For budget stays, there are many guest houses near the Ashram.";
-    }
-    if (q.includes('history') || q.includes('culture')) {
-        return "Puducherry has a rich French colonial history. Visit the French Quarter (White Town), the Museum, and the Bharathi Park to learn more about its dual heritage.";
-    }
-    if (q.includes('shopping')) {
-        return "Check out Sunday Market for bargains, or boutiques like Casablanca and Anokhi for curated clothes and crafts.";
-    }
-    return "That's an interesting question! Puducherry is full of surprises. Have you explored the Ashram area or the Sunday Market yet?";
-}
+

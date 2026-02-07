@@ -4,10 +4,11 @@ import { useTheme } from 'next-themes';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+// import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Moon, Sun, Laptop } from 'lucide-react';
 import { toast } from 'sonner';
+import { DashboardHeader } from '@/components/layout/DashboardHeader';
 
 export default function SettingsPage() {
     const { theme, setTheme } = useTheme();
@@ -17,11 +18,14 @@ export default function SettingsPage() {
     };
 
     return (
-        <div className="container py-8 max-w-2xl">
-            <div className="mb-8">
-                <h1 className="text-3xl font-bold tracking-tight">Settings</h1>
-                <p className="text-muted-foreground">Manage your application preferences</p>
-            </div>
+        <div className="container py-8 max-w-2xl space-y-8">
+            <DashboardHeader
+                title="Settings"
+                subtitle="Manage your application preferences"
+                backHref="/"
+                backLabel="Home"
+                showHome={false}
+            />
 
             <div className="space-y-6">
                 <Card>

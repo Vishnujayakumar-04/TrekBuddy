@@ -27,15 +27,15 @@ import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { useState, useEffect } from 'react';
 import { Input } from '@/components/ui/input';
 
-import { usePathname } from 'next/navigation';
+// import { usePathname } from 'next/navigation';
 
 export function Navbar() {
     const { user, logout } = useAuth();
     const [isOpen, setIsOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
     const [searchOpen, setSearchOpen] = useState(false);
-    const pathname = usePathname();
-    const isHome = pathname === '/';
+    // const pathname = usePathname();
+    // const isHome = pathname === '/';
 
     useEffect(() => {
         const handleScroll = () => {
