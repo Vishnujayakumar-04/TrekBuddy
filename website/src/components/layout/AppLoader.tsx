@@ -1,24 +1,21 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { usePathname } from 'next/navigation';
 import { useAuthContext } from '@/context/AuthContext';
 import { LoadingScreen } from './LoadingScreen';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export function AppLoader({ children }: { children: React.ReactNode }) {
     const { loading } = useAuthContext();
-    const [showSplash, setShowSplash] = useState(true);
+    const pathname = usePathname();
 
-    useEffect(() => {
-        // Minimum display time for splash screen to prevent flashing
-        const timer = setTimeout(() => {
-            setShowSplash(false);
-        }, 2000); // 2 seconds minimum for the full "premium" feel
-
-        return () => clearTimeout(timer);
-    }, []);
-
-    const isLoading = loading || showSplash;
+    const normalizedPath = pathname?.replace(/\/$/, '') || '/';
+    // Public routes that should never block on auth loading
+    // Using normalized path for comparison
+    const isPublicRoute = ['/', '/login', '/signup'].some(route =>
+        normalizedPath === route || (route !== '/' && normalizedPath.startsWith(route))
+    );
+    const isLoading = loading && !isPublicRoute;
 
     return (
         <>
@@ -28,7 +25,7 @@ export function AppLoader({ children }: { children: React.ReactNode }) {
                         key="splash-screen"
                         initial={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
-                        transition={{ duration: 0.5, ease: "easeInOut" }}
+                        transition={{ duration: 0.3, ease: "easeInOut" }}
                         className="fixed inset-0 z-[100]"
                     >
                         <LoadingScreen />
@@ -36,7 +33,7 @@ export function AppLoader({ children }: { children: React.ReactNode }) {
                 )}
             </AnimatePresence>
 
-            <div className={`transition-opacity duration-700 ${isLoading ? 'opacity-0' : 'opacity-100'}`}>
+            <div className={`transition-opacity duration-500 ${isLoading ? 'opacity-0' : 'opacity-100'}`}>
                 {children}
             </div>
         </>

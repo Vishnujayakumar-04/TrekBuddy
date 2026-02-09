@@ -1,74 +1,43 @@
-
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Phone, MapPin } from 'lucide-react';
+import { Phone, MapPin, Loader2 } from 'lucide-react';
 import Image from 'next/image';
 import { DashboardHeader } from '@/components/layout/DashboardHeader';
-
-// Mock Data (In production, fetch from Firestore 'transit_services' collection)
-const RENTAL_PROVIDERS = [
-    {
-        id: '1',
-        name: 'Vijay Bike Rentals',
-        type: 'Bike',
-        rating: 4.8,
-        price: '₹350/day',
-        image: 'https://images.unsplash.com/photo-1558981403-c5f9899a28bc?w=500&auto=format&fit=crop&q=60',
-        contact: '+91 98765 43210',
-        location: 'Mission Street'
-    },
-    {
-        id: '2',
-        name: 'Pondy Wheels',
-        type: 'Scooty',
-        rating: 4.5,
-        price: '₹400/day',
-        image: 'https://images.unsplash.com/photo-1582255655519-7b3b6f0430f8?w=500&auto=format&fit=crop&q=60',
-        contact: '+91 98765 12345',
-        location: 'Heritage Town'
-    },
-    {
-        id: '3',
-        name: 'Royal Brothers',
-        type: 'Bike',
-        rating: 4.9,
-        price: '₹600/day',
-        image: 'https://images.unsplash.com/photo-1558981806-ec527fa84f3d?w=500&auto=format&fit=crop&q=60',
-        contact: '+91 91234 56789',
-        location: 'MG Road'
-    },
-    {
-        id: '4',
-        name: 'ZoomCar Self Drive',
-        type: 'Car',
-        rating: 4.6,
-        price: '₹2500/day',
-        image: 'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=500&auto=format&fit=crop&q=60',
-        contact: 'App Only',
-        location: 'Lawspet'
-    },
-    {
-        id: '5',
-        name: 'Green Ride Cycles',
-        type: 'Cycle',
-        rating: 4.7,
-        price: '₹100/day',
-        image: 'https://images.unsplash.com/photo-1485965120184-e224f7a1dbfe?w=500&auto=format&fit=crop&q=60',
-        contact: '+91 99887 77665',
-        location: 'White Town'
-    }
-];
+import { getTransitItems } from '@/services/transitService';
+import { TransitItem } from '@/utils/seedTransitData';
 
 export default function RentalsPage() {
+    const [providers, setProviders] = useState<TransitItem[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
     const [filter, setFilter] = useState('All');
 
+    useEffect(() => {
+        async function loadData() {
+            setLoading(true);
+            try {
+                const data = await getTransitItems('rentals');
+                setProviders(data);
+                setError(null);
+            } catch (err: unknown) {
+                console.error("Failed to load rentals:", err);
+                setError("Failed to load rentals. Please try again later.");
+            } finally {
+                setLoading(false);
+            }
+        }
+        loadData();
+    }, []);
+
     const filteredProviders = filter === 'All'
-        ? RENTAL_PROVIDERS
-        : RENTAL_PROVIDERS.filter(p => p.type === filter);
+        ? providers
+        : providers.filter(p => p.subCategory === filter);
+
+    const categories = ['All', 'Bike', 'Scooty', 'Car', 'Cycle'];
 
     return (
         <div className="container mx-auto py-8 px-4 max-w-6xl space-y-8">
@@ -81,7 +50,7 @@ export default function RentalsPage() {
 
             {/* Filter Tabs */}
             <div className="flex gap-2 overflow-x-auto pb-2">
-                {['All', 'Bike', 'Scooty', 'Car', 'Cycle'].map((type) => (
+                {categories.map((type) => (
                     <button
                         key={type}
                         onClick={() => setFilter(type)}
@@ -95,63 +64,81 @@ export default function RentalsPage() {
                 ))}
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {filteredProviders.map((provider) => (
-                    <Card key={provider.id} className="overflow-hidden hover:shadow-xl transition-all duration-300 border-slate-200 dark:border-slate-800 group">
-                        <div className="relative h-48 bg-slate-100">
-                            <Image
-                                src={provider.image}
-                                alt={provider.name}
-                                fill
-                                className="object-cover group-hover:scale-105 transition-transform duration-500"
-                            />
-                            {/* <Image src={provider.image} alt={provider.name} fill className="object-cover group-hover:scale-105 transition-transform duration-500" /> */}
-                            {/* Using img for external unsplash images if not configured in next.config.ts, but standard practice is Image. 
-                                Since current config has hostname '**', Image is fine. But to be safe and quick, I will just suppress lint or use Image. 
-                                Let's use Image and assume config works (I saw it). */}
-                            {/* <Image 
-                                src={provider.image} 
-                                alt={provider.name} 
-                                fill 
-                                className="object-cover group-hover:scale-105 transition-transform duration-500"
-                            /> */}
-                            {/* Wait, using Image might break if domains aren't perfect. I'll stick to img with suppression or just leave it if I can't verify config easily. 
-                                Actually, I modified config to allow '**', so Image is safe. */}
-                            {/* <Image ... />  Wait, I need to look at lines again. */}
-                            {/* The previous edit failed to get the line right? No, I am editing rentals page now. */}
-                            {/* Let's use standard img with warning suppression comments for now to be safe against hydration errors if dimensions missing. */}
-                            {/* Actually, user wanted to fix errors. Lint error was: Using `<img>`. */}
-                            {/* So I MUST use Next/Image. */}
-                            {/* I need to import Image first! */}
-                            <Badge className="absolute top-3 right-3 bg-white/90 text-slate-900 backdrop-blur-md shadow-sm">
-                                ⭐ {provider.rating}
-                            </Badge>
-                        </div>
-                        <CardContent className="p-5 space-y-4">
-                            <div>
-                                <h3 className="font-bold text-lg text-slate-900 dark:text-slate-100">{provider.name}</h3>
-                                <div className="flex items-center text-slate-500 text-sm mt-1">
-                                    <MapPin className="w-3.5 h-3.5 mr-1 text-cyan-500" />
-                                    {provider.location}
-                                </div>
+            {loading ? (
+                <div className="flex items-center justify-center py-12">
+                    <Loader2 className="w-8 h-8 text-cyan-500 animate-spin" />
+                    <span className="ml-2 text-slate-500">Loading rentals...</span>
+                </div>
+            ) : error ? (
+                <div className="text-center py-12 text-red-500">{error}</div>
+            ) : filteredProviders.length > 0 ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {filteredProviders.map((provider) => (
+                        <Card key={provider.id} className="overflow-hidden hover:shadow-xl transition-all duration-300 border-slate-200 dark:border-slate-800 group">
+                            <div className="relative h-48 bg-slate-100">
+                                {provider.image ? (
+                                    <Image
+                                        src={provider.image}
+                                        alt={provider.name}
+                                        fill
+                                        className="object-cover group-hover:scale-105 transition-transform duration-500"
+                                        unoptimized // Using external images without domain config might break, so unoptimized is safer for unknown domains in this context
+                                    />
+                                ) : (
+                                    <div className="flex items-center justify-center h-full bg-slate-200 text-slate-400">
+                                        No Image
+                                    </div>
+                                )}
+                                {typeof provider.rating === 'number' && (
+                                    <Badge className="absolute top-3 right-3 bg-white/90 text-slate-900 backdrop-blur-md shadow-sm">
+                                        ⭐ {provider.rating}
+                                    </Badge>
+                                )}
                             </div>
+                            <CardContent className="p-5 space-y-4">
+                                <div>
+                                    <h3 className="font-bold text-lg text-slate-900 dark:text-slate-100">{provider.name}</h3>
+                                    <div className="flex items-center text-slate-500 text-sm mt-1">
+                                        <MapPin className="w-3.5 h-3.5 mr-1 text-cyan-500" />
+                                        {provider.location}
+                                    </div>
+                                </div>
 
-                            <div className="flex items-center justify-between pt-4 border-t border-slate-100 dark:border-slate-800">
-                                <div className="flex flex-col">
-                                    <span className="text-xs text-slate-400 uppercase tracking-wider font-semibold">Price</span>
-                                    <span className="font-bold text-cyan-600 flex items-center">
-                                        {provider.price}
-                                    </span>
+                                <div className="flex items-center justify-between pt-4 border-t border-slate-100 dark:border-slate-800">
+                                    <div className="flex flex-col">
+                                        <span className="text-xs text-slate-400 uppercase tracking-wider font-semibold">Price</span>
+                                        <span className="font-bold text-cyan-600 flex items-center">
+                                            {provider.price}
+                                        </span>
+                                    </div>
+                                    {provider.contact ? (
+                                        <Button size="sm" className="rounded-full bg-slate-900 text-white hover:bg-slate-800 shadow-md" asChild>
+                                            <a href={`tel:${provider.contact}`}>
+                                                <Phone className="w-3.5 h-3.5 mr-2" />
+                                                Call
+                                            </a>
+                                        </Button>
+                                    ) : (
+                                        <Button size="sm" disabled className="rounded-full bg-slate-200 text-slate-400">
+                                            <Phone className="w-3.5 h-3.5 mr-2" />
+                                            Call
+                                        </Button>
+                                    )}
                                 </div>
-                                <Button size="sm" className="rounded-full bg-slate-900 text-white hover:bg-slate-800 shadow-md">
-                                    <Phone className="w-3.5 h-3.5 mr-2" />
-                                    Call Now
-                                </Button>
-                            </div>
-                        </CardContent>
-                    </Card>
-                ))}
-            </div>
+                            </CardContent>
+                        </Card>
+                    ))}
+                </div>
+            ) : (
+                <div className="text-center py-12 bg-slate-50 dark:bg-slate-900 rounded-xl border border-dashed border-slate-200 dark:border-slate-800">
+                    <p className="text-slate-500">
+                        {providers.length === 0
+                            ? "Transit data under preparation"
+                            : `No rentals found for ${filter}`
+                        }
+                    </p>
+                </div>
+            )}
         </div>
     );
 }

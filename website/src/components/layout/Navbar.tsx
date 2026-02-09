@@ -27,16 +27,21 @@ import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { useState, useEffect } from 'react';
 import { Input } from '@/components/ui/input';
 
+
 // import { usePathname } from 'next/navigation';
+
+import { usePathname } from 'next/navigation';
 
 export function Navbar() {
     const { user, logout } = useAuth();
     const [isOpen, setIsOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
     const [searchOpen, setSearchOpen] = useState(false);
-    // const pathname = usePathname();
-    // const isHome = pathname === '/';
+    const pathname = usePathname();
+    const isHome = pathname === '/';
+    const isInteractive = scrolled || !isHome;
 
+    // ... rest of the component
     useEffect(() => {
         const handleScroll = () => {
             setScrolled(window.scrollY > 20);
@@ -49,7 +54,7 @@ export function Navbar() {
         <motion.header
             className={cn(
                 "fixed top-0 z-50 w-full transition-all duration-300 border-b",
-                scrolled
+                isInteractive
                     ? "bg-white/90 dark:bg-slate-950/90 backdrop-blur-md border-slate-200 dark:border-slate-800 shadow-sm py-2"
                     : "bg-transparent border-transparent py-4 text-white"
             )}
@@ -62,7 +67,7 @@ export function Navbar() {
                 <div className="flex items-center gap-2 lg:hidden">
                     <Sheet open={isOpen} onOpenChange={setIsOpen}>
                         <SheetTrigger asChild>
-                            <Button variant="ghost" size="icon" className={cn(scrolled ? "text-slate-900 dark:text-white" : "text-white")}>
+                            <Button variant="ghost" size="icon" className={cn(isInteractive ? "text-slate-900 dark:text-white" : "text-white")}>
                                 <Menu className="h-6 w-6" />
                                 <span className="sr-only">Toggle menu</span>
                             </Button>
@@ -88,7 +93,7 @@ export function Navbar() {
                     <motion.span
                         className={cn(
                             "bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-blue-500",
-                            scrolled ? "from-cyan-600 to-blue-700 dark:from-cyan-400 dark:to-blue-500" : "from-white to-slate-200"
+                            isInteractive ? "from-cyan-600 to-blue-700 dark:from-cyan-400 dark:to-blue-500" : "from-white to-slate-200"
                         )}
                         whileHover={{ scale: 1.05 }}
                         transition={{ type: "spring", stiffness: 400, damping: 10 }}
@@ -100,7 +105,7 @@ export function Navbar() {
                 {/* Desktop Nav */}
                 <div className="hidden lg:flex items-center gap-1">
                     <NavigationMenu>
-                        <NavigationMenuList className={cn("gap-2", scrolled ? "text-slate-700 dark:text-slate-200" : "text-slate-100")}>
+                        <NavigationMenuList className={cn("gap-2", isInteractive ? "text-slate-700 dark:text-slate-200" : "text-slate-100")}>
                             {[
                                 { name: "Home", href: "/" },
                                 { name: "Explore", href: "/dashboard/categories" },
@@ -114,7 +119,7 @@ export function Navbar() {
                                             className={cn(
                                                 navigationMenuTriggerStyle(),
                                                 "bg-transparent hover:bg-white/10 dark:hover:bg-white/10 focus:bg-white/10 transition-all font-medium",
-                                                scrolled ? "hover:bg-slate-100 dark:hover:bg-slate-800" : "text-white hover:text-white"
+                                                isInteractive ? "hover:bg-slate-100 dark:hover:bg-slate-800" : "text-white hover:text-white"
                                             )}
                                         >
                                             {item.name}
@@ -156,7 +161,7 @@ export function Navbar() {
                                 variant="ghost"
                                 size="icon"
                                 onClick={() => setSearchOpen(true)}
-                                className={cn("hidden md:flex rounded-full hover:bg-white/10", scrolled ? "text-slate-600 dark:text-slate-300" : "text-white")}
+                                className={cn("hidden md:flex rounded-full hover:bg-white/10", isInteractive ? "text-slate-600 dark:text-slate-300" : "text-white")}
                             >
                                 <Search className="h-5 w-5" />
                             </Button>
@@ -217,7 +222,7 @@ export function Navbar() {
                                 asChild
                                 className={cn(
                                     "hover:bg-white/10 transition-colors font-medium hidden sm:flex",
-                                    scrolled ? "text-slate-700 dark:text-slate-200" : "text-white hover:text-white"
+                                    isInteractive ? "text-slate-700 dark:text-slate-200" : "text-white hover:text-white"
                                 )}
                             >
                                 <Link href="/login">Log in</Link>

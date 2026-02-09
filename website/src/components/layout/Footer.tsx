@@ -1,3 +1,5 @@
+'use client';
+
 import Link from 'next/link';
 import { Facebook, Twitter, Instagram, Linkedin, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -20,16 +22,16 @@ export function Footer() {
                             Curated experiences, AI-powered planning, and local secrets.
                         </p>
                         <div className="flex space-x-5">
-                            <a href="#" className="text-slate-400 hover:text-cyan-500 transition-colors transform hover:scale-110">
+                            <a href="#" aria-label="Instagram" className="text-slate-400 hover:text-cyan-500 transition-colors transform hover:scale-110">
                                 <Instagram className="w-5 h-5" />
                             </a>
-                            <a href="#" className="text-slate-400 hover:text-cyan-500 transition-colors transform hover:scale-110">
+                            <a href="#" aria-label="Twitter" className="text-slate-400 hover:text-cyan-500 transition-colors transform hover:scale-110">
                                 <Twitter className="w-5 h-5" />
                             </a>
-                            <a href="#" className="text-slate-400 hover:text-cyan-500 transition-colors transform hover:scale-110">
+                            <a href="#" aria-label="LinkedIn" className="text-slate-400 hover:text-cyan-500 transition-colors transform hover:scale-110">
                                 <Linkedin className="w-5 h-5" />
                             </a>
-                            <a href="#" className="text-slate-400 hover:text-cyan-500 transition-colors transform hover:scale-110">
+                            <a href="#" aria-label="Facebook" className="text-slate-400 hover:text-cyan-500 transition-colors transform hover:scale-110">
                                 <Facebook className="w-5 h-5" />
                             </a>
                         </div>
@@ -41,7 +43,7 @@ export function Footer() {
                         <ul className="space-y-4 text-sm font-medium">
                             <li><Link href="/dashboard/categories" className="hover:text-cyan-500 transition-colors flex items-center group"><ArrowRight className="w-3 h-3 mr-2 opacity-0 group-hover:opacity-100 transition-opacity" />Destinations</Link></li>
                             <li><Link href="/dashboard/planner" className="hover:text-cyan-500 transition-colors flex items-center group"><ArrowRight className="w-3 h-3 mr-2 opacity-0 group-hover:opacity-100 transition-opacity" />Trip Planner</Link></li>
-                            <li><Link href="/dashboard/bus-routes" className="hover:text-cyan-500 transition-colors flex items-center group"><ArrowRight className="w-3 h-3 mr-2 opacity-0 group-hover:opacity-100 transition-opacity" />Local Transport</Link></li>
+                            <li><Link href="/dashboard/transit/bus" className="hover:text-cyan-500 transition-colors flex items-center group"><ArrowRight className="w-3 h-3 mr-2 opacity-0 group-hover:opacity-100 transition-opacity" />Local Transport</Link></li>
                             <li><Link href="/dashboard/chat" className="hover:text-cyan-500 transition-colors flex items-center group"><ArrowRight className="w-3 h-3 mr-2 opacity-0 group-hover:opacity-100 transition-opacity" />AI Guide</Link></li>
                         </ul>
                     </div>
@@ -64,16 +66,17 @@ export function Footer() {
                         <p className="text-sm text-slate-500 dark:text-slate-400 mb-4">
                             Get the latest hidden gems and travel tips sent to your inbox.
                         </p>
-                        <div className="space-y-3">
+                        <form onSubmit={(e) => { e.preventDefault(); alert("Thanks for subscribing!"); }} className="space-y-3">
                             <Input
                                 type="email"
                                 placeholder="Email address"
+                                required
                                 className="bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-slate-800 focus-visible:ring-cyan-500"
                             />
-                            <Button className="w-full bg-slate-900 dark:bg-white text-white dark:text-slate-900 hover:bg-cyan-600 dark:hover:bg-slate-200 font-bold transition-all">
+                            <Button type="submit" className="w-full bg-slate-900 dark:bg-white text-white dark:text-slate-900 hover:bg-cyan-600 dark:hover:bg-slate-200 font-bold transition-all">
                                 Subscribe
                             </Button>
-                        </div>
+                        </form>
                     </div>
                 </div>
 

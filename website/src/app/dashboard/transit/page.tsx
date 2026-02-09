@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect } from 'react';
 import Link from 'next/link';
 import { Card, CardContent } from '@/components/ui/card';
 import { motion } from 'framer-motion';
@@ -7,6 +8,7 @@ import { Bike, Car, Bus, Train, ArrowRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
 import { DashboardHeader } from '@/components/layout/DashboardHeader';
+import { seedTransitData } from '@/services/transitService';
 
 const TRANSIT_CATEGORIES = [
     {
@@ -48,6 +50,13 @@ const TRANSIT_CATEGORIES = [
 ];
 
 export default function TransitPage() {
+    useEffect(() => {
+        // Ensure data exists in Firestore for first-time users
+        seedTransitData().catch(error => {
+            console.error("Failed to seed transit data:", error);
+        });
+    }, []);
+
     return (
         <div className="container mx-auto py-8 px-4 max-w-6xl space-y-8">
             <DashboardHeader

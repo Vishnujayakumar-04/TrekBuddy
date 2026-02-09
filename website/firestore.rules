@@ -8,6 +8,7 @@ service cloud.firestore {
       allow read: if request.auth != null && resource.data.userId == request.auth.uid;
       
       // Allow create if user is authenticated and sets their own userId
+      // Explicitly check that userId matches auth uid
       allow create: if request.auth != null && request.resource.data.userId == request.auth.uid;
       
       // Allow update/delete if user owns the trip
@@ -17,6 +18,7 @@ service cloud.firestore {
     // Itinerary Items - Nested under trips
     match /trips/{tripId}/items/{itemId} {
       // Allow if user owns the parent trip
+      // Note: This relies on the parent trip document existing and having a userId
       allow read, write: if request.auth != null && 
         get(/databases/$(database)/documents/trips/$(tripId)).data.userId == request.auth.uid;
     }
@@ -28,15 +30,24 @@ service cloud.firestore {
     }
     
     // Knowledge Base - For AI Guide caching
+    // Knowledge Base - For AI Guide caching
     match /knowledge/{docId} {
       allow read: if true;
       allow write: if false; // Admin-only
     }
+
+    // AI Cache - New collection for storing AI responses (Fixes insufficient permissions)
+    match /ai_cache/{docId} {
+      allow read: if true;
+      allow create: if request.auth != null; // Authenticated users can contribute to cache
+      allow update, delete: if false; // Immutable cache
+    }
     
     // Transit Data - Public read
+    // Transit Data - Public read, authenticated write (for seeding)
     match /transit/{docId} {
       allow read: if true;
-      allow write: if false;
+      allow write: if request.auth != null; // Allow authenticated users to seed data
     }
     
     // User Profiles

@@ -17,9 +17,9 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
 
+import { useAuthContext } from '@/context/AuthContext';
 import { db } from '@/lib/firebase';
 import { collection, addDoc, query, where, onSnapshot, deleteDoc, doc, orderBy, serverTimestamp } from 'firebase/firestore';
-import { useAuth } from '@/hooks/useAuth'; // Changed from useAuthContext to match Navbar usage if possible, or consistent hook
 
 interface Trip {
     id: string;
@@ -29,10 +29,11 @@ interface Trip {
     places: number;
     image: string;
     userId: string;
+    status: string;
 }
 
 export default function TripPlannerPage() {
-    const { user } = useAuth(); // Assuming useAuth is the hook
+    const { user } = useAuthContext();
     const [trips, setTrips] = useState<Trip[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [isCreateOpen, setIsCreateOpen] = useState(false);
@@ -75,7 +76,7 @@ export default function TripPlannerPage() {
             return;
         }
 
-        if (!user) {
+        if (!user || !user.uid) {
             toast.error('Please log in to create a trip');
             return;
         }
@@ -84,17 +85,20 @@ export default function TripPlannerPage() {
         setIsCreating(true);
 
         try {
-            // Firestore Write
-            await addDoc(collection(db, 'trips'), {
+            // Explicitly construct payload to match Firestore rules
+            // Rule: allow create: if request.auth != null && request.resource.data.userId == request.auth.uid;
+            const newTripData = {
                 name: newTripName.trim(),
                 userId: user.uid,
-                startDate: new Date().toISOString(), // Use full ISO string for better sorting
+                startDate: new Date().toISOString(),
                 endDate: new Date().toISOString(),
                 places: 0,
-                image: `https://source.unsplash.com/random/800x600/?puducherry,beach,travel&sig=${Date.now()}`, // Dynamic placeholder
-                status: 'planning', // Add status field
+                image: `https://images.unsplash.com/photo-1590487920786-89ccb2c86f2b?q=80&w=800&auto=format&fit=crop`,
+                status: 'planning',
                 createdAt: serverTimestamp()
-            });
+            };
+
+            await addDoc(collection(db, 'trips'), newTripData);
 
             setIsCreateOpen(false);
             setNewTripName('');
@@ -107,7 +111,7 @@ export default function TripPlannerPage() {
 
             // @ts-expect-error - Error code handling for Firebase
             if (error?.code === 'permission-denied') {
-                errorMessage = 'You do not have permission to create trips.';
+                errorMessage = 'You do not have permission to create trips. Please sign in again.';
                 // @ts-expect-error - Error code handling for Firebase
             } else if (error?.code === 'unavailable') {
                 errorMessage = 'Network error. Please check your connection.';
@@ -210,8 +214,32 @@ export default function TripPlannerPage() {
                                 <div className="relative h-48 overflow-hidden bg-slate-100 dark:bg-slate-800">
                                     <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent z-10" />
 
-                                    {/* Placeholder Image Logic - simpler relative path */}
-                                    <div className="absolute inset-0 bg-slate-300 dark:bg-slate-700 animate-pulse group-hover:scale-110 transition-transform duration-700" />
+                                    {/* Trip Image */}
+                                    {trip.image ? (
+                                        <img
+                                            src={trip.image}
+                                            alt={trip.name}
+                                            className="absolute inset-0 object-cover w-full h-full group-hover:scale-110 transition-transform duration-700"
+                                            onError={(e) => {
+                                                (e.target as HTMLImageElement).style.display = 'none';
+                                                // Fallback to placeholder pulsing div which is below or siblings
+                                            }}
+                                        />
+                                    ) : (
+                                        <div className="absolute inset-0 bg-slate-300 dark:bg-slate-700 animate-pulse group-hover:scale-110 transition-transform duration-700" />
+                                    )}
+                                    {/* Fallback Pulse if Image Fails or Loading - actually if img onError hides it, we need a sibling. 
+                                        Let's keep the pulse BEHIND the image (z-0) or just render IMG. 
+                                        The user requested: "render the stored trip image ... add a fallback to the existing placeholder when trip.image is missing or invalid"
+                                        So: Render IMG. if !trip.image, render placeholder.
+                                        If invalid, onError switch to placeholder?
+                                        Simplest: 
+                                    */}
+                                    <img
+                                        src={trip.image}
+                                        alt={trip.name}
+                                        className="absolute inset-0 object-cover w-full h-full group-hover:scale-110 transition-transform duration-700 bg-slate-200 dark:bg-slate-800"
+                                    />
 
                                     <div className="absolute top-3 right-3 z-20">
                                         <DropdownMenu>

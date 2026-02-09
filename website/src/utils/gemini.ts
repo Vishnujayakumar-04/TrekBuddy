@@ -28,7 +28,7 @@ TONE: Warm, welcoming, helpful. Like a local friend.
 export async function getGeminiResponse(userPrompt: string, chatHistory: { text: string; sender: 'user' | 'bot' }[] = []) {
     if (!genAI) {
         console.error("Gemini API Key is missing");
-        return "I'm having trouble connecting to my brain right now. Please check the API key configuration.";
+        throw new Error("MISSING_API_KEY");
     }
 
     try {
@@ -45,8 +45,8 @@ export async function getGeminiResponse(userPrompt: string, chatHistory: { text:
         const result = await model.generateContent(fullPrompt);
         const response = await result.response;
         return response.text();
-    } catch (error) {
+    } catch (error: unknown) {
         console.error("Gemini API Error:", error);
-        return "I'm having a bit of trouble thinking clearly right now. Please try asking again in a moment.";
+        throw error; // Re-throw to let the UI handle the fallback logic
     }
 }

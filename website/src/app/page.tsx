@@ -1,13 +1,12 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { LoadingScreen } from '@/components/layout/LoadingScreen';
 import {
   MapPin,
   Map,
@@ -25,132 +24,15 @@ import {
 
 export default function HomePage() {
   const [searchQuery, setSearchQuery] = useState('');
-  const [loading, setLoading] = useState(true);
   const [showSuggestions, setShowSuggestions] = useState(false);
 
-  // Combined searchable data
-  const SEARCH_DATA = [
-    { name: 'Promenade Beach', category: 'Beaches', path: '/dashboard/places/promenade-beach' },
-    { name: 'Paradise Beach', category: 'Beaches', path: '/dashboard/places/paradise-beach' },
-    { name: 'Serenity Beach', category: 'Beaches', path: '/dashboard/places/serenity-beach' },
-    { name: 'Auroville Beach', category: 'Beaches', path: '/dashboard/places/auroville-beach' },
-    { name: 'Auroville', category: 'Spiritual', path: '/dashboard/places/auroville' },
-    { name: 'Matrimandir', category: 'Spiritual', path: '/dashboard/places/matrimandir' },
-    { name: 'Sri Aurobindo Ashram', category: 'Spiritual', path: '/dashboard/places/ashram' },
-    { name: 'White Town', category: 'Heritage', path: '/dashboard/places/white-town' },
-    { name: 'French Quarter', category: 'Heritage', path: '/dashboard/places/french-quarter' },
-    { name: 'Manakula Vinayagar Temple', category: 'Temples', path: '/dashboard/places/manakula-temple' },
-    { name: 'Baker Street', category: 'Cafes', path: '/dashboard/places/baker-street' },
-    { name: 'Cafe des Arts', category: 'Cafes', path: '/dashboard/places/cafe-des-arts' },
-    { name: 'Surguru', category: 'Restaurants', path: '/dashboard/places/surguru' },
-    { name: 'Le Club', category: 'Restaurants', path: '/dashboard/places/le-club' },
-    { name: 'Rock Beach Park', category: 'Parks', path: '/dashboard/places/rock-beach-park' },
-    { name: 'Botanical Garden', category: 'Parks', path: '/dashboard/places/botanical-garden' },
-  ];
-
+  // Data constants moved outside component
   const filteredSuggestions = searchQuery.length > 0
     ? SEARCH_DATA.filter(item =>
       item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       item.category.toLowerCase().includes(searchQuery.toLowerCase())
     ).slice(0, 6)
     : [];
-
-  useEffect(() => {
-    // Simulate initial loading
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 1200);
-    return () => clearTimeout(timer);
-  }, []);
-
-  // Updated Categories with Unsplash Images
-  const categories = [
-    {
-      id: 'beaches',
-      name: 'Beaches',
-      image: 'https://images.unsplash.com/photo-1590487920786-89ccb2c86f2b?q=80&w=800&auto=format&fit=crop',
-      desc: 'Sun, Sand & Surf',
-      icon: Sunset
-    },
-    {
-      id: 'temples',
-      name: 'Heritage',
-      image: 'https://images.unsplash.com/photo-1582563364956-65a25e197c38?q=80&w=800&auto=format&fit=crop',
-      desc: 'Colonial & Spiritual',
-      icon: Landmark
-    },
-    {
-      id: 'hotels',
-      name: 'Hotels',
-      image: 'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?q=80&w=800&auto=format&fit=crop',
-      desc: 'Luxury to Budget',
-      icon: Star
-    },
-    {
-      id: 'restaurants',
-      name: 'Dining',
-      image: 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?q=80&w=800&auto=format&fit=crop',
-      desc: 'Crepes to Curry',
-      icon: Utensils
-    },
-    {
-      id: 'places',
-      name: 'Sights',
-      image: 'https://images.unsplash.com/photo-1533929736472-ed2199d435bb?q=80&w=800&auto=format&fit=crop',
-      desc: 'Must-visit Spots',
-      icon: Camera
-    },
-    {
-      id: 'education',
-      name: 'Education',
-      image: 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=800&auto=format&fit=crop',
-      desc: 'Universities & Schools',
-      icon: GraduationCap
-    },
-  ];
-
-  const popularDestinations = [
-    {
-      id: 1,
-      name: 'Promenade Beach',
-      rating: 4.8,
-      reviews: 1240,
-      description: 'Iconic rock beach with a long promenade, perfect for sunrise walks.',
-      image: 'https://images.unsplash.com/photo-1621577708605-6c703080bf07?q=80&w=800&auto=format&fit=crop',
-      tag: 'Must Visit'
-    },
-    {
-      id: 2,
-      name: 'Auroville',
-      rating: 4.9,
-      reviews: 3500,
-      description: 'An experimental township dedicated to human unity and sustainable living.',
-      image: 'https://images.unsplash.com/photo-1580211782250-b4d241d7f6c3?q=80&w=800&auto=format&fit=crop',
-      tag: 'Spiritual'
-    },
-    {
-      id: 3,
-      name: 'White Town',
-      rating: 4.7,
-      reviews: 890,
-      description: 'Charming French Quarter with colonial architecture and vibrant cafes.',
-      image: 'https://images.unsplash.com/photo-1605374467006-25f16e949984?q=80&w=800&auto=format&fit=crop',
-      tag: 'Heritage'
-    },
-    {
-      id: 4,
-      name: 'Paradise Beach',
-      rating: 4.6,
-      reviews: 1100,
-      description: 'Pristine island beach accessible by boat, known for golden sands.',
-      image: 'https://images.unsplash.com/photo-1563294060-63d1912a201b?q=80&w=800&auto=format&fit=crop',
-      tag: 'Nature'
-    }
-  ];
-
-  if (loading) {
-    return <LoadingScreen />
-  }
 
   return (
     <div className="flex flex-col min-h-screen bg-slate-50 dark:bg-slate-950 font-sans selection:bg-cyan-100 selection:text-cyan-900">
@@ -292,7 +174,7 @@ export default function HomePage() {
               icon: Bus,
               color: "text-emerald-500",
               bg: "bg-emerald-500/10",
-              href: "/dashboard/bus-routes"
+              href: "/dashboard/transit/bus"
             }
           ].map((feature, i) => (
             <motion.div
@@ -465,3 +347,108 @@ export default function HomePage() {
     </div>
   );
 }
+
+// --- Static Data Constants (Moved outside component for performance) ---
+
+const SEARCH_DATA = [
+  { name: 'Promenade Beach', category: 'Beaches', path: '/dashboard/places/promenade-beach' },
+  { name: 'Paradise Beach', category: 'Beaches', path: '/dashboard/places/paradise-beach' },
+  { name: 'Serenity Beach', category: 'Beaches', path: '/dashboard/places/serenity-beach' },
+  { name: 'Auroville Beach', category: 'Beaches', path: '/dashboard/places/auroville-beach' },
+  { name: 'Auroville', category: 'Spiritual', path: '/dashboard/places/auroville' },
+  { name: 'Matrimandir', category: 'Spiritual', path: '/dashboard/places/matrimandir' },
+  { name: 'Sri Aurobindo Ashram', category: 'Spiritual', path: '/dashboard/places/ashram' },
+  { name: 'White Town', category: 'Heritage', path: '/dashboard/places/white-town' },
+  { name: 'French Quarter', category: 'Heritage', path: '/dashboard/places/french-quarter' },
+  { name: 'Manakula Vinayagar Temple', category: 'Temples', path: '/dashboard/places/manakula-temple' },
+  { name: 'Baker Street', category: 'Cafes', path: '/dashboard/places/baker-street' },
+  { name: 'Cafe des Arts', category: 'Cafes', path: '/dashboard/places/cafe-des-arts' },
+  { name: 'Surguru', category: 'Restaurants', path: '/dashboard/places/surguru' },
+  { name: 'Le Club', category: 'Restaurants', path: '/dashboard/places/le-club' },
+  { name: 'Rock Beach Park', category: 'Parks', path: '/dashboard/places/rock-beach-park' },
+  { name: 'Botanical Garden', category: 'Parks', path: '/dashboard/places/botanical-garden' },
+];
+
+const categories = [
+  {
+    id: 'beaches',
+    name: 'Beaches',
+    image: 'https://images.unsplash.com/photo-1590487920786-89ccb2c86f2b?q=80&w=800&auto=format&fit=crop',
+    desc: 'Sun, Sand & Surf',
+    icon: Sunset
+  },
+  {
+    id: 'temples',
+    name: 'Heritage',
+    image: 'https://images.unsplash.com/photo-1582563364956-65a25e197c38?q=80&w=800&auto=format&fit=crop',
+    desc: 'Colonial & Spiritual',
+    icon: Landmark
+  },
+  {
+    id: 'hotels',
+    name: 'Hotels',
+    image: 'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?q=80&w=800&auto=format&fit=crop',
+    desc: 'Luxury to Budget',
+    icon: Star
+  },
+  {
+    id: 'restaurants',
+    name: 'Dining',
+    image: 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?q=80&w=800&auto=format&fit=crop',
+    desc: 'Crepes to Curry',
+    icon: Utensils
+  },
+  {
+    id: 'places',
+    name: 'Sights',
+    image: 'https://images.unsplash.com/photo-1533929736472-ed2199d435bb?q=80&w=800&auto=format&fit=crop',
+    desc: 'Must-visit Spots',
+    icon: Camera
+  },
+  {
+    id: 'education',
+    name: 'Education',
+    image: 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=800&auto=format&fit=crop',
+    desc: 'Universities & Schools',
+    icon: GraduationCap
+  },
+];
+
+const popularDestinations = [
+  {
+    id: 'promenade-beach',
+    name: 'Promenade Beach',
+    rating: 4.8,
+    reviews: 1240,
+    description: 'Iconic rock beach with a long promenade, perfect for sunrise walks.',
+    image: 'https://images.unsplash.com/photo-1621577708605-6c703080bf07?q=80&w=800&auto=format&fit=crop',
+    tag: 'Must Visit'
+  },
+  {
+    id: 'auroville',
+    name: 'Auroville',
+    rating: 4.9,
+    reviews: 3500,
+    description: 'An experimental township dedicated to human unity and sustainable living.',
+    image: 'https://images.unsplash.com/photo-1580211782250-b4d241d7f6c3?q=80&w=800&auto=format&fit=crop',
+    tag: 'Spiritual'
+  },
+  {
+    id: 'white-town',
+    name: 'White Town',
+    rating: 4.7,
+    reviews: 890,
+    description: 'Charming French Quarter with colonial architecture and vibrant cafes.',
+    image: 'https://images.unsplash.com/photo-1605374467006-25f16e949984?q=80&w=800&auto=format&fit=crop',
+    tag: 'Heritage'
+  },
+  {
+    id: 'paradise-beach',
+    name: 'Paradise Beach',
+    rating: 4.6,
+    reviews: 1100,
+    description: 'Pristine island beach accessible by boat, known for golden sands.',
+    image: 'https://images.unsplash.com/photo-1563294060-63d1912a201b?q=80&w=800&auto=format&fit=crop',
+    tag: 'Nature'
+  }
+];
