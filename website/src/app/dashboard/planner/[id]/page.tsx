@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { ArrowLeft, Calendar, MapPin, GripVertical, Trash2, PlusCircle, Share2, Loader2, AlertCircle } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { db } from '@/lib/firebase';
-import { doc, getDoc } from 'firebase/firestore';
+import { doc, getDoc, collection, getDocs, deleteDoc } from 'firebase/firestore';
 import { useAuthContext } from '@/context/AuthContext';
 import { toast } from 'sonner';
 
@@ -58,8 +58,13 @@ export default function TripDetailPage({ params }: PageProps) {
 
                     setTrip({ id: docSnap.id, ...data } as Trip);
 
-                    // Initialize empty items
-                    setItems([]);
+                    // Fetch subcollection 'itinerary' if it exists (assuming future implementation)
+                    // For now, checks if there's an 'items' array in the doc, or just mock it empty
+                    // Since we haven't implemented adding items yet, we'll start with empty.
+                    // const itinerarySnap = await getDocs(collection(db, 'trips', id, 'itinerary'));
+                    // const loadedItems = itinerarySnap.docs.map(d => ({id: d.id, ...d.data()})) as TripItem[];
+                    // setItems(loadedItems);
+                    setItems([]); // Initialize empty for now as we don't have adding logic yet
 
                 } else {
                     setError('Trip not found.');
@@ -78,7 +83,7 @@ export default function TripDetailPage({ params }: PageProps) {
             // If authentication finished and no user
             setLoading(false);
         }
-    }, [id, user, loading]);
+    }, [id, user]);
 
     const handleDelete = async (itemId: string) => {
         // Placeholder for future delete logic
@@ -110,11 +115,11 @@ export default function TripDetailPage({ params }: PageProps) {
     return (
         <div className="container py-12 max-w-5xl">
             <div className="mb-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-                <Button variant="ghost" className="gap-2 pl-0 hover:pl-2 hover:bg-transparent transition-all text-slate-500 hover:text-cyan-600" asChild>
-                    <Link href="/dashboard/planner">
+                <Link href="/dashboard/planner">
+                    <Button variant="ghost" className="gap-2 pl-0 hover:pl-2 hover:bg-transparent transition-all text-slate-500 hover:text-cyan-600">
                         <ArrowLeft className="w-4 h-4" /> Back to All Trips
-                    </Link>
-                </Button>
+                    </Button>
+                </Link>
                 <Button variant="outline" className="gap-2 border-slate-200 dark:border-slate-800 hover:bg-cyan-50 dark:hover:bg-slate-800 text-cyan-600">
                     <Share2 className="w-4 h-4" /> Share Itinerary
                 </Button>

@@ -8,447 +8,271 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import {
-  MapPin,
   Map,
   Search,
   MessageCircle,
   Bus,
-  ArrowRight,
-  Star,
-  Sunset,
-  Landmark,
-  Utensils,
+  Umbrella,
   Camera,
-  GraduationCap
+  Hotel,
+  Utensils
 } from 'lucide-react';
+// import { collection, getDocs, limit, query, where } from 'firebase/firestore';
+// import { db } from '@/lib/firebase';
+// import { Place, Category } from '@/types';
 
 export default function HomePage() {
   const [searchQuery, setSearchQuery] = useState('');
-  const [showSuggestions, setShowSuggestions] = useState(false);
 
-  // Data constants moved outside component
-  const filteredSuggestions = searchQuery.length > 0
-    ? SEARCH_DATA.filter(item =>
-      item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.category.toLowerCase().includes(searchQuery.toLowerCase())
-    ).slice(0, 6)
-    : [];
+  // Featured categories matching mobile app
+  const categories = [
+    { id: 'beaches', name: 'Beaches', icon: Umbrella, color: 'text-blue-500' },
+    { id: 'temples', name: 'Temples', icon: '🛕', color: 'text-orange-500' },
+    { id: 'hotels', name: 'Hotels', icon: Hotel, color: 'text-purple-500' },
+    { id: 'restaurants', name: 'Restaurants', icon: Utensils, color: 'text-red-500' },
+    { id: 'places', name: 'Places', icon: Camera, color: 'text-green-500' },
+    { id: 'education', name: 'Education', icon: '🎓', color: 'text-yellow-500' },
+  ];
 
   return (
-    <div className="flex flex-col min-h-screen bg-slate-50 dark:bg-slate-950 font-sans selection:bg-cyan-100 selection:text-cyan-900">
-
+    <div className="flex flex-col min-h-screen">
       {/* Hero Section */}
-      <section className="relative min-h-[92vh] flex items-center justify-center overflow-hidden bg-slate-900 pb-48 pt-32">
-        {/* Background Overlay */}
-        <div className="absolute inset-0 z-0">
+      <section className="relative h-[85vh] flex items-center justify-center overflow-hidden">
+        <div className="absolute inset-0 z-0 bg-slate-900">
           <Image
-            src="https://images.unsplash.com/photo-1582563364956-65a25e197c38?q=80&w=2669&auto=format&fit=crop"
-            alt="Puducherry Coast"
+            src="/images/hero-bg.jpg"
+            alt="Discover Puducherry"
             fill
-            className="object-cover opacity-50 scale-105 animate-[zoom_20s_infinite_alternate]"
+            className="object-cover opacity-60 mix-blend-overlay"
             priority
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-slate-950/70 via-slate-950/40 to-slate-50 dark:to-slate-950" />
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-cyan-900/10 via-slate-950/60 to-slate-950/90" />
+          <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent" />
         </div>
 
-        <div className="relative z-10 container mx-auto px-4 text-center">
+        <div className="relative z-10 container flex flex-col items-center text-center space-y-8 px-4">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, ease: "easeOut" }}
-            className="max-w-5xl mx-auto space-y-8"
+            transition={{ duration: 0.8 }}
+            className="space-y-4"
           >
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              className="inline-flex items-center px-6 py-2 rounded-full bg-white/5 backdrop-blur-md border border-white/10 text-cyan-200 text-sm font-medium tracking-wider shadow-xl hover:bg-white/10 transition-colors cursor-default"
-            >
-              <span className="w-2 h-2 rounded-full bg-cyan-400 mr-3 animate-pulse shadow-[0_0_15px_rgba(34,211,238,0.8)]" />
-              THE INTELLIGENT GUIDE TO PUDUCHERRY
-            </motion.div>
-
-            <h1 className="text-6xl md:text-7xl lg:text-8xl font-black tracking-tight text-white leading-[1.1] drop-shadow-2xl">
+            <span className="inline-block py-1 px-3 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-cyan-300 text-sm font-medium tracking-wide">
+              WELCOME TO PONDICHERRY
+            </span>
+            <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight text-white drop-shadow-2xl">
               Discover the <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-blue-200 to-indigo-300 animate-pulse">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">
                 French Riviera
-              </span>{' '}
-              of the East
+              </span>
             </h1>
-
-            <p className="text-xl md:text-2xl text-slate-200 max-w-2xl mx-auto leading-relaxed font-normal drop-shadow-lg opacity-90">
-              Explore golden beaches, heritage streets, and spiritual vibes in the heart of India&apos;s south coast.
+            <p className="text-xl md:text-2xl text-slate-200 max-w-2xl mx-auto font-light leading-relaxed">
+              Explore golden beaches, heritage streets, and spiritual vibes in the heart of India's south coast.
             </p>
+          </motion.div>
 
-            {/* Premium Search Bar */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.6, duration: 0.5 }}
-              className="max-w-2xl mx-auto mt-12 w-full px-4 relative z-50"
-            >
-              <div className="relative group">
-                <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-full blur opacity-40 group-hover:opacity-100 transition duration-700" />
-                <div className="relative flex items-center bg-white/10 backdrop-blur-xl rounded-full border border-white/20 p-2 shadow-2xl">
-                  <Search className="ml-5 w-6 h-6 text-slate-300" />
-                  <Input
-                    type="text"
-                    placeholder="Search beaches, cafes, temples..."
-                    className="flex-1 border-none bg-transparent text-white placeholder:text-slate-300 focus-visible:ring-0 focus-visible:ring-offset-0 h-14 text-lg px-4 font-light tracking-wide"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    onFocus={() => setShowSuggestions(true)}
-                    onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
-                  />
-                  <Button size="lg" className="rounded-full px-8 h-12 bg-cyan-500 hover:bg-cyan-400 text-white font-semibold text-lg border-none shadow-lg transition-all hover:scale-105">
-                    Explore
-                  </Button>
-                </div>
-
-                {/* Search Suggestions Dropdown */}
-                {showSuggestions && filteredSuggestions.length > 0 && (
-                  <motion.div
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-700 overflow-hidden"
-                  >
-                    {filteredSuggestions.map((item, index) => (
-                      <Link
-                        key={index}
-                        href={item.path}
-                        className="flex items-center justify-between px-6 py-4 hover:bg-cyan-50 dark:hover:bg-slate-800 transition-colors cursor-pointer border-b last:border-b-0 border-slate-100 dark:border-slate-800"
-                      >
-                        <div className="flex items-center gap-3">
-                          <MapPin className="w-4 h-4 text-cyan-500" />
-                          <span className="text-slate-900 dark:text-white font-medium">{item.name}</span>
-                        </div>
-                        <span className="text-xs px-2 py-1 rounded-full bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300">
-                          {item.category}
-                        </span>
-                      </Link>
-                    ))}
-                  </motion.div>
-                )}
-
-                {/* No results message */}
-                {showSuggestions && searchQuery.length > 2 && filteredSuggestions.length === 0 && (
-                  <motion.div
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-700 p-6 text-center"
-                  >
-                    <p className="text-slate-500">No places found for &quot;{searchQuery}&quot;</p>
-                    <p className="text-sm text-slate-400 mt-1">Try searching for beaches, temples, or cafes</p>
-                  </motion.div>
-                )}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.3, duration: 0.6 }}
+            className="w-full max-w-xl mx-auto"
+          >
+            <div className="flex items-center p-2 bg-white/10 backdrop-blur-xl rounded-full border border-white/20 shadow-2xl ring-1 ring-white/10 transition-all focus-within:ring-cyan-500/50 focus-within:bg-white/15">
+              <div className="pl-4 text-slate-300">
+                <Search className="w-6 h-6" />
               </div>
-            </motion.div>
+              <Input
+                type="text"
+                placeholder="Search places, hotels, beaches..."
+                className="flex-1 border-none bg-transparent text-white placeholder:text-slate-400 focus-visible:ring-0 focus-visible:ring-offset-0 text-lg h-12"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+              <Button size="lg" className="rounded-full px-8 bg-gradient-to-r from-cyan-500 to-blue-600 hover:scale-105 transition-transform shadow-lg border-none text-white font-semibold">
+                Explore
+              </Button>
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1, duration: 1 }}
+            className="absolute bottom-10 left-0 right-0 flex justify-center animate-bounce text-slate-400"
+          >
+            <span className="text-sm">Scroll to explore</span>
           </motion.div>
         </div>
       </section>
 
-      {/* Overlapping Feature Cards */}
-      <section className="container mx-auto px-4 -mt-32 relative z-40 pb-24">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {[
-            {
-              title: "Trip Planner",
-              desc: "Build your custom itinerary with our smart, map-based planning tool.",
-              icon: Map,
-              color: "text-cyan-500",
-              bg: "bg-cyan-500/10",
-              href: "/dashboard/planner"
-            },
-            {
-              title: "AI Guide",
-              desc: "Chat with our AI expert for instant local tips and hidden gems.",
-              icon: MessageCircle,
-              color: "text-indigo-500",
-              bg: "bg-indigo-500/10",
-              href: "/dashboard/chat"
-            },
-            {
-              title: "Local Transit",
-              desc: "Find bus routes, schedules, and transport options easily.",
-              icon: Bus,
-              color: "text-emerald-500",
-              bg: "bg-emerald-500/10",
-              href: "/dashboard/transit/bus"
-            }
-          ].map((feature, i) => (
-            <motion.div
-              key={feature.title}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1 + 0.5 }}
-            >
-              <Link href={feature.href} className="block h-full">
-                <Card className="h-full border-0 shadow-2xl bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] transition-all duration-300 hover:-translate-y-2 overflow-hidden group">
-                  <CardContent className="p-8 flex items-start space-x-6">
-                    <div className={`p-4 rounded-2xl ${feature.bg} ${feature.color} group-hover:scale-110 transition-transform duration-300`}>
-                      <feature.icon className="w-8 h-8" />
-                    </div>
-                    <div className="space-y-3">
-                      <h3 className="font-bold text-xl text-slate-900 dark:text-white group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors">{feature.title}</h3>
-                      <p className="text-slate-500 dark:text-slate-400 text-sm leading-relaxed">
-                        {feature.desc}
-                      </p>
-                    </div>
-                  </CardContent>
-                </Card>
+      {/* Quick Actions */}
+      <section className="container py-12">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <Link href="/dashboard/planner">
+            <Card className="hover:shadow-lg transition-shadow cursor-pointer border-l-4 border-l-primary">
+              <CardContent className="flex items-center p-6 space-x-4">
+                <div className="p-3 bg-primary/10 rounded-full text-primary">
+                  <Map className="w-8 h-8" />
+                </div>
+                <div>
+                  <h3 className="font-bold text-lg">Trip Planner</h3>
+                  <p className="text-sm text-muted-foreground">Create your perfect itinerary</p>
+                </div>
+              </CardContent>
+            </Card>
+          </Link>
+
+          <Link href="/dashboard/chat">
+            <Card className="hover:shadow-lg transition-shadow cursor-pointer border-l-4 border-l-secondary">
+              <CardContent className="flex items-center p-6 space-x-4">
+                <div className="p-3 bg-secondary/10 rounded-full text-secondary-foreground">
+                  <MessageCircle className="w-8 h-8" />
+                </div>
+                <div>
+                  <h3 className="font-bold text-lg">AI Travel Guide</h3>
+                  <p className="text-sm text-muted-foreground">Ask anything about Pondy</p>
+                </div>
+              </CardContent>
+            </Card>
+          </Link>
+
+          <Link href="/dashboard/bus-routes">
+            <Card className="hover:shadow-lg transition-shadow cursor-pointer border-l-4 border-l-accent">
+              <CardContent className="flex items-center p-6 space-x-4">
+                <div className="p-3 bg-accent/10 rounded-full text-accent">
+                  <Bus className="w-8 h-8" />
+                </div>
+                <div>
+                  <h3 className="font-bold text-lg">Local Bus Routes</h3>
+                  <p className="text-sm text-muted-foreground">Find easy transportation</p>
+                </div>
+              </CardContent>
+            </Card>
+          </Link>
+        </div>
+      </section>
+
+      {/* Categories Grid */}
+      <section className="bg-slate-50 dark:bg-slate-900 py-20 relative overflow-hidden">
+        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-slate-300 dark:via-slate-700 to-transparent" />
+        <div className="container relative z-10">
+          <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-4">
+            <div className="space-y-2">
+              <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-slate-800 dark:text-slate-100">
+                Explore by <span className="text-cyan-500">Interest</span>
+              </h2>
+              <p className="text-slate-500 dark:text-slate-400 text-lg max-w-lg">
+                Whether you're looking for spiritual peace, adventure, or culinary delights, we have curated lists for you.
+              </p>
+            </div>
+            <Link href="/dashboard/categories">
+              <Button variant="outline" className="group border-slate-300 dark:border-slate-700 hover:border-cyan-500 hover:text-cyan-500">
+                View All Categories
+                <span className="ml-2 group-hover:translate-x-1 transition-transform">→</span>
+              </Button>
+            </Link>
+          </div>
+
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={{
+              hidden: { opacity: 0 },
+              visible: {
+                opacity: 1,
+                transition: {
+                  staggerChildren: 0.1
+                }
+              }
+            }}
+            className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6"
+          >
+            {categories.map((cat) => (
+              <Link key={cat.id} href={`/dashboard/categories/${cat.id}`}>
+                <motion.div
+                  variants={{
+                    hidden: { y: 20, opacity: 0 },
+                    visible: { y: 0, opacity: 1 }
+                  }}
+                >
+                  <Card className="h-full border-none shadow-md hover:shadow-xl hover:-translate-y-2 transition-all duration-300 bg-white dark:bg-slate-800 group overflow-hidden relative">
+                    <div className={`absolute inset-0 opacity-0 group-hover:opacity-5 transition-opacity duration-500 bg-current ${cat.color}`} />
+                    <CardContent className="flex flex-col items-center justify-center p-8 text-center space-y-4">
+                      <div className={`p-4 rounded-full bg-slate-50 dark:bg-slate-900 group-hover:scale-110 transition-transform duration-300 ${cat.color}`}>
+                        {typeof cat.icon === 'string' ? <span className="text-3xl">{cat.icon}</span> : <cat.icon className="w-8 h-8" />}
+                      </div>
+                      <span className="font-semibold text-slate-700 dark:text-slate-200 group-hover:text-primary transition-colors">{cat.name}</span>
+                    </CardContent>
+                  </Card>
+                </motion.div>
               </Link>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Popular Places Carousel (Placeholder for now) */}
+      <section className="container py-24">
+        <div className="flex flex-col items-center text-center mb-16 space-y-4">
+          <span className="text-cyan-500 font-semibold tracking-wider text-sm uppercase">Don't Miss Out</span>
+          <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-slate-900 dark:text-white">
+            Popular <span className="relative inline-block">
+              Destinations
+              <svg className="absolute w-full h-3 -bottom-1 left-0 text-yellow-400 -z-10" viewBox="0 0 100 10" preserveAspectRatio="none">
+                <path d="M0 5 Q 50 10 100 5" stroke="currentColor" strokeWidth="8" fill="none" opacity="0.6" />
+              </svg>
+            </span>
+          </h2>
+          <p className="text-slate-500 max-w-2xl text-lg">
+            The most visited and highly rated locations in Puducherry this month.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {[1, 2, 3, 4].map((i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ delay: i * 0.1 }}
+              viewport={{ once: true }}
+            >
+              <Card className="overflow-hidden border-none shadow-lg hover:shadow-2xl transition-all duration-300 h-full flex flex-col group">
+                <div className="relative h-64 bg-slate-200 overflow-hidden">
+                  {/* Placeholder for real images */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10" />
+                  <div className="absolute inset-0 bg-slate-300 animate-pulse group-hover:scale-110 transition-transform duration-700" />
+                  <div className="absolute bottom-4 left-4 z-20 text-white">
+                    <span className="text-xs font-bold bg-cyan-500 px-2 py-1 rounded-sm mb-2 inline-block">MUST VISIT</span>
+                    <h3 className="font-bold text-xl">Promenade Beach</h3>
+                  </div>
+                </div>
+                <CardContent className="p-6 flex-1 bg-white dark:bg-slate-800 relative z-20">
+                  <div className="flex justify-between items-center mb-2">
+                    <div className="flex text-yellow-400 text-sm">
+                      {'★★★★★'} <span className="text-slate-400 ml-1">(4.8)</span>
+                    </div>
+                  </div>
+                  <p className="text-slate-500 text-sm line-clamp-2">
+                    A beautiful stretch of rock beach along the Bay of Bengal, perfect for morning walks.
+                  </p>
+                  <Button variant="link" className="p-0 mt-4 h-auto text-cyan-600 font-semibold group-hover:translate-x-1 transition-transform">
+                    View Details →
+                  </Button>
+                </CardContent>
+              </Card>
             </motion.div>
           ))}
         </div>
-      </section>
 
-      {/* Categories - Image Grid */}
-      <section className="py-24 bg-slate-50 dark:bg-slate-950 relative overflow-hidden">
-        {/* Decorative elements */}
-        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-cyan-500/5 rounded-full blur-[100px] pointer-events-none" />
-        <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-blue-500/5 rounded-full blur-[100px] pointer-events-none" />
-
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
-            <div className="space-y-4 max-w-2xl">
-              <span className="text-cyan-600 dark:text-cyan-400 font-bold tracking-widest text-xs uppercase">Curated Collections</span>
-              <h2 className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white tracking-tight leading-tight">
-                Explore by <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-600 to-blue-600">Interest</span>
-              </h2>
-              <p className="text-slate-600 dark:text-slate-400 text-lg leading-relaxed font-light">
-                Dive into curated collections. Whether you crave the sound of waves, the silence of meditation, or the aroma of French bakeries.
-              </p>
-            </div>
-            <Button variant="outline" className="border-slate-300 dark:border-slate-700 hover:border-cyan-600 hover:text-cyan-600 rounded-full px-8 py-6 text-base font-medium transition-all group" asChild>
-              <Link href="/dashboard/categories">
-                View All Categories
-                <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </Link>
+        <div className="mt-12 text-center">
+          <Link href="/dashboard/categories/places">
+            <Button size="lg" className="rounded-full px-8 py-6 text-lg bg-slate-900 text-white hover:bg-slate-800 dark:bg-white dark:text-slate-900">
+              Explore All Destinations
             </Button>
-          </div>
-
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-6">
-            {categories.map((cat, i) => (
-              <motion.div
-                key={cat.id}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                className="col-span-1"
-              >
-                <Link href={`/dashboard/categories/${cat.id}`}>
-                  <div className="group relative h-72 md:h-96 w-full rounded-3xl overflow-hidden shadow-lg cursor-pointer transform transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl">
-                    <div className="absolute inset-0 bg-slate-900">
-                      <Image
-                        src={cat.image}
-                        alt={cat.name}
-                        fill
-                        className="object-cover transition-transform duration-700 group-hover:scale-110 opacity-80 group-hover:opacity-90"
-                      />
-                    </div>
-                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent opacity-90" />
-
-                    <div className="absolute bottom-0 left-0 w-full p-6 text-white translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
-                      <cat.icon className="w-6 h-6 mb-3 text-cyan-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                      <h3 className="text-xl font-bold mb-1 tracking-tight">{cat.name}</h3>
-                      <p className="text-xs text-slate-300 font-medium opacity-80 group-hover:text-cyan-200 transition-colors">
-                        {cat.desc}
-                      </p>
-                    </div>
-                  </div>
-                </Link>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Popular Places Carousel */}
-      <section className="py-24 bg-white dark:bg-slate-900 relative">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16 space-y-4">
-            <span className="text-cyan-600 dark:text-cyan-400 font-bold tracking-widest text-xs uppercase px-3 py-1 rounded-full bg-cyan-50 dark:bg-cyan-900/20 border border-cyan-100 dark:border-cyan-800">Don&apos;t Miss Out</span>
-            <h2 className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white tracking-tight">
-              Popular Destinations
-            </h2>
-            <p className="text-slate-500 dark:text-slate-400 max-w-2xl mx-auto text-lg font-light">
-              Handpicked favorites loved by travelers and locals alike.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {popularDestinations.map((place, i) => (
-              <motion.div
-                key={place.id}
-                initial={{ opacity: 0, scale: 0.95 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                className="group h-full"
-              >
-                <Link href={`/dashboard/places/${place.id}`}>
-                  <Card className="h-full border-0 shadow-lg hover:shadow-2xl transition-all duration-500 flex flex-col overflow-hidden bg-white dark:bg-slate-950 rounded-3xl group-hover:-translate-y-2">
-                    {/* Image Placeholder */}
-                    <div className="relative h-72 bg-slate-200 dark:bg-slate-800 overflow-hidden">
-                      <Image
-                        src={place.image}
-                        alt={place.name}
-                        fill
-                        className="object-cover group-hover:scale-105 transition-transform duration-700"
-                      />
-                      <div className="absolute top-4 left-4 z-10">
-                        <span className="px-3 py-1.5 rounded-full bg-slate-950/60 backdrop-blur-md text-white text-xs font-bold border border-white/10 shadow-lg tracking-wide uppercase">
-                          {place.tag}
-                        </span>
-                      </div>
-                      <div className="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-slate-950/90 via-slate-950/40 to-transparent" />
-
-                      <div className="absolute bottom-4 left-4 right-4 flex justify-between items-end text-white">
-                        <div className="flex items-center gap-1.5 bg-white/20 backdrop-blur-md px-2 py-1 rounded-lg border border-white/10">
-                          <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
-                          <span className="text-xs font-bold">{place.rating}</span>
-                        </div>
-                      </div>
-                    </div>
-
-                    <CardContent className="flex-1 p-6 space-y-4 relative">
-                      <div className="flex justify-between items-start">
-                        <h3 className="font-bold text-xl text-slate-900 dark:text-white group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors line-clamp-1">
-                          {place.name}
-                        </h3>
-                      </div>
-
-                      <p className="text-slate-500 dark:text-slate-400 text-sm line-clamp-2 leading-relaxed font-light">
-                        {place.description}
-                      </p>
-
-                      <div className="pt-4 mt-auto border-t border-slate-100 dark:border-slate-800/50 flex items-center text-cyan-600 dark:text-cyan-400 text-sm font-semibold group/link">
-                        View Details <ArrowRight className="ml-1 w-4 h-4 group-hover/link:translate-x-1 transition-transform" />
-                      </div>
-                    </CardContent>
-                  </Card>
-                </Link>
-              </motion.div>
-            ))}
-          </div>
-
-          <div className="mt-20 text-center">
-            <Button size="lg" className="rounded-full px-12 py-8 text-lg bg-slate-900 text-white hover:bg-slate-800 hover:scale-105 dark:bg-white dark:text-slate-900 dark:hover:bg-slate-200 shadow-2xl hover:shadow-cyan-500/20 transition-all font-bold tracking-tight" asChild>
-              <Link href="/dashboard/categories/places">
-                Explore All Destinations
-              </Link>
-            </Button>
-          </div>
+          </Link>
         </div>
       </section>
     </div>
   );
 }
-
-// --- Static Data Constants (Moved outside component for performance) ---
-
-const SEARCH_DATA = [
-  { name: 'Promenade Beach', category: 'Beaches', path: '/dashboard/places/promenade-beach' },
-  { name: 'Paradise Beach', category: 'Beaches', path: '/dashboard/places/paradise-beach' },
-  { name: 'Serenity Beach', category: 'Beaches', path: '/dashboard/places/serenity-beach' },
-  { name: 'Auroville Beach', category: 'Beaches', path: '/dashboard/places/auroville-beach' },
-  { name: 'Auroville', category: 'Spiritual', path: '/dashboard/places/auroville' },
-  { name: 'Matrimandir', category: 'Spiritual', path: '/dashboard/places/matrimandir' },
-  { name: 'Sri Aurobindo Ashram', category: 'Spiritual', path: '/dashboard/places/ashram' },
-  { name: 'White Town', category: 'Heritage', path: '/dashboard/places/white-town' },
-  { name: 'French Quarter', category: 'Heritage', path: '/dashboard/places/french-quarter' },
-  { name: 'Manakula Vinayagar Temple', category: 'Temples', path: '/dashboard/places/manakula-temple' },
-  { name: 'Baker Street', category: 'Cafes', path: '/dashboard/places/baker-street' },
-  { name: 'Cafe des Arts', category: 'Cafes', path: '/dashboard/places/cafe-des-arts' },
-  { name: 'Surguru', category: 'Restaurants', path: '/dashboard/places/surguru' },
-  { name: 'Le Club', category: 'Restaurants', path: '/dashboard/places/le-club' },
-  { name: 'Rock Beach Park', category: 'Parks', path: '/dashboard/places/rock-beach-park' },
-  { name: 'Botanical Garden', category: 'Parks', path: '/dashboard/places/botanical-garden' },
-];
-
-const categories = [
-  {
-    id: 'beaches',
-    name: 'Beaches',
-    image: 'https://images.unsplash.com/photo-1590487920786-89ccb2c86f2b?q=80&w=800&auto=format&fit=crop',
-    desc: 'Sun, Sand & Surf',
-    icon: Sunset
-  },
-  {
-    id: 'temples',
-    name: 'Heritage',
-    image: 'https://images.unsplash.com/photo-1582563364956-65a25e197c38?q=80&w=800&auto=format&fit=crop',
-    desc: 'Colonial & Spiritual',
-    icon: Landmark
-  },
-  {
-    id: 'hotels',
-    name: 'Hotels',
-    image: 'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?q=80&w=800&auto=format&fit=crop',
-    desc: 'Luxury to Budget',
-    icon: Star
-  },
-  {
-    id: 'restaurants',
-    name: 'Dining',
-    image: 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?q=80&w=800&auto=format&fit=crop',
-    desc: 'Crepes to Curry',
-    icon: Utensils
-  },
-  {
-    id: 'places',
-    name: 'Sights',
-    image: 'https://images.unsplash.com/photo-1533929736472-ed2199d435bb?q=80&w=800&auto=format&fit=crop',
-    desc: 'Must-visit Spots',
-    icon: Camera
-  },
-  {
-    id: 'education',
-    name: 'Education',
-    image: 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=800&auto=format&fit=crop',
-    desc: 'Universities & Schools',
-    icon: GraduationCap
-  },
-];
-
-const popularDestinations = [
-  {
-    id: 'promenade-beach',
-    name: 'Promenade Beach',
-    rating: 4.8,
-    reviews: 1240,
-    description: 'Iconic rock beach with a long promenade, perfect for sunrise walks.',
-    image: 'https://images.unsplash.com/photo-1621577708605-6c703080bf07?q=80&w=800&auto=format&fit=crop',
-    tag: 'Must Visit'
-  },
-  {
-    id: 'auroville',
-    name: 'Auroville',
-    rating: 4.9,
-    reviews: 3500,
-    description: 'An experimental township dedicated to human unity and sustainable living.',
-    image: 'https://images.unsplash.com/photo-1580211782250-b4d241d7f6c3?q=80&w=800&auto=format&fit=crop',
-    tag: 'Spiritual'
-  },
-  {
-    id: 'white-town',
-    name: 'White Town',
-    rating: 4.7,
-    reviews: 890,
-    description: 'Charming French Quarter with colonial architecture and vibrant cafes.',
-    image: 'https://images.unsplash.com/photo-1605374467006-25f16e949984?q=80&w=800&auto=format&fit=crop',
-    tag: 'Heritage'
-  },
-  {
-    id: 'paradise-beach',
-    name: 'Paradise Beach',
-    rating: 4.6,
-    reviews: 1100,
-    description: 'Pristine island beach accessible by boat, known for golden sands.',
-    image: 'https://images.unsplash.com/photo-1563294060-63d1912a201b?q=80&w=800&auto=format&fit=crop',
-    tag: 'Nature'
-  }
-];
